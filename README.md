@@ -2,7 +2,7 @@
 
 本项目存放HowNet核心数据和THUNLP开发的OpenHowNet API，提供方便的HowNet信息查询、义原树展示、基于义原的词相似度计算等功能。如果您想了解OpenHowNet的更多信息，请访问我们的[网站](https://openhownet.thunlp.org)。
 
-如果您在研究中使用了OpenHowNet提供的知识或API，请引用以下两篇文章：
+如果您在研究中使用了OpenHowNet提供的数据或API，请引用以下两篇文章：
 
 	@article{qi2019openhownet,
 	  title={OpenHowNet: An Open Sememe-based Lexical Knowledge Base},
