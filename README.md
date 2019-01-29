@@ -1,7 +1,22 @@
 # OpenHowNet API
 
-本项目存放HowNet核心数据和THUNLP开发的OpenHowNet API，提供方便的HowNet信息查询、义原树展示、基于义原的词相似度计算等功能。
+本项目存放HowNet核心数据和THUNLP开发的OpenHowNet API，提供方便的HowNet信息查询、义原树展示、基于义原的词相似度计算等功能。关于OpenHowNet的更多信息可以访问我们的[网站](https://openhownet.thunlp.org)。
 
+如果您在研究中使用了OpenHowNet的数据或API，请引用以下两篇文章：
+
+	@inproceedings{dong2003hownet,
+	  title={HowNet-a hybrid language and knowledge resource},
+	  author={Dong, Zhendong and Dong, Qiang},
+	  booktitle={Proceedings of NLP-KE},
+	  year={2003},
+	}
+	@article{qi2019openhownet,
+	  title={OpenHowNet: An Open Sememe-based Lexical Knowledge Base},
+	  author={Qi, Fanchao and Yang, Chenghao and Liu, Zhiyuan and Dong, Qiang and Sun, Maosong and Dong, Zhendong},
+	  journal={arXiv preprint},
+	  year={2019},
+	}
+	  
 ## HowNet核心数据
 数据文件（`HowNet.txt`）由223,767个以中英文词和词组所代表的概念构成，HowNet为每个概念标注了基于义原的定义以及词性、情感倾向、例句等信息。下图提供了HowNet中一个概念的例子：
 
@@ -28,11 +43,5 @@ get\_nearest\_words\_via\_sememes(self, word, K=10)|在使用基于义原的词�
 ### 使用方式
 1. 首先运行`HowNet/run.sh`来处理数据文件。
 2. 然后可以打开Jupyter Demo 文件`DemoForHowNetPackage.ipynb`来运行API示例程序。
-
-### 开源协议
-1. OpenHowNet面向国内外大学、研究所、企业以及个人用于研究目的免费开放源代码
-2. 如有机构或个人拟将OpenHowNet用于商业目的，请发邮件至thunlp@gmail.com洽谈技术许可协议。
-3. 欢迎对该工具包提出任何宝贵意见和建议。请发邮件至thunlp@gmail.com。
-4. 如果您在OpenHowNet基础上发表论文或取得科研成果，请您在发表论文和申报成果时声明“使用了清华大学OpenHowNet”，并按如下格式引用：
 
 * **Fanchao Qi, Chenghao Yang, Zhiyuan Liu, Qiang Dong, Maosong Sun, Zhendong Dong. OpenHowNet: An Open Sememe-based Lexical Knowledge Base. 2018.**
