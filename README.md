@@ -28,3 +28,11 @@ get\_nearest\_words\_via\_sememes(self, word, K=10)|在使用基于义原的词�
 ### 使用方式
 1. 首先运行`HowNet/run.sh`来处理数据文件。
 2. 然后可以打开Jupyter Demo 文件`DemoForHowNetPackage.ipynb`来运行API示例程序。
+
+### 开源协议
+1. OpenHowNet面向国内外大学、研究所、企业以及个人用于研究目的免费开放源代码
+2. 如有机构或个人拟将OpenHowNet用于商业目的，请发邮件至thunlp@gmail.com洽谈技术许可协议。
+3. 欢迎对该工具包提出任何宝贵意见和建议。请发邮件至thunlp@gmail.com。
+4. 如果您在OpenHowNet基础上发表论文或取得科研成果，请您在发表论文和申报成果时声明“使用了清华大学OpenHowNet”，并按如下格式引用：
+
+* **Fanchao Qi, Chenghao Yang, Zhiyuan Liu, Qiang Dong, Maosong Sun, Zhendong Dong. OpenHowNet: An Open Sememe-based Lexical Knowledge Base. 2018.**
