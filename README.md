@@ -7,7 +7,7 @@
 	@article{qi2019openhownet,
 	  title={OpenHowNet: An Open Sememe-based Lexical Knowledge Base},
 	  author={Qi, Fanchao and Yang, Chenghao and Liu, Zhiyuan and Dong, Qiang and Sun, Maosong and Dong, Zhendong},
-	  journal={arXiv preprint},
+	  journal={arXiv preprint arXiv:1901.09957},
 	  year={2019},
 	}
 
