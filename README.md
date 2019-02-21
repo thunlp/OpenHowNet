@@ -44,3 +44,8 @@ get\_nearest\_words\_via\_sememes(self, word, K=10)|在使用基于义原的词�
 ### 使用方式
 1. 首先运行`HowNet/run.sh`来处理数据文件。
 2. 然后可以打开Jupyter Demo 文件`DemoForHowNetPackage.ipynb`来运行API示例程序。
+
+### 核心文件zip版本链接
+如果您发现tar文件分卷在Windows等系统平台上使用不方便，我们提供zip格式文件
+1. [dict.zip](https://pan.baidu.com/s/1qgzS7p3F1_QdYbrxdHNQaw)
+2. [pack.zip](https://pan.baidu.com/s/1ZMovevWBa9pb9k26W_4jFA)
