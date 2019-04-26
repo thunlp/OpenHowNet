@@ -3,10 +3,11 @@ import pickle
 import sys
 from typing import Dict, Any
 
+from anytree import RenderTree
+
+from .SememeTreeParser import GenSememeTree
 from .pack.submit_user import util
 from .pack.submit_user.main import sense_similarity, word_similarity
-from anytree import RenderTree
-from .SememeTreeParser import GenSememeTree
 
 
 class HowNetDict(object):
@@ -25,7 +26,7 @@ class HowNetDict(object):
             self.ids = dict()
             with open(data_dir, 'rb') as origin_dict:
                 word_dict = pickle.load(origin_dict)
-                #self.max_count = len(word_dict) + 10
+                # self.max_count = len(word_dict) + 10
             for key in word_dict:
                 now_dict = word_dict[key]
                 en_word = now_dict["en_word"].strip()
@@ -59,9 +60,11 @@ class HowNetDict(object):
         :param item: target word.
         :return:(List) candidates HowNet annotation, if the target word does not exist, return an empty list.
         """
-        if item == "I WANT ALL!" or item == "*":
-            return list(self.ids.values())
         res = list()
+        if item == "I WANT ALL!" or item == "*":
+            for item in self.ids.values():
+                res.extend(item)
+            return res
         if item in self.en_map:
             res.extend(self.en_map[item])
         if item in self.ch_map:
@@ -155,8 +158,6 @@ class HowNetDict(object):
             for pre, fill, node in tree:
                 print("%s[%s]%s" % (pre, node.role, node.name))
 
-
-
     def get_sememes_by_word(self, word, structured=False, lang="ch", merge=False, expanded_layer=-1):
         """
         Given specific word, you can get corresponding HowNet annotation.
@@ -194,10 +195,12 @@ class HowNetDict(object):
                     else:
                         if item[name] not in result:
                             result[item[name]] = set()
-                        result[item[name]] |= set(self._expand_tree(GenSememeTree(item["Def"]), lang, expanded_layer))
+                        result[item[name]] |= set(
+                            self._expand_tree(GenSememeTree(item["Def"]), lang, expanded_layer))
                 except Exception as e:
+                    print(word)
                     print("Wrong Item:", item)
-                    #print("Generate Sememe Tree Failed for", item["No"])
+                    # print("Generate Sememe Tree Failed for", item["No"])
                     print("Exception:", e)
                     raise e
             if merge:
