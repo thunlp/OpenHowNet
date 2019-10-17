@@ -1,5 +1,9 @@
 # OpenHowNet API
 
+[English Version](https://github.com/thunlp/OpenHowNet-API/blob/master/README.md)
+
+![HowNet Example](hownet-example.png)
+
 本项目存放HowNet核心数据和THUNLP开发的OpenHowNet API，提供方便的HowNet信息查询、义原树展示、基于义原的词相似度计算等功能。如果您想了解OpenHowNet的更多信息，请访问我们的[网站](https://openhownet.thunlp.org)。
 
 如果您在研究中使用了OpenHowNet提供的数据或API，请引用以下两篇文章：
@@ -27,6 +31,8 @@
 
 ## 安装
 
+### 通过 Pypi 安装（推荐）
+
 首先运行 `pip install OpenHowNet`
 
 ```python
@@ -35,6 +41,15 @@ hownet_dict = OpenHowNet.HowNetDict()
 ```
 
 这里如果没有下载过义原数据会报错，需要执行`OpenHowNet.download()`。
+
+### 通过 Github 安装
+
+```bash
+git clone https://github.com/thunlp/OpenHowNet-API/
+cd OpenHowNet-API/OpenHowNet
+chmod +x run.sh
+./run.sh
+```
 
 ## 接口说明 / Interfaces
 
