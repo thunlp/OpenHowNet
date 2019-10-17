@@ -1,16 +1,12 @@
 # OpenHowNet API
 
+<img src="openhownet-logo.png" width = "300"  alt="OpenHowNet Logo" align=center />
+
 [中文版本](https://github.com/thunlp/OpenHowNet-API/blob/master/README_CN.md)
 
-![OpenHowNet Logo](openhownet-logo.png)
+This project contains core data of HowNet and OpenHowNet API developed by THUNLP, which provides a convenient way to search information in HowNet, display sememe trees, calculate word similarity via sememes, etc. You can also visit our [website](https://openhownet.thunlp.org) to enjoy searching and exhibiting sememes of words online.
 
-This project contains core data of HowNet and OpenHowNet API developed by THUNLP, for providing a convenient way to search information in HowNet, display sememe trees, calculate word similarity via sememes, etc. If you would like to learn more about OpenHowNet, please visit our [website](https://openhownet.thunlp.org).
-
-The following image shows an entry in HowNet:
-
-![HowNet Example](hownet-example.png)
-
-If you are using any data or API provided by OpenHowNet, please cite the following papers:
+If you use any data or API provided by OpenHowNet in your research, please cite the following papers:
 
 	@article{qi2019openhownet,
 	  title={OpenHowNet: An Open Sememe-based Lexical Knowledge Base},
@@ -26,26 +22,41 @@ If you are using any data or API provided by OpenHowNet, please cite the followi
 	  year={2003},
 	}
 
-## Requirements
+## HowNet Core Data
+HowNet core data file（`HowNet.txt`）consists of concepts represented by 223,767 Chinese & English words and phrases. Each concept in HowNet is annotated with sememe-based definition, POS tag, sentiment oriatation, examples, etc. Here is an example of how concepts are annotated in HowNet:
+
+```python
+NO.=042012 #Concept ID
+W_C=贷 #Chinese word
+G_C=verb [9MustObj] [dai4] #POS tag of the Chinese word
+S_C=PlusFeeling|正面情感 #Sentiment orientation
+E_C=定斩不~，严惩不~  #Examples of the Chinese word
+W_E=forgive #English word 
+G_E=verb [7 forgiveverb-0vt,sobj,ofnpa22    ]  #POS tag of the English word
+S_E=PlusFeeling|正面情感 #Sentiment orientation
+E_E=    #Examples of the English word
+DEF={forgive|原谅} # Sememe-based definition
+RMK=
+```
+
+## OpenHowNet API
+
+
+### Requirements
 
 * Python==3.6
 * anytree==2.4.3
 * tqdm==4.31.1
 * requests==2.22.0
 
-## Installation
+### Installation
 
-### Install via Pypi (recommended)
-First, run `pip install OpenHowNet`
-
-```python
-import OpenHowNet
-hownet_dict = OpenHowNet.HowNetDict()
+* Installation via pip (recommended)
+```bash
+pip install OpenHowNet
 ```
 
-An error will occur if you haven't downloaded the HowNet data, you need to run `OpenHowNet.download()` to make the package functional.
-
-### Install via Github
+* Installation via Github
 
 ```bash
 git clone https://github.com/thunlp/OpenHowNet-API/
@@ -54,37 +65,46 @@ chmod +x run.sh
 ./run.sh
 ```
 
-## Interfaces
+
+### Interfaces
 
 |interfaces|description|params|
 |---|-------|-------|
-get(self, word, language=None)|Search all information annotated with a word. | "word" is the target word. "lang" is 'en'(English) or 'zh'(Chinese), searching in both languages by default.
-get\_sememes\_by\_word(self, word, structured=False, lang='zh', merge=False, expanded_layer=-1) | Search sememes of the target word. You can choose whether multiple senses in the result will be merged, whether the result itself will be structured, and the expand layers of the tree | "word" is the target word. "lang" is 'en'(English) or 'zh'(Chinese). "structured" is whether the result is structured. "merge" is whether the result is merged. "expanded_layer" is number of expand layers, -1 means expand all layers.
-initialize\_sememe\_similarity\_calculation(self)| Initialize the implementation of advanced feature #1 to calculate sememe similarity. May take some time to read necessary files.|
-calculate\_word\_similarity(self, word0, word1)|Calculate similarity of two words. You need to run initialize\_sememe\_similarity\_calculation before calling this function.|"word0" and "word1" represents the words you are to query.
-get\_nearest\_words\_via\_sememes(self, word, K=10)|Get the nearest K words to the target word with similarity calculated via sememes.|"word" is the target word, "K" is "top K" in k nearest neighbors.
-get\_sememe\_relation(self, x, y)|Get relationship between sememe x and sememe y.|"x" and "y" represents the sememes you are to query.
-get\_sememe\_via\_relation(self, x, relation, lang='zh')|Get all sememes that have specified relation with sememe x.|"x" is the target sememe, "relation" is the target relation, "lang" is 'en'(English) or 'zh'(Chinese)
+|get(self, word, language=None)|Search all information annotated with a word. | `word` is the target word. `lang` is `en`(English) or `zh`(Chinese), searching in both languages by default.|
+|get\_sememes\_by\_word(self, word, structured=False, lang='zh', merge=False, expanded_layer=-1) | Search sememes of the target word. You can choose whether multiple senses in the result are merged, whether the result itself is structured, and the expand layers of the tree. | `word` is the target word. `lang` is `en`(English) or `zh`(Chinese). `structured` denotes whether the result is structured. `merge` denotes whether the result is merged. `expanded_layer` is number of expanded layers and -1 means expand all layers.|
+|initialize\_sememe\_similarity\_calculation(self)| Initialize the implementation of advanced feature to calculate sememe-based word similarity. It may take some time to read necessary files.|
+|calculate\_word\_similarity(self, word0, word1)|Calculate similarity of two words. You need to run `initialize_sememe_similarity_calculation` before calling this function.|`word0` and `word1` represents the words you are querying.|
+|get\_nearest\_words\_via\_sememes(self, word, K=10)|Get the nearest K words to the target word with similarity calculated via sememes.|`word` is the target word, `K` is "top K" in k nearest neighbors.|
+|get\_sememe\_relation(self, sememe0, sememe1)|Get the relationship between two sememes.|`sememe0` and `sememe1` represent the sememes you are querying.|
+|get\_sememe\_via\_relation(self, sememe, relation, lang='zh')|Get all sememes that have specified relation with the input sememe.|`sememe` is the target sememe, `relation` is the target relation, `lang` is `en`(English) or `zh`(Chinese).|
 
-## Usage
+### Usage
 
-### Get word annotations in HowNet
+#### Initialization
+
+```python
+import OpenHowNet
+hownet_dict = OpenHowNet.HowNetDict()
+```
+An error will occur if you haven't downloaded the HowNet data. In this case you need to run `OpenHowNet.download()` first.
+
+
+#### Get Word Annotations in HowNet
 
 By default, the api will search the target word in both English and Chinese annotations in HowNet, which will cause significant search overhead. Note that if the target word does not exist in HowNet annotation, this api will simply return an empty list.
 
 ```python
 >>> result_list = hownet_dict.get("苹果")
->>> print("检索数量：",len(result_list))
->>> print("检索结果范例:",result_list[0])
-检索数量： 6
-检索结果范例: {'Def': '{computer|电脑:modifier={PatternValue|样式值:CoEvent={able|能:scope={bring|携带:patient={$}}}}{SpeBrand|特定牌子}}', 'en_grammar': 'noun', 'ch_grammar': 'noun', 'No': '127151', 'syn': [{'id': '004024', 'text': 'IBM'}, {'id': '041684', 'text': '戴尔'}, {'id': '049006', 'text': '东芝'}, {'id': '106795', 'text': '联想'}, {'id': '156029', 'text': '索尼'}, {'id': '004203', 'text': 'iPad'}, {'id': '019457', 'text': '笔记本'}, {'id': '019458', 'text': '笔记本电脑'}, {'id': '019459', 'text': '笔记本电脑'}, {'id': '019460', 'text': '笔记本电脑'}, {'id': '019461', 'text': '笔记本电脑'}, {'id': '019463', 'text': '笔记簿电脑'}, {'id': '019464', 'text': '笔记簿电脑'}, {'id': '020567', 'text': '便携式电脑'}, {'id': '020568', 'text': '便携式计算机'}, {'id': '020569', 'text': '便携式计算机'}, {'id': '127224', 'text': '平板电脑'}, {'id': '127225', 'text': '平板电脑'}, {'id': '172264', 'text': '膝上型电脑'}, {'id': '172265', 'text': '膝上型电脑'}], 'ch_word': '苹果', 'en_word': 'apple'}
+>>> print(len(result_list))
+6
+>>> print(result_list[0])
+{'Def': '{computer|电脑:modifier={PatternValue|样式值:CoEvent={able|能:scope={bring|携带:patient={$}}}}{SpeBrand|特定牌子}}', 'en_grammar': 'noun', 'ch_grammar': 'noun', 'No': '127151', 'syn': [{'id': '004024', 'text': 'IBM'}, {'id': '041684', 'text': '戴尔'}, {'id': '049006', 'text': '东芝'}, {'id': '106795', 'text': '联想'}, {'id': '156029', 'text': '索尼'}, {'id': '004203', 'text': 'iPad'}, {'id': '019457', 'text': '笔记本'}, {'id': '019458', 'text': '笔记本电脑'}, {'id': '019459', 'text': '笔记本电脑'}, {'id': '019460', 'text': '笔记本电脑'}, {'id': '019461', 'text': '笔记本电脑'}, {'id': '019463', 'text': '笔记簿电脑'}, {'id': '019464', 'text': '笔记簿电脑'}, {'id': '020567', 'text': '便携式电脑'}, {'id': '020568', 'text': '便携式计算机'}, {'id': '020569', 'text': '便携式计算机'}, {'id': '127224', 'text': '平板电脑'}, {'id': '127225', 'text': '平板电脑'}, {'id': '172264', 'text': '膝上型电脑'}, {'id': '172265', 'text': '膝上型电脑'}], 'ch_word': '苹果', 'en_word': 'apple'}
 
 >>> hownet_dict.get("test_for_non_exist_word")
 []
 ```
 
-You can visualize the retrieved HowNet structured annotations ("sememe tree") of the target word as follow :
-(K=2 means only displaying 2 sememe trees)
+You can visualize the retrieved HowNet structured sememe annotations ("sememe tree") of the target word as follows (K=2 means only displaying sememe trees of 2 concepts represented by the input word)
 
 ```python
 >>> hownet_dict.visualize_sememe_trees("苹果", K=2)
@@ -106,41 +126,39 @@ To boost the efficiency of the search process, you can specify the language of t
 
 ```python
 >>> result_list = hownet_dict.get("苹果", language="zh")
->>> print("单语检索数量：",len(result_list))
->>> print("单语检索结果范例:",result_list[0])
->>> print("-------双语混合检索测试---------")
->>> print("混合检索结果数量:",len(hownet_dict.get("X")))
->>> print("中文检索结果数量:",len(hownet_dict.get("X",language="zh")))
->>> print("英语检索结果数量:",len(hownet_dict.get("X",language="en")))
-单语检索数量： 6
-单语检索结果范例: {'Def': '{computer|电脑:modifier={PatternValue|样式值:CoEvent={able|能:scope={bring|携带:patient={$}}}}{SpeBrand|特定牌子}}', 'en_grammar': 'noun', 'ch_grammar': 'noun', 'No': '127151', 'syn': [{'id': '004024', 'text': 'IBM'}, {'id': '041684', 'text': '戴尔'}, {'id': '049006', 'text': '东芝'}, {'id': '106795', 'text': '联想'}, {'id': '156029', 'text': '索尼'}, {'id': '004203', 'text': 'iPad'}, {'id': '019457', 'text': '笔记本'}, {'id': '019458', 'text': '笔记本电脑'}, {'id': '019459', 'text': '笔记本电脑'}, {'id': '019460', 'text': '笔记本电脑'}, {'id': '019461', 'text': '笔记本电脑'}, {'id': '019463', 'text': '笔记簿电脑'}, {'id': '019464', 'text': '笔记簿电脑'}, {'id': '020567', 'text': '便携式电脑'}, {'id': '020568', 'text': '便携式计算机'}, {'id': '020569', 'text': '便携式计算机'}, {'id': '127224', 'text': '平板电脑'}, {'id': '127225', 'text': '平板电脑'}, {'id': '172264', 'text': '膝上型电脑'}, {'id': '172265', 'text': '膝上型电脑'}], 'ch_word': '苹果', 'en_word': 'apple'}
--------双语混合检索测试---------
-混合检索结果数量: 5
-中文检索结果数量: 3
-英语检索结果数量: 2
+>>> print("Number of monolingual results: ",len(result_list))
+Number of monolingual results: 6
+>>> print("Example of monolingual results: ",result_list[0])
+Example of monolingual results: {'Def': '{computer|电脑:modifier={PatternValue|样式值:CoEvent={able|能:scope={bring|携带:patient={$}}}}{SpeBrand|特定牌子}}', 'en_grammar': 'noun', 'ch_grammar': 'noun', 'No': '127151', 'syn': [{'id': '004024', 'text': 'IBM'}, {'id': '041684', 'text': '戴尔'}, {'id': '049006', 'text': '东芝'}, {'id': '106795', 'text': '联想'}, {'id': '156029', 'text': '索尼'}, {'id': '004203', 'text': 'iPad'}, {'id': '019457', 'text': '笔记本'}, {'id': '019458', 'text': '笔记本电脑'}, {'id': '019459', 'text': '笔记本电脑'}, {'id': '019460', 'text': '笔记本电脑'}, {'id': '019461', 'text': '笔记本电脑'}, {'id': '019463', 'text': '笔记簿电脑'}, {'id': '019464', 'text': '笔记簿电脑'}, {'id': '020567', 'text': '便携式电脑'}, {'id': '020568', 'text': '便携式计算机'}, {'id': '020569', 'text': '便携式计算机'}, {'id': '127224', 'text': '平板电脑'}, {'id': '127225', 'text': '平板电脑'}, {'id': '172264', 'text': '膝上型电脑'}, {'id': '172265', 'text': '膝上型电脑'}], 'ch_word': '苹果', 'en_word': 'apple'}
+
+>>> print("Number of all the results: ",len(hownet_dict.get("X")))
+Number of all the results: 5
+>>> print("Number of Chinese results: ",len(hownet_dict.get("X",language="zh")))
+Number of Chinese results: 3
+>>> print("Number of English results:",len(hownet_dict.get("X",language="en")))
+Number of English results: 2
 
 >>> hownet_dict.get("苹果", language="en")
 []
 ```
 
-### Get All Words annotated in HowNet¶
+#### Get All Words Annotated in HowNet
 
 ```python
 >>> ch_word_list = hownet_dict.get_ch_words()
->>> en_word_list = hownet_dict.get_en_words()
 >>> print(ch_word_list[:30])
->>> print(en_word_list[:30])
 ['', '"', '#', '#号标签', '$', '%', "'", '(', ')', '*', '+', '-', '--', '...', '...出什么问题', '...底', '...底下', '...发生故障', '...发生了什么', '...何如', '...家里有几口人', '...检测呈阳性', '...检测呈阴性', '...来', '...内', '...为止', '...也同样使然', '...以来', '...以内', '...以上']
+
+>>> en_word_list = hownet_dict.get_en_words()
+>>> print(en_word_list[:30])
 ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a', 'aardwolves', 'abaci', 'abandoned', 'abbreviated', 'abode', 'aboideaux', 'aboiteaux', 'abscissae', 'absorbed', 'acanthi', 'acari', 'accepted', 'acciaccature', 'acclaimed', 'accommodating', 'accompanied', 'accounting', 'accused', 'acetabula', 'acetified', 'aching', 'acicula', 'acini', 'acquired']
 ```
 
-### Get Flattened Sememe Trees for certain word or all words in HowNet
+#### Get Flattened Sememe Trees for the Input Word
 
-Cautions: the parameters "lang", "merge" and "expanded_layer" only works when "structured = False". The main consideration is that there are multiple ways to interpret these params when deal with structured data. We leave the freedom to our end user. In next section, you will be able to see how to utilize the structured data.
+Notice: the parameters `lang`, `merge` and `expanded_layer` only work when `structured = False`. The main consideration is that there are multiple ways to interpret these params when deal with structured data. We leave the freedom to our end user. In next section, you will be able to see how to utilize the structured data. Detailed descriptions of the params are in our documentation.
 
-Detailed explanation of params will be displayed in our documentation.
-
-#### Get the full merged sememe list from multi-sense words
+Get the full merged sememe list from multi-sense words
 
 ```python
 >>> hownet_dict.get_sememes_by_word("苹果",structured=False,lang="zh",merge=True)
@@ -157,9 +175,7 @@ Even if the language is not corresponding to the target word, the api still work
 {'apple': {'communicate', 'able', 'reproduce', 'SpeBrand', 'computer', 'bring', 'tool', 'PatternValue', 'tree', '$', 'fruit'}, 'malus pumila': {'reproduce', 'fruit', 'tree'}, 'orchard apple tree': {'reproduce', 'fruit', 'tree'}}
 ```
 
-Note that, in the latest version, if the number of the word entries equals to one, for convenience, the api will simply return the set of sememes.
-
-You could specify the number of the expanded layers like the following:
+You could specify the number of the expanded layers:
 
 ```python
 >>> hownet_dict.get_sememes_by_word("苹果",structured=False,merge=True,expanded_layer=2)
@@ -173,7 +189,7 @@ You could get all flattened sememe trees for all words as well as specify the nu
 # the result is too large, just try it yourself.
 ```
 
-If you would like to see the sememe lists for different senses of particular word in HowNet, just need to set the param "merged" to False.
+If you would like to see the sememe lists for different senses of particular word in HowNet, just need to set the param `merged` to `False`.
 
 ```python
 >>> hownet_dict.get_sememes_by_word("苹果",structured=False,lang="zh",merge=False)
@@ -195,7 +211,7 @@ If you would like to see the sememe lists for different senses of particular wor
 {'word': 'apple', 'sememes': {'fruit'}}]
 ```
 
-### Get Structured Sememe Trees for certain words in HowNet
+#### Get Structured Sememe Trees for Certain Words in HowNet
 
 ```python
 >>> hownet_dict.get_sememes_by_word("苹果",structured=True)[0]["tree"]
@@ -249,9 +265,9 @@ Two ways to see the corresponding annotation data
 'en_word': 'apple'}
 ```
 
-### Get the static synonyms of the certain word
+#### Get the Synonyms of the Input Word
 
-The similarity metrics are based on HowNet.
+The similarity metrics are based on sememes.
 
 ```python
 >>> hownet_dict["苹果"][0]["syn"]
@@ -277,57 +293,62 @@ The similarity metrics are based on HowNet.
  {'id': '172265', 'text': '膝上型电脑'}]
 ```
 
-### Get access of the word by ID
+#### Query a Word by its ID
 
 ```python
 >>> hownet_dict["004024"]
 ['Def', 'en_grammar', 'ch_grammar', 'No', 'syn', 'ch_word', 'en_word']
 ```
 
-### Get all sememes
+#### Get all sememes
 
 ```python
 >>> len(hownet_dict.get_all_sememes())
 2187
 ```
 
-### Get relationship between two sememes
+#### Get Relationship Between Two Sememes 
 
 The sememes you input can be in any language.
 
 ```python
 >>> hownet_dict.get_sememe_relation("音量值", "尖声")
->>> hownet_dict.get_sememe_relation("音量值", "shrill")
+'hyponym'
+
 >>> hownet_dict.get_sememe_relation("尖声", "SoundVolumeValue")
+'hyponym'
+
 >>> hownet_dict.get_sememe_relation("shrill", "SoundVolumeValue")
-'hyponym'
-'hyponym'
 'hypernym'
+
+>>> hownet_dict.get_sememe_relation("音量值", "shrill")
 'hypernym'
 ```
 
 The output could be hypernym, hyponym, antonym or converse.
 
-### Get a sememe by another and the relation between them
+#### Get sememes having a certain relation with the input sememe
 
-The sememe you input can be in any language, but the relation must be in lowercase. You can specify the language of result, by default it will be Chinese.
+The sememe you input can be in any language, but the relation must be in lowercase English. You can specify the language of result, by default it will be Chinese.
 
 ```python
 >>> hownet_dict.get_sememe_via_relation("音量值", "hyponym")
->>> hownet_dict.get_sememe_via_relation("音量值", "hyponym", lang="en")
->>> hownet_dict.get_sememe_via_relation("SoundVolumeValue", "hyponym", lang="en")
 ['高声', '低声', '尖声', '沙哑', '无声', '有声']
+
+>>> hownet_dict.get_sememe_via_relation("音量值", "hyponym", lang="en")
 ['loud', 'LowVoice', 'shrill', 'hoarse', 'silent', 'talking']
+
+>>> hownet_dict.get_sememe_via_relation("SoundVolumeValue", "hyponym", lang="en")
 ['loud', 'LowVoice', 'shrill', 'hoarse', 'silent', 'talking']
 ```
 
-## Advanced Feature #1: Word Similarity Calculation via Sememes
+### Advanced Feature: Word Similarity Calculation via Sememes
 
-The following parts are mainly implemented by Jun Yan and integrated by Chenghao Yang. Our implementation is based on the paper:
+Our implementation is based on the paper:
 
 > Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP
 
-### Extra Initialization
+#### Extra Initialization
 
 Because there are some files required to be loaded for similarity calculation, the initialization overhead will be larger than before. To begin with, you can initialize the hownet_dict object as the following code:
 
@@ -342,7 +363,7 @@ You can also postpone the initialization work of similarity calculation until us
 True
 ```
 
-### Get Top-K Nearest Words for the Given Word
+#### Get Top-K Nearest Words for the Input Word
 
 If the given word does not exist in HowNet annotations, this function will return an empty list.
 
@@ -378,7 +399,7 @@ synset and corresonding word&id&score:
  {'id': 172265, 'word': '膝上型电脑', 'score': 0.865}]
 ```
 
-### Calculate the Similarity for the Given Two Words
+### Calculate the Similarity for Given Two Words
 
 If any of the given words does not exist in HowNet annotations, this function will return 0.
 
@@ -386,7 +407,3 @@ If any of the given words does not exist in HowNet annotations, this function wi
 >>> hownet_dict_advanced.calculate_word_similarity("苹果", "梨")
 1.0
 ```
-
-## License
-
-MIT
