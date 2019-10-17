@@ -6,3 +6,4 @@ HowNet/pack
 .ipynb_checkpoints
 dict.tar
 pack.tar
+.DS_Store
