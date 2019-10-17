@@ -2,9 +2,13 @@
 
 [中文版本](https://github.com/thunlp/OpenHowNet-API/blob/master/README_CN.md)
 
-![HowNet Example](hownet-example.png)
+![OpenHowNet Logo](openhownet-logo.png)
 
 This project contains core data of HowNet and OpenHowNet API developed by THUNLP, for providing a convenient way to search information in HowNet, display sememe trees, calculate word similarity via sememes, etc. If you would like to learn more about OpenHowNet, please visit our [website](https://openhownet.thunlp.org).
+
+The following image shows an entry in HowNet:
+
+![HowNet Example](hownet-example.png)
 
 If you are using any data or API provided by OpenHowNet, please cite the following papers:
 
