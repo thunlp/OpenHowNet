@@ -1,9 +1,8 @@
 #OpenHowNet
-    
+
 <img src="openhownet-logo.png" width = "300"  alt="OpenHowNet Logo" align=center />
 
-
-[English Version](https://github.com/thunlp/OpenHowNet-API/blob/master/README.md)
+###[English Version](https://github.com/thunlp/OpenHowNet-API/blob/master/README.md)
 
 本项目存放HowNet核心数据和清华大学自然语言处理实验室（THUNLP）开发的OpenHowNet API，提供方便的义原信息查询、义原树展示、基于义原的词相似度计算等功能。您还可以访问我们的[网站](https://openhownet.thunlp.org)体验义原在线查询和展示功能。
 
@@ -25,7 +24,7 @@
 ## HowNet核心数据
 HowNet核心数据文件（`HowNet.txt`）由223,767个中英文词和词组所代表的概念构成。HowNet为每个概念标注了基于义原的定义以及词性、情感倾向、例句等信息。下面是HowNet中一个概念的示例：
 
-```python
+```
 NO.=042012 #概念编号
 W_C=贷 #中文词
 G_C=verb [9MustObj] [dai4] #中文词词性
@@ -82,7 +81,7 @@ chmod +x run.sh
 ```python
 import OpenHowNet
 hownet_dict = OpenHowNet.HowNetDict()
-```		
+```
 这里如果没有下载义原数据会报错，需要执行`OpenHowNet.download()`。
 
 #### 获取HowNet中的词语对应概念的标注

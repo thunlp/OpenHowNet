@@ -2,7 +2,8 @@
 
 <img src="openhownet-logo.png" width = "300"  alt="OpenHowNet Logo" align=center />
 
-[中文版本](https://github.com/thunlp/OpenHowNet-API/blob/master/README_CN.md)
+
+###[中文版本](https://github.com/thunlp/OpenHowNet-API/blob/master/README_CN.md)
 
 This project contains core data of HowNet and OpenHowNet API developed by THUNLP, which provides a convenient way to search information in HowNet, display sememe trees, calculate word similarity via sememes, etc. You can also visit our [website](https://openhownet.thunlp.org) to enjoy searching and exhibiting sememes of words online.
 
@@ -25,7 +26,7 @@ If you use any data or API provided by OpenHowNet in your research, please cite 
 ## HowNet Core Data
 HowNet core data file（`HowNet.txt`）consists of concepts represented by 223,767 Chinese & English words and phrases. Each concept in HowNet is annotated with sememe-based definition, POS tag, sentiment oriatation, examples, etc. Here is an example of how concepts are annotated in HowNet:
 
-```python
+```
 NO.=042012 #Concept ID
 W_C=贷 #Chinese word
 G_C=verb [9MustObj] [dai4] #POS tag of the Chinese word
@@ -399,7 +400,7 @@ synset and corresonding word&id&score:
  {'id': 172265, 'word': '膝上型电脑', 'score': 0.865}]
 ```
 
-### Calculate the Similarity for Given Two Words
+#### Calculate the Similarity for Given Two Words
 
 If any of the given words does not exist in HowNet annotations, this function will return 0.
 
