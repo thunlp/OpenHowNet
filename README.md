@@ -1,4 +1,4 @@
-# OpenHowNet API
+# OpenHowNet
 
 <img src="openhownet-logo.png" width = "300"  alt="OpenHowNet Logo" align=center />
 
