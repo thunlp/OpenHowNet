@@ -15,7 +15,7 @@ If you use any data or API provided by OpenHowNet in your research, please cite 
 	  journal={arXiv preprint arXiv:1901.09957},
 	  year={2019},
 	}
-
+	
 	@inproceedings{dong2003hownet,
 	  title={HowNet-a hybrid language and knowledge resource},
 	  author={Dong, Zhendong and Dong, Qiang},
