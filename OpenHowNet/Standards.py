@@ -98,7 +98,7 @@ class HowNetDict(object):
             res = self[word]
         return res
 
-    def get_ch_words(self):
+    def get_zh_words(self):
         """
         Get all Chinese words annotated in HowNet
         :return: (list) All annotated Chinese words in HowNet.
