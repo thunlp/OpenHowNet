@@ -23,7 +23,7 @@ class HowNetDict(object):
             package_directory = os.path.dirname(os.path.abspath(__file__))
             data_dir = os.path.join(package_directory, "HowNet_dict_complete")
             self.en_map = dict()
-            self.ch_map = dict()
+            self.zh_map = dict()
             self.ids = dict()
 
             # load dict complete
@@ -33,13 +33,13 @@ class HowNetDict(object):
             for key in word_dict:
                 now_dict = word_dict[key]
                 en_word = now_dict["en_word"].strip()
-                ch_word = now_dict["ch_word"].strip()
+                zh_word = now_dict["zh_word"].strip()
                 if en_word not in self.en_map:
                     self.en_map[en_word] = list()
                 self.en_map[en_word].append(now_dict)
-                if ch_word not in self.ch_map:
-                    self.ch_map[ch_word] = list()
-                self.ch_map[ch_word].append(now_dict)
+                if zh_word not in self.zh_map:
+                    self.zh_map[zh_word] = list()
+                self.zh_map[zh_word].append(now_dict)
                 if now_dict["No"] not in self.ids:
                     self.ids[now_dict["No"]] = list()
                 self.ids[now_dict['No']].append(now_dict)
@@ -70,8 +70,8 @@ class HowNetDict(object):
             return res
         if item in self.en_map:
             res.extend(self.en_map[item])
-        if item in self.ch_map:
-            res.extend(self.ch_map[item])
+        if item in self.zh_map:
+            res.extend(self.zh_map[item])
         if item in self.ids:
             res.extend(self.ids[item])
         return res
@@ -92,8 +92,8 @@ class HowNetDict(object):
             if (word in self.en_map):
                 res = self.en_map[word]
         elif language == "zh":
-            if (word in self.ch_map):
-                res = self.ch_map[word]
+            if (word in self.zh_map):
+                res = self.zh_map[word]
         else:
             res = self[word]
         return res
@@ -103,7 +103,7 @@ class HowNetDict(object):
         Get all Chinese words annotated in HowNet
         :return: (list) All annotated Chinese words in HowNet.
         """
-        return list(self.ch_map.keys())
+        return list(self.zh_map.keys())
 
     def get_en_words(self):
         """
@@ -230,9 +230,9 @@ class HowNetDict(object):
         if language == "en":
             return item in self.en_map
         elif language == "zh":
-            return item in self.ch_map
+            return item in self.zh_map
 
-        return item in self.en_map or item in self.ch_map or item in self.ids
+        return item in self.en_map or item in self.zh_map or item in self.ids
 
     def get_all_sememes(self):
         """
