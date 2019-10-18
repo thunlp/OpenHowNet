@@ -33,7 +33,7 @@ class HowNetDict(object):
             for key in word_dict:
                 now_dict = word_dict[key]
                 en_word = now_dict["en_word"].strip()
-                zh_word = now_dict["zh_word"].strip()
+                zh_word = now_dict["ch_word"].strip()
                 if en_word not in self.en_map:
                     self.en_map[en_word] = list()
                 self.en_map[en_word].append(now_dict)
