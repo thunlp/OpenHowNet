@@ -146,7 +146,7 @@ Number of English results: 2
 #### Get All Words Annotated in HowNet
 
 ```python
->>> ch_word_list = hownet_dict.get_ch_words()
+>>> ch_word_list = hownet_dict.get_zh_words()
 >>> print(ch_word_list[:30])
 ['', '"', '#', '#号标签', '$', '%', "'", '(', ')', '*', '+', '-', '--', '...', '...出什么问题', '...底', '...底下', '...发生故障', '...发生了什么', '...何如', '...家里有几口人', '...检测呈阳性', '...检测呈阴性', '...来', '...内', '...为止', '...也同样使然', '...以来', '...以内', '...以上']
 
