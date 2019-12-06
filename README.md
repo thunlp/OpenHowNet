@@ -7,20 +7,13 @@
 
 This project contains core data of HowNet and OpenHowNet API developed by THUNLP, which provides a convenient way to search information in HowNet, display sememe trees, calculate word similarity via sememes, etc. You can also visit our [website](https://openhownet.thunlp.org) to enjoy searching and exhibiting sememes of words online.
 
-If you use any data or API provided by OpenHowNet in your research, please cite the following papers:
+If you use any data or API provided by OpenHowNet in your research, please cite the following paper:
 
 	@article{qi2019openhownet,
 	  title={OpenHowNet: An Open Sememe-based Lexical Knowledge Base},
 	  author={Qi, Fanchao and Yang, Chenghao and Liu, Zhiyuan and Dong, Qiang and Sun, Maosong and Dong, Zhendong},
 	  journal={arXiv preprint arXiv:1901.09957},
 	  year={2019},
-	}
-	
-	@inproceedings{dong2003hownet,
-	  title={HowNet-a hybrid language and knowledge resource},
-	  author={Dong, Zhendong and Dong, Qiang},
-	  booktitle={Proceedings of NLP-KE},
-	  year={2003},
 	}
 
 ## HowNet Core Data

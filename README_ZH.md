@@ -6,19 +6,13 @@
 
 本项目存放HowNet核心数据和清华大学自然语言处理实验室（THUNLP）开发的OpenHowNet API，提供方便的义原信息查询、义原树展示、基于义原的词相似度计算等功能。您还可以访问我们的[网站](https://openhownet.thunlp.org)体验义原在线查询和展示功能。
 
-如果您在研究中使用了OpenHowNet提供的数据或API，请引用以下两篇文章：
+如果您在研究中使用了OpenHowNet提供的数据或API，请引用以下论文：
 
 	@article{qi2019openhownet,
 	  title={OpenHowNet: An Open Sememe-based Lexical Knowledge Base},
 	  author={Qi, Fanchao and Yang, Chenghao and Liu, Zhiyuan and Dong, Qiang and Sun, Maosong and Dong, Zhendong},
 	  journal={arXiv preprint arXiv:1901.09957},
 	  year={2019},
-	}
-	@inproceedings{dong2003hownet,
-	  title={HowNet-a hybrid language and knowledge resource},
-	  author={Dong, Zhendong and Dong, Qiang},
-	  booktitle={Proceedings of NLP-KE},
-	  year={2003},
 	}
 
 ## HowNet核心数据
