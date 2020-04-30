@@ -9,4 +9,4 @@ __pycache__
 *.egg-info
 /OpenHowNet/HowNet_dict*
 .DS_Store
-
+/output.md
