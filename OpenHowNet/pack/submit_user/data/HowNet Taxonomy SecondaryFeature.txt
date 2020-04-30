@@ -1,0 +1,134 @@
+- {Secondary Feature}  
+  ├ {domain|领域}  
+  │ ├ {economy|经济}  
+  │ │ ├ {industrial|工}  
+  │ │ ├ {mine|矿}  
+  │ │ ├ {agricultural|农}  
+  │ │ ├ {commerce|商业}  
+  │ │ ├ {finance|金融}  
+  │ │ ├ {insurance|保险}  
+  │ │ └ {securities|证券}  
+  │ ├ {education|教育}  
+  │ ├ {medical|医}  
+  │ ├ {physiology|生理学}  
+  │ ├ {biology|生物学}  
+  │ ├ {literature|文}  
+  │ ├ {entertainment|艺}  
+  │ ├ {sport|体育}  
+  │ │ ├ {TableTennis|乒乓球}  
+  │ │ ├ {badminton|羽毛球}  
+  │ │ ├ {baseball|棒球}  
+  │ │ ├ {basketball|篮球}  
+  │ │ ├ {boxing|拳击}  
+  │ │ ├ {cricket|板球}  
+  │ │ ├ {football|足球}  
+  │ │ ├ {softball|垒球}  
+  │ │ ├ {tennis|网球}  
+  │ │ └ {volleyball|排球}  
+  │ ├ {politics|政}  
+  │ ├ {diplomatic|外交}  
+  │ ├ {police|警}  
+  │ ├ {military|军}  
+  │ ├ {religion|宗教}  
+  │ ├ {royal|皇}  
+  │ ├ {math|数学}  
+  │ ├ {chemistry|化学}  
+  │ └ {physics|物理}  
+  ├ {PartPosition|部件位置}  
+  │ ├ {head|头}  
+  │ ├ {heart|心}  
+  │ ├ {body|身}  
+  │ ├ {bone|骨}  
+  │ ├ {base|根}  
+  │ ├ {limb|肢}  
+  │ ├ {arm|臂}  
+  │ ├ {hand|手}  
+  │ ├ {leg|腿}  
+  │ ├ {foot|脚}  
+  │ ├ {wing|翅}  
+  │ ├ {edge|边}  
+  │ ├ {mouth|口}  
+  │ ├ {eye|眼}  
+  │ ├ {viscera|脏}  
+  │ ├ {nerve|络}  
+  │ ├ {tail|尾}  
+  │ ├ {embryo|胚}  
+  │ ├ {skin|皮}  
+  │ ├ {flesh|肉}  
+  │ ├ {hair|毛}  
+  │ └ {BodyFluid|体液}  
+  ├ {TimeSect|时间段}  
+  │ ├ {dynasty|朝代}  
+  │ ├ {lifespan|终生}  
+  │ └ {year|年}  
+  │   └ {season|季}  
+  │     ├ {spring|春}  
+  │     ├ {summer|夏}  
+  │     ├ {autumn|秋}  
+  │     ├ {winter|冬}  
+  │     └ {month|月}  
+  │       ├ {TenDays|旬}  
+  │       └ {week|周}  
+  │         └ {day|日}  
+  │           ├ {daytime|白昼}  
+  │           │ ├ {morning|晨}  
+  │           │ └ {afternoon|午}  
+  │           ├ {night|夜}  
+  │           └ {hour|时}  
+  │             └ {minute|分钟}  
+  │               └ {second|秒}  
+  ├ {TimeFeature|时间特性}  
+  │ ├ {beginning|始}  
+  │ ├ {ending|末}  
+  │ ├ {middle|间}  
+  │ └ {festival|节}  
+  ├ {PlaceSect|地域}  
+  │ ├ {world|世界}  
+  │ ├ {country|国家}  
+  │ ├ {capital|国都}  
+  │ ├ {provincial|省}  
+  │ ├ {city|市}  
+  │ ├ {county|县}  
+  │ ├ {district|区}  
+  │ ├ {ResidentialArea|居民区}  
+  │ └ {village|乡}  
+  ├ {PersonPro|人称}  
+  │ ├ {1stPerson|我}  
+  │ ├ {2ndPerson|你}  
+  │ ├ {3rdPerson|他}  
+  │ └ {it|它}  
+  ├ {adjunct|修饰语}  
+  │ ├ {question|疑问}  
+  │ ├ {exclamation|感叹}  
+  │ ├ {neg|否}  
+  │ ├ {also|也}  
+  │ ├ {DeChinese|构助}  
+  │ ├ {LeChinese|动助}  
+  │ └ {MaChinese|语助}  
+  ├ {aspect|体}  
+  │ ├ {Vdirection|动趋}  
+  │ ├ {Vprocess|动程}  
+  │ │ ├ {Vsuppose|假定}  
+  │ │ ├ {Vstart|发端}  
+  │ │ ├ {Vgoingon|进展}  
+  │ │ ├ {Vcontinue|延续}  
+  │ │ └ {Vend|完结}  
+  │ └ {Vresult|动果}  
+  │   ├ {Vachieve|达成}  
+  │   ├ {Vfail|未达成}  
+  │   ├ {Vable|有能力}  
+  │   ├ {Vincapable|没能力}  
+  │   ├ {Vpossible|有可能}  
+  │   ├ {Vimpossible|没可能}  
+  │   └ {Vtry|试试}  
+  └ {SentimentAnalysis|情感分析}  
+    ├ {PlusAttr|正面属性}  
+    ├ {MinusAttr|负面属性}  
+    ├ {PlusEntity|正面实体}  
+    ├ {MinusEntity|负面实体}  
+    ├ {PlusEvent|正面事件}  
+    ├ {MinusEvent|负面事件}  
+    ├ {PlusFeeling|正面情感}  
+    ├ {MinusFeeling|负面情感}  
+    ├ {PlusSentiment|正面评价}  
+    └ {MinusSentiment|负面评价}  

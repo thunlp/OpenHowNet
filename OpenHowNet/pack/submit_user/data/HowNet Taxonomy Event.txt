@@ -1,0 +1,804 @@
+- {event|事件}  
+  ├ {static|静态} {event|事件} 
+  │ ├ {relation|关系} {static|静态} 
+  │ │ ├ {isa|是非关系} {relation|关系} 
+  │ │ │ ├ {be|是} {isa|是非关系:isa={*},relevant={*}};{isa|是非关系:descriptive={*},relevant={*}} 
+  │ │ │ │ ├ {become|成为} {be|是:isa={*},relevant={*}};{be|是:descriptive={*},relevant={*}} 
+  │ │ │ │ └ {mean|指代} {be|是:isa={*},relevant={*}} 
+  │ │ │ └ {BeNot|非} {isa|是非关系:isa={*},relevant={*}};{isa|是非关系:descriptive={*},relevant={*}} 
+  │ │ ├ {possession|领属关系} {relation|关系} 
+  │ │ │ ├ {own|有} {possession|领属关系:possession={*},possessor={*}} 
+  │ │ │ │ ├ {obtain|得到} {own|有:possession={*},possessor={*},source={*}} 
+  │ │ │ │ └ {receive|收受} {own|有:possession={*},possessor={*},source={*}} 
+  │ │ │ ├ {BelongTo|属于} {possession|领属关系:possession={*},possessor={*}} 
+  │ │ │ ├ {OwnNot|无} {possession|领属关系:possession={*},possessor={*}} 
+  │ │ │ │ └ {lose|失去} {OwnNot|无:possession={*},possessor={*}} 
+  │ │ │ │   └ {InDebt|亏损} {lose|失去:domain={finance|金融},possession={*},possessor={*}} 
+  │ │ │ └ {owe|欠} {possession|领属关系:possession={*},possessor={*},target={*}} 
+  │ │ ├ {comparison|相比关系} {relation|关系} 
+  │ │ │ ├ {BeSame|相同} {comparison|相比关系:contrast={*},manner={alike|似},relevant={*},scope={*}} 
+  │ │ │ │ ├ {equal|相等} {BeSame|相同:contrast={*},relevant={*},scope={Quantity|数量}} 
+  │ │ │ │ └ {BeSimilar|相像} {BeSame|相同:contrast={*},degree={*},relevant={*},scope={Form|形状}} 
+  │ │ │ ├ {differ|不同} {comparison|相比关系:contrast={*},manner={different|异},relevant={*},scope={*}} 
+  │ │ │ ├ {worth|值得} {comparison|相比关系:content={*},manner={alike|似},relevant={*},scope={Worth|价值}} 
+  │ │ │ └ {WorthNot|不值} {comparison|相比关系:content={*},manner={different|异},relevant={*},scope={Worth|价值}} 
+  │ │ ├ {suit|相适关系} {relation|关系} 
+  │ │ │ ├ {fit|适合} {suit|相适关系:contrast={*},relevant={*},scope={*}} 
+  │ │ │ ├ {ServeAsFoil|陪衬} {suit|相适关系:contrast={*},relevant={*},scope={*}} 
+  │ │ │ └ {FitNot|不适} {suit|相适关系:contrast={*},relevant={*},scope={*}} 
+  │ │ ├ {inclusive|蕴涵关系} {relation|关系} 
+  │ │ │ ├ {contain|包含} {inclusive|蕴涵关系:OfPart={*},whole={*}} 
+  │ │ │ └ {BeMember|隶属} {inclusive|蕴涵关系:OfPart={*},whole={*}} 
+  │ │ ├ {connective|关联关系} {relation|关系} 
+  │ │ │ ├ {relate|有关} {connective|关联关系:manner={relevant|相关},partner={*},relevant={*}} 
+  │ │ │ │ └ {depend|依靠} {relate|有关:manner={relevant|相关},partner={*},relevant={*}} 
+  │ │ │ └ {RelateNot|无关} {connective|关联关系:manner={irrelevant|不相关},partner={*},relevant={*}} 
+  │ │ │   ├ {BeIndependent|独立} {connective|关联关系:manner={irrelevant|不相关},partner={*},relevant={*}} 
+  │ │ │   └ {BeOpposite|对立} {connective|关联关系:manner={irrelevant|不相关},partner={*},relevant={*}} 
+  │ │ ├ {CauseResult|因果关系} {relation|关系} 
+  │ │ │ ├ {ResultIn|导致} {CauseResult|因果关系:relevant={*},result={*}} 
+  │ │ │ ├ {ResultFrom|缘于} {CauseResult|因果关系:cause={*},relevant={*}} 
+  │ │ │ ├ {BaseOn|基于} {CauseResult|因果关系:cause={*},relevant={*}} 
+  │ │ │ └ {influence|影响} {CauseResult|因果关系:relevant={*},scope={*},target={*}} 
+  │ │ ├ {TimeOrSpace|时空关系} {relation|关系} 
+  │ │ │ ├ {situated|处于} {TimeOrSpace|时空关系:existent={*},location={*}} 
+  │ │ │ ├ {facing|朝向} {TimeOrSpace|时空关系:direction={*},existent={*}} 
+  │ │ │ ├ {LeadTo|通往} {TimeOrSpace|时空关系:direction={*},existent={*}} 
+  │ │ │ └ {from|相距} {TimeOrSpace|时空关系:existent={*},partner={*},range={*}} 
+  │ │ │   ├ {BeNear|靠近} {from|相距:existent={*},partner={*},range={*}} 
+  │ │ │   ├ {BeAcross|相交} {from|相距:existent={*},location={*},partner={*}} 
+  │ │ │   └ {BeBeyond|越界} {from|相距:existent={*},partner={*}} 
+  │ │ └ {arithmetic|数量关系} {relation|关系} 
+  │ │   ├ {DoSum|算术} {arithmetic|数量关系:partner={*},relevant={*}} 
+  │ │   └ {AmountTo|总计} {arithmetic|数量关系:quantity={*},relevant={*}} 
+  │ └ {state|状态} {static|静态} 
+  │   ├ {StatePhysical|物理状态} {state|状态} 
+  │   │ ├ {ExistAppear|存现} {StatePhysical|物理状态:existent={*},location={*}} 
+  │   │ │ ├ {exist|存在} {ExistAppear|存现:existent={*},location={*}} 
+  │   │ │ │ └ {ComeToWorld|问世} {exist|存在:existent={*},location={*}} 
+  │   │ │ ├ {appear|出现} {ExistAppear|存现:existent={*},location={*}} 
+  │   │ │ │ └ {exposure|露出} {appear|出现:existent={*},location={*}} 
+  │   │ │ └ {happen|发生} {ExistAppear|存现:existent={*},location={*},time={*}} 
+  │   │ ├ {begin|起始} {StatePhysical|物理状态:experiencer={*},time={*}} 
+  │   │ ├ {BeNormal|常态} {StatePhysical|物理状态:experiencer={*}} 
+  │   │ │ ├ {certainty|定或未定态} {BeNormal|常态:experiencer={*}} 
+  │   │ │ │ ├ {fixed|已定} {certainty|定或未定态:experiencer={*}} 
+  │   │ │ │ └ {unfixed|未定} {certainty|定或未定态:experiencer={*}} 
+  │   │ │ ├ {alive|活着} {BeNormal|常态:experiencer={*},time={*}} 
+  │   │ │ │ └ {function|活动} {alive|活着:experiencer={*},time={*}} 
+  │   │ │ ├ {grow|成长} {BeNormal|常态:StateFin={*},StateIni={*},experiencer={*}} 
+  │   │ │ ├ {pregnant|怀孕} {BeNormal|常态:DurationAfterEvent={*},experiencer={*}} 
+  │   │ │ ├ {GoOn|继续} {BeNormal|常态:content={*},experiencer={*}} 
+  │   │ │ │ └ {withstand|抗住} {GoOn|继续:content={*},experiencer={*}} 
+  │   │ │ └ {undergo|经受} {BeNormal|常态:content={*},experiencer={*}} 
+  │   │ │   ├ {enjoy|享受} {undergo|经受:content={*},experiencer={*}} 
+  │   │ │   ├ {suffer|遭受} {undergo|经受:content={*},experiencer={*}} 
+  │   │ │   ├ {AptTo|易于} {undergo|经受:content={*},experiencer={*}} 
+  │   │ │   └ {endure|忍耐} {undergo|经受:content={*},experiencer={*}} 
+  │   │ ├ {BeGood|良态} {StatePhysical|物理状态:experiencer={*}} 
+  │   │ │ ├ {BeFull|吃饱} {BeGood|良态:experiencer={*}} 
+  │   │ │ ├ {BeWell|健壮} {BeGood|良态:experiencer={*}} 
+  │   │ │ ├ {prosper|发达} {BeGood|良态:StateFin={*},StateIni={*},experiencer={*},scope={*}} 
+  │   │ │ ├ {succeed|成功} {BeGood|良态:experiencer={*},scope={*}} 
+  │   │ │ ├ {win|获胜} {BeGood|良态:contrast={*},experiencer={*},scope={*}} 
+  │   │ │ ├ {surpass|强过} {BeGood|良态:contrast={*},experiencer={*},scope={*}} 
+  │   │ │ └ {WellKnown|成名} {BeGood|良态:experiencer={*}} 
+  │   │ ├ {BeRecovered|复原} {StatePhysical|物理状态:StateFin={*},StateIni={*},experiencer={*}} 
+  │   │ │ └ {awake|醒} {BeRecovered|复原:StateFin={*},StateIni={*},experiencer={*}} 
+  │   │ ├ {change|变} {StatePhysical|物理状态:StateFin={*},StateIni={*},experiencer={*}} 
+  │   │ │ ├ {AppearanceChange|外观变} {change|变:StateFin={*},StateIni={*},experiencer={*},scope={Appearance|外观}} 
+  │   │ │ │ ├ {StateChange|态变} {AppearanceChange|外观变:StateFin={*},StateIni={*},experiencer={*},scope={*}} 
+  │   │ │ │ └ {FormChange|形变} {AppearanceChange|外观变:StateFin={*},StateIni={*},experiencer={*},scope={*}} 
+  │   │ │ ├ {QuantityChange|量变} {change|变:StateFin={*},StateIni={*},experiencer={*},range={*},scope={Quantity|数量}} 
+  │   │ │ │ ├ {BecomeMore|增多} {QuantityChange|量变:StateFin={*},StateIni={*},experiencer={*},range={*},scope={*}} 
+  │   │ │ │ ├ {surplus|剩余} {QuantityChange|量变:StateFin={*},StateIni={*},experiencer={*},range={*},scope={*}} 
+  │   │ │ │ ├ {lack|缺少} {QuantityChange|量变:StateFin={*},experiencer={*},range={*},scope={*}} 
+  │   │ │ │ └ {BecomeLess|减少} {QuantityChange|量变:StateFin={*},StateIni={*},experiencer={*},range={*},scope={*}} 
+  │   │ │ ├ {BeBad|衰变} {change|变:experiencer={*},manner={*},scope={*}} 
+  │   │ │ │ ├ {tired|疲乏} {BeBad|衰变:StateFin={*},degree={*},experiencer={*}} 
+  │   │ │ │ ├ {HungryThirsty|饥渴} {BeBad|衰变:experiencer={*}} 
+  │   │ │ │ ├ {SufferFrom|罹患} {BeBad|衰变:content={*},domain={medical|医},experiencer={*}} 
+  │   │ │ │ │ └ {ill|病态} {SufferFrom|罹患:domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {wounded|受伤} {ill|病态:OfPart={*},domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {disable|残疾} {ill|病态:OfPart={*},domain={medical|医},experiencer={*},scope={*}} 
+  │   │ │ │ │   ├ {labour|临产} {ill|病态:domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {mad|疯痴} {ill|病态:domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {paralyse|瘫麻} {ill|病态:domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {painful|疼痛} {ill|病态:OfPart={*},domain={medical|医},experiencer={*},scope={*}} 
+  │   │ │ │ │   ├ {dizzy|昏迷} {ill|病态:domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {twitch|抽搐} {ill|病态:domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {bleed|出血} {ill|病态:domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {swollen|肿胀} {ill|病态:OfPart={*},domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {fever|寒热} {ill|病态:domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {StomachTrouble|腹症} {ill|病态:domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {pant|气喘} {ill|病态:domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   ├ {inflamed|发炎} {ill|病态:OfPart={*},domain={medical|医},experiencer={*}} 
+  │   │ │ │ │   └ {itch|发痒} {ill|病态:OfPart={*},domain={medical|医},experiencer={*}} 
+  │   │ │ │ ├ {OutOfOrder|坏掉} {BeBad|衰变:content={*},experiencer={*}} 
+  │   │ │ │ ├ {decline|衰败} {BeBad|衰变:experiencer={*},scope={*}} 
+  │   │ │ │ ├ {fail|失败} {BeBad|衰变:experiencer={*},scope={*}} 
+  │   │ │ │ │ ├ {err|出错} {fail|失败:experiencer={*},scope={*}} 
+  │   │ │ │ │ └ {defeated|输掉} {fail|失败:contrast={*},experiencer={*},scope={*}} 
+  │   │ │ │ └ {inferior|不如} {BeBad|衰变:contrast={*},experiencer={*},scope={*}} 
+  │   │ │ ├ {end|终结} {change|变:DurationAfterEvent={*},cause={*},experiencer={*}} 
+  │   │ │ │ ├ {die|死} {end|终结:DurationAfterEvent={*},cause={*},experiencer={*}} 
+  │   │ │ │ ├ {finish|完毕} {end|终结:DurationAfterEvent={*},cause={*},experiencer={*}} 
+  │   │ │ │ ├ {perish|灭亡} {end|终结:DurationAfterEvent={*},cause={*},experiencer={*}} 
+  │   │ │ │ └ {due|到期} {end|终结:experiencer={*}} 
+  │   │ │ └ {WeatherChange|天变} {change|变:duration={*},experiencer={*},manner={*}} 
+  │   │ │   ├ {WeatherFine|好天} {WeatherChange|天变:duration={*},experiencer={*},manner={*}} 
+  │   │ │   └ {WeatherBad|坏天} {WeatherChange|天变:duration={*},experiencer={*},manner={*}} 
+  │   │ └ {disappear|消失} {StatePhysical|物理状态:existent={*}} 
+  │   └ {StateMental|精神状态} {state|状态:experiencer={*}} 
+  │     ├ {feeling|情绪} {StateMental|精神状态:experiencer={*}} 
+  │     │ ├ {cherish|心怀} {feeling|情绪:content={*},experiencer={*}} 
+  │     │ ├ {excited|激动} {feeling|情绪:cause={*},degree={*},experiencer={*}} 
+  │     │ ├ {FeelingByGood|好情} {feeling|情绪:cause={*},degree={*},experiencer={*}} 
+  │     │ │ ├ {AtEase|安心} {FeelingByGood|好情:cause={*},degree={*},experiencer={*}} 
+  │     │ │ │ └ {calm|镇静} {calm|镇静:cause={*},degree={*},experiencer={*}} 
+  │     │ │ ├ {joyful|喜悦} {FeelingByGood|好情:cause={*},degree={*},experiencer={*}} 
+  │     │ │ ├ {satisfied|满意} {FeelingByGood|好情:cause={*},degree={*},experiencer={*}} 
+  │     │ │ ├ {FeelNoQualms|无愧} {FeelingByGood|好情:cause={*},degree={*},experiencer={*}} 
+  │     │ │ └ {shameless|没羞} {FeelingByGood|好情:cause={*},degree={*},experiencer={*}} 
+  │     │ └ {FeelingByBad|坏情} {feeling|情绪:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {uneasy|不安} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {unsatisfied|不满} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {upset|烦恼} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {sad|忧愁} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {sorrowful|悲哀} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {fear|害怕} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {surprise|惊奇} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {worried|着急} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {angry|生气} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {disheartened|灰心} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {repent|懊悔} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {shy|羞愧} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   ├ {embarrassed|为难} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     │   └ {disappointed|失望} {FeelingByBad|坏情:cause={*},degree={*},experiencer={*}} 
+  │     ├ {Attitude|态度} {StateMental|精神状态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ ├ {AttitudeByGood|好态} {Attitude|态度:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ ├ {FondOf|喜欢} {AttitudeByGood|好态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ │ ├ {like|爱惜} {FondOf|喜欢:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ │ └ {love|爱} {FondOf|喜欢:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ ├ {PayAttention|注意} {AttitudeByGood|好态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ │ └ {ParticularAbout|讲求} {PayAttention|注意:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ ├ {respect|敬佩} {AttitudeByGood|好态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ ├ {loyal|忠孝} {AttitudeByGood|好态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ ├ {admire|羡慕} {AttitudeByGood|好态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ │ └ {jealous|妒忌} {admire|羡慕:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ ├ {grateful|感激} {AttitudeByGood|好态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ ├ {agree|同意} {AttitudeByGood|好态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │ │ └ {ThinkOf|思念} {AttitudeByGood|好态:content={*},degree={*},experiencer={*}} 
+  │     │ └ {AttitudeByBad|坏态} {Attitude|态度:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   ├ {sorry|惋惜} {AttitudeByBad|坏态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   ├ {pity|怜悯} {AttitudeByBad|坏态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   ├ {disgust|厌恶} {AttitudeByBad|坏态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   ├ {stupefied|木然} {AttitudeByBad|坏态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   ├ {blame|埋怨} {AttitudeByBad|坏态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   ├ {hate|仇恨} {AttitudeByBad|坏态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   ├ {forgive|原谅} {AttitudeByBad|坏态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   ├ {regret|抱歉} {AttitudeByBad|坏态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   ├ {despise|轻视} {AttitudeByBad|坏态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   ├ {disloyal|不忠} {AttitudeByBad|坏态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   ├ {disagree|不同意} {AttitudeByBad|坏态:cause={*},degree={*},experiencer={*},target={*}} 
+  │     │   └ {doubt|怀疑} {AttitudeByBad|坏态:content={*},degree={*},experiencer={*}} 
+  │     ├ {volition|意向} {StateMental|精神状态:content={*},degree={*},experiencer={*}} 
+  │     │ ├ {expect|期望} {volition|意向:content={*},degree={*},experiencer={*}} 
+  │     │ ├ {need|需求} {volition|意向:content={*},degree={*},experiencer={*}} 
+  │     │ ├ {willing|愿意} {volition|意向:content={*},degree={*},experiencer={*}} 
+  │     │ ├ {unwilling|不愿} {volition|意向:content={*},degree={*},experiencer={*}} 
+  │     │ ├ {GrudgeNot|舍得} {volition|意向:content={*},degree={*},experiencer={*}} 
+  │     │ ├ {grudge|不舍} {volition|意向:content={*},degree={*},experiencer={*}} 
+  │     │ ├ {dare|敢于} {volition|意向:content={*},degree={*},experiencer={*}} 
+  │     │ └ {hesitate|犹豫} {volition|意向:content={*},degree={*},experiencer={*}} 
+  │     └ {cognition|感知状态} {StateMental|精神状态:content={*},degree={*},experiencer={*}} 
+  │       ├ {HaveKnowledge|有知} {cognition|感知状态:content={*},degree={*},experiencer={*}} 
+  │       │ ├ {perception|感知} {HaveKnowledge|有知:content={*},degree={*},experiencer={*}} 
+  │       │ ├ {know|知道} {HaveKnowledge|有知:content={*},degree={*},experiencer={*}} 
+  │       │ │ └ {understand|领会} {know|知道:content={*},degree={*},experiencer={*}} 
+  │       │ ├ {regard|认为} {HaveKnowledge|有知:content={*},experiencer={*},manner={*}};{HaveKnowledge|有知:ResultIsa={*},experiencer={*},manner={*},patient={*}} 
+  │       │ ├ {believe|相信} {HaveKnowledge|有知:content={*},degree={*},experiencer={*}} 
+  │       │ ├ {remember|记得} {HaveKnowledge|有知:content={*},degree={*},experiencer={*}} 
+  │       │ ├ {BeAble|能够} {HaveKnowledge|有知:content={*},degree={*},experiencer={*}} 
+  │       │ └ {dream|做梦} {HaveKnowledge|有知:content={*},experiencer={*}} 
+  │       ├ {NoKnowledge|无知} {cognition|感知状态:content={*},experiencer={*},range={*}} 
+  │       │ ├ {ignorant|不知} {NoKnowledge|无知:content={*},experiencer={*},range={*}} 
+  │       │ └ {forget|忘记} {NoKnowledge|无知:content={*},experiencer={*},range={*}} 
+  │       ├ {misunderstand|误信} {cognition|感知状态:content={*},experiencer={*},range={*}} 
+  │       │ └ {confuse|混淆} {misunderstand|误信:content={*},experiencer={*},range={*}} 
+  │       └ {BeUnable|无能} {cognition|感知状态:content={*},degree={*},experiencer={*}} 
+  └ {act|行动} {event|事件:agent={*}} 
+    ├ {ActGeneral|泛动} {act|行动:agent={*}} 
+    │ ├ {start|开始} {ActGeneral|泛动:agent={*},content={*}} 
+    │ ├ {do|做} {ActGeneral|泛动:agent={*},content={*},manner={*}} 
+    │ │ ├ {try|尝试} {do|做:agent={*},content={*}} 
+    │ │ ├ {endeavour|卖力} {do|做:agent={*},content={*}} 
+    │ │ ├ {VieFor|快干} {do|做:agent={*},content={*}} 
+    │ │ ├ {RashlyAct|蛮干} {do|做:agent={*},content={*}} 
+    │ │ │ └ {venture|冒险} {RashlyAct|蛮干:agent={*},content={*}} 
+    │ │ ├ {cooperate|合作} {do|做:agent={*},content={*}} 
+    │ │ ├ {repeat|重复} {do|做:agent={*},content={*}} 
+    │ │ ├ {CatchUp|补做} {do|做:agent={*},content={*}} 
+    │ │ ├ {pretend|假装} {do|做:agent={*},content={*}} 
+    │ │ ├ {engage|从事} {do|做:agent={*},content={*}} 
+    │ │ │ └ {bear|承担} {engage|从事:agent={*},content={*}} 
+    │ │ │   └ {undertake|担任} {bear|承担:agent={*},content={*}} 
+    │ │ ├ {conduct|实施} {do|做:agent={*},content={*}} 
+    │ │ ├ {prepare|准备} {do|做:agent={*},content={*}} 
+    │ │ └ {respond|回应} {do|做:agent={*},cause={*}} 
+    │ ├ {DoNot|不做} {ActGeneral|泛动:agent={*},content={*}} 
+    │ │ ├ {refuse|拒做} {DoNot|不做:agent={*},content={*}} 
+    │ │ │ └ {evade|回避} {refuse|拒做:agent={*},content={*}} 
+    │ │ └ {slack|偷懒} {DoNot|不做:agent={*},content={*}} 
+    │ ├ {cease|停做} {ActGeneral|泛动:agent={*},content={*}} 
+    │ │ ├ {GiveUp|戒除} {cease|停做:agent={*},content={*}} 
+    │ │ └ {rest|休息} {cease|停做:agent={*}} 
+    │ │   └ {sleep|睡} {rest|休息:agent={*}} 
+    │ └ {wait|等待} {ActGeneral|泛动:TimeFin={*},TimeIni={*},agent={*},content={*},duration={*}} 
+    └ {ActSpecific|实动} {act|行动:agent={*}} 
+      ├ {AlterGeneral|泛变} {ActSpecific|实动:agent={*},patient={*},result={*}} 
+      │ ├ {alter|改变} {AlterGeneral|泛变:StateFin={*},StateIni={*},agent={*},patient={*}} 
+      │ ├ {control|控制} {AlterGeneral|泛变:ResultEvent={*},agent={*},patient={*}} 
+      │ │ ├ {manage|管理} {control|控制:agent={*},patient={*}} 
+      │ │ ├ {handle|处理} {control|控制:agent={*},patient={*}} 
+      │ │ ├ {arrange|安排} {control|控制:agent={*},patient={*}} 
+      │ │ └ {drive|驾驭} {CauseToMoveInManner|方式性他移:LocationFin={*},LocationIni={*},agent={*},direction={*},patient={*}} 
+      │ └ {stabilize|使不变} {AlterGeneral|泛变:agent={*},patient={*}} 
+      └ {AlterSpecific|实变} {ActSpecific|实动:agent={*}} 
+        ├ {AlterRelation|变关系} {AlterSpecific|实变:agent={*}} 
+        │ ├ {AlterPossession|变领属} {AlterRelation|变关系:agent={*},possession={*}} 
+        │ │ ├ {take|取} {AlterPossession|变领属:agent={*},possession={*},source={*}} 
+        │ │ │ ├ {seek|谋取} {take|取:agent={*},possession={*},source={*}} 
+        │ │ │ │ └ {beg|乞求} {seek|谋取:agent={*},possession={*},source={*}} 
+        │ │ │ ├ {steal|偷} {take|取:agent={*},manner={covert|隐秘},possession={*},source={*}} 
+        │ │ │ ├ {rob|抢} {take|取:agent={*},manner={fierce|暴},possession={*},source={*}} 
+        │ │ │ ├ {cheat|骗} {take|取:agent={*},manner={dishonest|不诚实},possession={*},source={*}} 
+        │ │ │ ├ {earn|赚} {take|取:agent={*},possession={*},source={*}} 
+        │ │ │ ├ {buy|买} {take|取:agent={*},beneficiary={*},cost={*},domain={commerce|商业},possession={*},source={*}} 
+        │ │ │ ├ {collect|收} {take|取:agent={*},possession={*},source={*}} 
+        │ │ │ │ ├ {deprive|剥夺} {collect|收:agent={*},possession={*},source={*}} 
+        │ │ │ │ └ {levy|征收} {collect|收:agent={*},possession={*},source={*}} 
+        │ │ │ ├ {borrow|借入} {take|取:agent={*},possession={*},source={*}} 
+        │ │ │ ├ {gather|采集} {take|取:agent={*},possession={*},source={*}} 
+        │ │ │ ├ {occupy|占领} {take|取:agent={*},possession={*},source={*}} 
+        │ │ │ ├ {MarryFrom|娶} {take|取:ResultEvent={GetMarried|结婚},agent={*},possession={*},source={*}} 
+        │ │ │ └ {TakeBack|取回} {take|取:agent={*},possession={*},source={*}} 
+        │ │ │   └ {redeem|赎} {TakeBack|取回:agent={*},cost={*},domain={finance|金融},possession={*},source={*}} 
+        │ │ ├ {give|给} {AlterPossession|变领属:agent={*},possession={*},target={*}} 
+        │ │ │ ├ {provide|供} {give|给:agent={*},possession={*},target={*}} 
+        │ │ │ ├ {GiveAsGift|赠} {give|给:agent={*},possession={*},target={*}} 
+        │ │ │ │ ├ {grant|赐} {GiveAsGift|赠:agent={*},possession={*},target={*}} 
+        │ │ │ │ └ {donate|捐} {GiveAsGift|赠:agent={*},possession={*},target={*}} 
+        │ │ │ ├ {submit|交} {give|给:agent={*},possession={*},target={*}} 
+        │ │ │ ├ {return|还} {give|给:agent={*},possession={*},target={*}} 
+        │ │ │ │ └ {recompense|补偿} {return|还:agent={*},possession={*},target={*}} 
+        │ │ │ ├ {issue|分发} {give|给:agent={*},possession={*},target={*}} 
+        │ │ │ ├ {sell|卖} {give|给:agent={*},cost={*},domain={commerce|商业},possession={*},target={*}} 
+        │ │ │ ├ {lend|借出} {give|给:agent={*},possession={*},target={*}} 
+        │ │ │ ├ {pawn|押给} {give|给:agent={*},domain={finance|金融},possession={*},target={*}} 
+        │ │ │ ├ {PassOn|留给} {give|给:agent={*},possession={*},target={*}} 
+        │ │ │ ├ {pay|付} {give|给:agent={*},possession={*},target={*}} 
+        │ │ │ ├ {MarryTo|嫁} {give|给:ResultEvent={GetMarried|结婚},agent={*},possession={*},target={*}} 
+        │ │ │ └ {abandon|放弃} {give|给:agent={*},possession={*}} 
+        │ │ ├ {exchange|交换} {AlterPossession|变领属:agent={*},cost={*},possession={*},source={*}} 
+        │ │ └ {OnCredit|赊} {AlterPossession|变领属:agent={*},domain={finance|金融},possession={*},source={*}} 
+        │ ├ {AlterIsa|变是非} {AlterRelation|变关系:agent={*}} 
+        │ │ ├ {CauseToBe|使之是} {AlterIsa|变是非:ResultIsa={*},agent={*},patient={*}} 
+        │ │ │ ├ {RegardAs|当作} {CauseToBe|使之是:ResultIsa={*},agent={*},patient={*}} 
+        │ │ │ ├ {naming|称作} {CauseToBe|使之是:ResultIsa={*},agent={*},patient={*}} 
+        │ │ │ └ {appoint|任命} {CauseToBe|使之是:ResultIsa={*},agent={*},patient={*}} 
+        │ │ ├ {CauseNotToBe|使之非} {AlterIsa|变是非:ResultIsa={*},agent={*},patient={*}} 
+        │ │ │ └ {dismiss|罢免} {CauseNotToBe|使之非:ResultIsa={*},agent={*},patient={*}} 
+        │ │ └ {replace|代替} {AlterIsa|变是非:ResultIsa={*},agent={*},patient={*}} 
+        │ ├ {AlterComparison|变相比} {AlterRelation|变关系:agent={*}} 
+        │ │ ├ {CompareTo|比拟} {AlterComparison|变相比:agent={*},contrast={*},patient={*}} 
+        │ │ └ {MakeEqual|使相等} {AlterComparison|变相比:agent={*},contrast={*},patient={*}} 
+        │ ├ {AlterFitness|变相适} {AlterRelation|变关系:agent={*}} 
+        │ │ ├ {obey|遵循} {AlterFitness|变相适:agent={*},content={*},patient={*}} 
+        │ │ │ └ {surrender|屈服} {obey|遵循:agent={*},target={*}} 
+        │ │ ├ {coordinate|协调} {AlterFitness|变相适:agent={*},content={*}} 
+        │ │ └ {disobey|违背} {AlterFitness|变相适:agent={*},content={*}} 
+        │ ├ {AlterInclusion|变包含} {AlterRelation|变关系:agent={*}} 
+        │ │ ├ {include|纳入} {AlterInclusion|变包含:ResultWhole={*},agent={*},patient={*}} 
+        │ │ ├ {discharge|开除} {AlterInclusion|变包含:SourceWhole={*},agent={*},patient={*}} 
+        │ │ ├ {withdraw|退出} {AlterInclusion|变包含:SourceWhole={*},agent={*}} 
+        │ │ └ {classify|分类} {AlterInclusion|变包含:ResultWhole={*},agent={*},patient={*}} 
+        │ ├ {AlterConnection|变关联} {AlterRelation|变关系:agent={*}} 
+        │ │ ├ {tie|关联} {AlterConnection|变关联:agent={*},partner={*},patient={*}} 
+        │ │ │ ├ {connect|连接} {tie|关联:agent={*},partner={*},patient={*}} 
+        │ │ │ │ └ {fasten|拴连} {connect|连接:agent={*},partner={*},patient={*}};{tie|关联:LocationFin={*},agent={*},patient={*}} 
+        │ │ │ ├ {mix|混合} {tie|关联:agent={*},partner={*},patient={*}};{tie|关联:OfPart={*},ResultWhole={*},agent={*}} 
+        │ │ │ ├ {merge|合并} {tie|关联:agent={*},partner={*},patient={*}};{tie|关联:OfPart={*},ResultWhole={*},agent={*}} 
+        │ │ │ └ {associate|交往} {tie|关联:agent={*},partner={*}};{tie|关联:coagent={*}} 
+        │ │ │   ├ {ally|结盟} {associate|交往:agent={*},partner={*}};{associate|交往:coagent={*}} 
+        │ │ │   ├ {collude|勾结} {associate|交往:agent={*},partner={*}};{associate|交往:coagent={*}} 
+        │ │ │   ├ {reconcile|讲和} {associate|交往:agent={*},partner={*}};{associate|交往:coagent={*}} 
+        │ │ │   ├ {SeekRefuge|投靠} {associate|交往:agent={*},partner={*}} 
+        │ │ │   ├ {meet|会面} {associate|交往:agent={*},partner={*}};{associate|交往:coagent={*}} 
+        │ │ │   ├ {BeInLove|恋爱} {associate|交往:agent={*},partner={*}};{associate|交往:coagent={*}} 
+        │ │ │   ├ {GetMarried|结婚} {associate|交往:agent={*},partner={*}};{associate|交往:coagent={*}} 
+        │ │ │   └ {mating|交配} {associate|交往:agent={*},partner={*}};{associate|交往:coagent={*}} 
+        │ │ └ {separate|分离} {AlterConnection|变关联:agent={*},partner={*}};{AlterConnection|变关联:SourceWhole={*},agent={*},patient={*}};{AlterConnection|变关联:OfPart={*},SourceWhole={*},agent={*}} 
+        │ │   ├ {disconnect|脱离} {separate|分离:agent={*},partner={*}};{separate|分离:coagent={*}} 
+        │ │   ├ {divorce|离婚} {separate|分离:agent={*},partner={*}};{separate|分离:coagent={*}} 
+        │ │   └ {farewell|离别} {separate|分离:agent={*},partner={*}};{separate|分离:coagent={*}} 
+        │ ├ {AlterCauseResult|变因果} {AlterRelation|变关系:agent={*}} 
+        │ │ ├ {infect|传染} {AlterCauseResult|变因果:agent={*},cause={*},target={*}} 
+        │ │ └ {incur|招惹} {AlterCauseResult|变因果:agent={*},result={*}} 
+        │ ├ {AlterLocation|变空间位置} {AlterRelation|变关系:agent={*}} 
+        │ │ ├ {SelfMove|自移} {AlterLocation|变空间位置:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ ├ {SelfMoveInManner|方式性自移} {SelfMove|自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {roam|流浪} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},instrument={foot|脚}{leg|腿}} 
+        │ │ │ │ ├ {walk|走} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},instrument={foot|脚}{leg|腿}} 
+        │ │ │ │ ├ {run|跑} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},instrument={foot|脚}{leg|腿}} 
+        │ │ │ │ ├ {jump|跳} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},instrument={foot|脚}{leg|腿}} 
+        │ │ │ │ ├ {crawl|爬} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},instrument={foot|脚}{hand|手}{leg|腿}} 
+        │ │ │ │ ├ {slide|滑} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {roll|滚} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {swim|游} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {flow|流} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {fly|飞} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},location={sky|空域}} 
+        │ │ │ │ ├ {float|漂} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {VehicleGo|驶} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ └ {circulate|循环} {SelfMoveInManner|方式性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ ├ {SelfMoveInDirection|方向性自移} {SelfMove|自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {ToAndFro|来回} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ │ ├ {come|来} {ToAndFro|来回:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},purpose={*}} 
+        │ │ │ │ │ ├ {go|去} {ToAndFro|来回:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},purpose={*}} 
+        │ │ │ │ │ └ {LeaveFor|前往} {ToAndFro|来回:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},purpose={*}} 
+        │ │ │ │ ├ {GoUp|上去} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {GoDown|下去} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {GoForward|前进} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},purpose={*}} 
+        │ │ │ │ ├ {GoBackward|后退} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},purpose={*}} 
+        │ │ │ │ ├ {GoInto|进入} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},purpose={*}} 
+        │ │ │ │ ├ {GoOut|出去} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},purpose={*}} 
+        │ │ │ │ │ ├ {leak|漏出} {GoOut|出去:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ │ ├ {jet|喷出} {GoOut|出去:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ │ └ {spill|溢出} {GoOut|出去:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {leave|离开} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ │ ├ {flee|逃跑} {leave|离开:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},cause={*},direction={*}} 
+        │ │ │ │ │ └ {escape|躲避} {leave|离开:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},cause={*},direction={*}} 
+        │ │ │ │ ├ {approach|接近} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ │ └ {chase|追赶} {approach|接近:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ │   └ {follow|跟随} {chase|追赶:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},partner={*}} 
+        │ │ │ │ ├ {disperse|散开} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {ComeTogether|集聚} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {GoThrough|经过} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ │ └ {cross|越过} {GoThrough|经过:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {GoBack|返回} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │ └ {GoRound|围绕} {SelfMoveInDirection|方向性自移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │   ├ {TurnRound|拐弯} {GoRound|围绕:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ │   └ {circle|盘旋} {GoRound|围绕:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*}} 
+        │ │ │ └ {MoveInFixedPosition|定位自移} {SelfMove|自移:agent={*},location={*}} 
+        │ │ │   ├ {wave|摆动} {MoveInFixedPosition|定位自移:agent={*},location={*}} 
+        │ │ │   ├ {shiver|颤动} {MoveInFixedPosition|定位自移:agent={*},location={*}} 
+        │ │ │   ├ {rotate|转动} {MoveInFixedPosition|定位自移:agent={*},location={*}} 
+        │ │ │   ├ {twine|打结} {MoveInFixedPosition|定位自移:agent={*},location={*}} 
+        │ │ │   └ {PartSelfMove|部件自移} {MoveInFixedPosition|定位自移:agent={*},location={*}} 
+        │ │ │     ├ {stand|站立} {PartSelfMove|部件自移:agent={*},location={*}} 
+        │ │ │     ├ {arise|起身} {PartSelfMove|部件自移:LocationIni={*},agent={*}} 
+        │ │ │     ├ {sit|坐蹲} {PartSelfMove|部件自移:agent={*},location={*}} 
+        │ │ │     ├ {LieDown|躺卧} {PartSelfMove|部件自移:agent={*},location={*}} 
+        │ │ │     ├ {FallDown|跌倒} {PartSelfMove|部件自移:agent={*},location={*}} 
+        │ │ │     ├ {tilt|倾斜} {PartSelfMove|部件自移:agent={*},direction={*},location={*}} 
+        │ │ │     │ └ {lean|倚靠} {tilt|倾斜:agent={*},direction={*},location={*}} 
+        │ │ │     └ {upmove|翘耸} {PartSelfMove|部件自移:agent={*},direction={*},location={*}} 
+        │ │ ├ {CeaseSelfMove|终止自移} {AlterLocation|变空间位置:agent={*},location={*}} 
+        │ │ │ ├ {stay|停留} {CeaseSelfMove|终止自移:TimeFin={*},TimeIni={*},agent={*},duration={*},location={*}} 
+        │ │ │ ├ {arrive|到达} {CeaseSelfMove|终止自移:LocationFin={*},agent={*}} 
+        │ │ │ └ {reside|住下} {CeaseSelfMove|终止自移:agent={*},location={*}} 
+        │ │ ├ {CauseToMove|他移} {AlterLocation|变空间位置:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ ├ {CauseToMoveInManner|方式性他移} {CauseToMove|他移:agent={*},patient={*}} 
+        │ │ │ │ ├ {release|释放} {CauseToMoveInManner|方式性他移:agent={*},patient={*},source={*}} 
+        │ │ │ │ ├ {TakeAway|搬动} {CauseToMoveInManner|方式性他移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {put|放置} {CauseToMoveInManner|方式性他移:LocationFin={*},LocationIni={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {store|保存} {CauseToMoveInManner|方式性他移:LocationFin={*},LocationIni={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ └ {SetAside|留存} {store|保存:LocationFin={*},agent={*},patient={*}} 
+        │ │ │ │ ├ {install|安装} {CauseToMoveInManner|方式性他移:LocationFin={*},LocationIni={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {dismantle|拆卸} {CauseToMoveInManner|方式性他移:LocationFin={*},LocationIni={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {load|装载} {CauseToMoveInManner|方式性他移:LocationFin={*},LocationIni={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ └ {unload|卸载} {CauseToMoveInManner|方式性他移:LocationFin={*},LocationIni={*},agent={*},direction={*},patient={*}} 
+        │ │ │ ├ {CauseToMoveInDirection|方向性他移} {CauseToMove|他移:agent={*},patient={*}} 
+        │ │ │ │ ├ {pull|拉} {CauseToMoveInDirection|方向性他移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {push|推} {CauseToMoveInDirection|方向性他移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {MoveItUp|上移} {CauseToMoveInDirection|方向性他移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {lift|提升} {MoveItUp|上移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ └ {hang|悬挂} {MoveItUp|上移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {MoveItDown|下移} {CauseToMoveInDirection|方向性他移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {spray|洒下} {MoveItDown|下移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {swallow|咽下} {MoveItDown|下移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ └ {drop|投下} {MoveItDown|下移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {MoveItBack|回移} {CauseToMoveInDirection|方向性他移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {MoveItInto|内移} {CauseToMoveInDirection|方向性他移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {inhale|吸入} {MoveItInto|内移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {insert|插入} {MoveItInto|内移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {soak|浸入} {MoveItInto|内移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {inlay|嵌入} {MoveItInto|内移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {fill|填入} {MoveItInto|内移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ └ {bury|埋入} {MoveItInto|内移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {MoveItOut|外移} {CauseToMoveInDirection|方向性他移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {drain|排出} {MoveItOut|外移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {vomit|吐出} {MoveItOut|外移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {exhale|呼出} {MoveItOut|外移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {dump|倒出} {MoveItOut|外移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {PickOut|拔出} {MoveItOut|外移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ └ {SqueezeOut|挤出} {MoveItOut|外移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {MoveItAway|远移} {CauseToMoveInDirection|方向性他移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ ├ {throw|扔} {MoveItAway|远移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │ └ {send|发送} {MoveItAway|远移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │   ├ {shoot|发射} {send|发送:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │   ├ {transmit|传送} {send|发送:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │   ├ {transport|运送} {send|发送:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │   ├ {post|邮寄} {send|发送:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │   └ {expel|驱赶} {send|发送:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ │     └ {exile|流放} {expel|驱赶:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {spread|撒} {CauseToMoveInDirection|方向性他移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ └ {assemble|聚集} {CauseToMoveInDirection|方向性他移:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ ├ {CauseToMoveInFixedPosition|定位他移} {CauseToMove|他移:agent={*},patient={*}} 
+        │ │ │ │ ├ {shake|摇动} {CauseToMoveInFixedPosition|定位他移:agent={*},direction={*}} 
+        │ │ │ │ ├ {reverse|颠倒} {CauseToMoveInFixedPosition|定位他移:agent={*},direction={*}} 
+        │ │ │ │ ├ {turn|扭转} {CauseToMoveInFixedPosition|定位他移:LocationFin={*},LocationIni={*},agent={*},direction={*}} 
+        │ │ │ │ ├ {coil|缠绕} {CauseToMoveInFixedPosition|定位他移:agent={*},direction={*}} 
+        │ │ │ │ │ └ {surround|包围} {coil|缠绕:agent={*},direction={*}} 
+        │ │ │ │ └ {CausePartMove|部件他移} {CauseToMoveInFixedPosition|定位他移:PatientPart={*},agent={*},direction={*}} 
+        │ │ │ └ {OpenShut|开关} {CauseToMove|他移:agent={*},patient={*}} 
+        │ │ │   ├ {open|打开} {OpenShut|开关:agent={*},patient={*},range={*}} 
+        │ │ │   └ {shut|关闭} {OpenShut|开关:agent={*},patient={*},range={*}} 
+        │ │ ├ {CeaseCauseTOMove|终止他移} {AlterLocation|变空间位置:agent={*},patient={*}} 
+        │ │ │ ├ {hold|拿} {CeaseCauseTOMove|终止他移:agent={*},patient={*}} 
+        │ │ │ │ ├ {pick|拾起} {hold|拿:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {HoldWithHand|搀扶} {hold|拿:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {PropUp|支撑} {hold|拿:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {bring|携带} {hold|拿:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {HoldInMouth|衔起} {hold|拿:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {HoldInArm|搂抱} {hold|拿:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ ├ {CarryOnBack|背起} {hold|拿:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ │ └ {TakeOutOfWater|捞起} {hold|拿:LocationFin={*},LocationIni={*},LocationThru={*},agent={*},direction={*},patient={*}} 
+        │ │ │ ├ {catch|捉住} {CeaseCauseTOMove|终止他移:agent={*},patient={*}} 
+        │ │ │ ├ {detain|扣住} {CeaseCauseTOMove|终止他移:agent={*},patient={*}} 
+        │ │ │ ├ {block|拦住} {CeaseCauseTOMove|终止他移:agent={*},patient={*}} 
+        │ │ │ ├ {fix|定住} {CeaseCauseTOMove|终止他移:agent={*},patient={*}} 
+        │ │ │ └ {SupportWeight|托住} {CeaseCauseTOMove|终止他移:agent={*},patient={*}} 
+        │ │ └ {AimAt|定向} {AlterLocation|变空间位置:agent={*},direction={*},patient={*}} 
+        │ ├ {AlterTimePosition|变时间位置} {AlterRelation|变关系:agent={*},patient={*},time={*}} 
+        │ │ └ {pass|度过} {AlterTimePosition|变时间位置:agent={*},patient={*},time={*}} 
+        │ └ {AlterQuantity|变数量} {AlterRelation|变关系:agent={*},patient={*},quantity={*}} 
+        │   ├ {add|增加} {AlterQuantity|变数量:agent={*},patient={*},quantity={*}} 
+        │   ├ {subtract|削减} {AlterQuantity|变数量:agent={*},patient={*},quantity={*}} 
+        │   ├ {exhaust|损耗} {AlterQuantity|变数量:agent={*},patient={*},quantity={*}} 
+        │   └ {economize|节省} {AlterQuantity|变数量:agent={*},patient={*},quantity={*}} 
+        └ {AlterState|变状态} {AlterSpecific|实变:agent={*}} 
+          ├ {AlterPhysical|变本体} {AlterState|变状态:agent={*}} 
+          │ ├ {CauseToExist|使存现} {AlterPhysical|变本体:PatientProduct={*},agent={*}} 
+          │ │ ├ {create|创造} {CauseToExist|使存现:PatientProduct={*},agent={*}} 
+          │ │ │ ├ {reproduce|生殖} {create|创造:PatientProduct={*},agent={*}} 
+          │ │ │ ├ {produce|制造} {create|创造:PatientProduct={*},agent={*},material={*}} 
+          │ │ │ │ ├ {cook|烹调} {produce|制造:PatientProduct={*},agent={*},material={*}} 
+          │ │ │ │ └ {compile|编辑} {produce|制造:PatientProduct={*},agent={*}} 
+          │ │ │ ├ {build|建造} {create|创造:PatientProduct={*},agent={*},material={*}} 
+          │ │ │ ├ {forming|形成} {create|创造:PatientProduct={*},agent={*}} 
+          │ │ │ ├ {establish|建立} {create|创造:PatientProduct={*},agent={*}} 
+          │ │ │ └ {forge|伪造} {create|创造:PatientProduct={*},agent={*}} 
+          │ │ └ {CauseToAppear|显现} {CauseToExist|使存现:agent={*},patient={*}} 
+          │ │   ├ {reveal|揭露} {CauseToAppear|显现:agent={*},patient={*}} 
+          │ │   └ {StripOff|剥去} {CauseToAppear|显现:agent={*},patient={*}} 
+          │ ├ {AlterStateNormal|变常态} {AlterPhysical|变本体:agent={*},patient={*}} 
+          │ │ ├ {CauseToLive|使活} {AlterStateNormal|变常态:agent={*},patient={*}} 
+          │ │ │ ├ {MakeLiving|谋生} {CauseToLive|使活:agent={*},patient={*}} 
+          │ │ │ └ {ProvideFor|供养} {CauseToLive|使活:agent={*},patient={*}} 
+          │ │ │   ├ {foster|饲养} {ProvideFor|供养:agent={*},patient={*}} 
+          │ │ │   └ {planting|栽植} {ProvideFor|供养:LocationFin={*},agent={*},patient={*}} 
+          │ │ └ {CauseToGrow|使成长} {AlterStateNormal|变常态:StateFin={*},StateIni={*},agent={*},patient={*}} 
+          │ │   ├ {metabolize|代谢} {CauseToGrow|使成长:agent={*},patient={*}} 
+          │ │   │ ├ {digest|消化} {metabolize|代谢:agent={*},patient={*}} 
+          │ │   │ ├ {absorb|吸收} {metabolize|代谢:agent={*},patient={*}} 
+          │ │   │ ├ {eat|吃} {metabolize|代谢:agent={*},patient={*}} 
+          │ │   │ ├ {drink|喝} {metabolize|代谢:agent={*},patient={*}} 
+          │ │   │ ├ {feed|喂} {metabolize|代谢:agent={*},patient={*},target={*}} 
+          │ │   │ ├ {excrete|排泄} {metabolize|代谢:agent={*},patient={*}} 
+          │ │   │ └ {respire|呼吸} {metabolize|代谢:agent={*},patient={*}} 
+          │ │   ├ {WhileAway|消闲} {CauseToGrow|使成长:agent={*}} 
+          │ │   │ ├ {exercise|锻炼} {WhileAway|消闲:agent={*},domain={sport|体育}} 
+          │ │   │ ├ {tour|旅游} {WhileAway|消闲:LocationFin={*},LocationIni={*},agent={*},direction={*},location={*},manner={SelfMove|自移}} 
+          │ │   │ ├ {recreation|娱乐} {WhileAway|消闲:agent={*},instrument={*},partner={*}};{WhileAway|消闲:coagent={*},instrument={*}} 
+          │ │   │ ├ {addict|嗜好} {WhileAway|消闲:agent={*},patient={*}} 
+          │ │   │ └ {SeekPleasure|寻欢} {WhileAway|消闲:agent={*},partner={*}};{WhileAway|消闲:coagent={*}} 
+          │ │   ├ {keep|保持} {CauseToGrow|使成长:agent={*},patient={*}} 
+          │ │   │ └ {maintain|保养} {keep|保持:agent={*},patient={*}} 
+          │ │   ├ {protect|保护} {CauseToGrow|使成长:agent={*},cause={*},patient={*}} 
+          │ │   ├ {TakeCare|照料} {CauseToGrow|使成长:agent={*},patient={*}} 
+          │ │   ├ {cultivate|培养} {CauseToGrow|使成长:agent={*},patient={*}} 
+          │ │   ├ {help|帮助} {CauseToGrow|使成长:agent={*},patient={*},scope={*}};{CauseToGrow|使成长:agent={*},patient={*},purpose={*}} 
+          │ │   │ └ {rescue|救助} {help|帮助:StateFin={*},StateIni={*},agent={*},patient={*}} 
+          │ │   └ {KeepOn|使继续} {CauseToGrow|使成长:agent={*},patient={*}} 
+          │ ├ {AlterStateGood|变良态} {AlterPhysical|变本体:agent={*},patient={*}} 
+          │ │ ├ {benefit|便利} {AlterStateGood|变良态:agent={*},patient={*}} 
+          │ │ ├ {MakeBetter|优化} {AlterStateGood|变良态:agent={*},patient={*}} 
+          │ │ │ ├ {adjust|调整} {MakeBetter|优化:agent={*},patient={*}} 
+          │ │ │ ├ {PutInOrder|整理} {MakeBetter|优化:agent={*},patient={*}} 
+          │ │ │ ├ {improve|改良} {MakeBetter|优化:agent={*},patient={*}} 
+          │ │ │ │ └ {enrich|充实} {improve|改良:agent={*},material={*},patient={*}} 
+          │ │ │ └ {fulfil|实现} {MakeBetter|优化:agent={*},patient={*}} 
+          │ │ └ {resume|恢复} {AlterStateGood|变良态:StateFin={*},StateIni={*},agent={*},patient={*}} 
+          │ │   ├ {doctor|医治} {resume|恢复:agent={*},content={*},domain={medical|医},patient={*}} 
+          │ │   ├ {repair|修理} {resume|恢复:agent={*},content={*},patient={*}} 
+          │ │   └ {amend|改正} {resume|恢复:agent={*},content={*},patient={*}} 
+          │ ├ {AlterStateBad|变莠态} {AlterPhysical|变本体:agent={*},patient={*}} 
+          │ │ └ {MakeBad|加害} {AlterStateBad|变莠态:agent={*},instrument={*},patient={*}} 
+          │ │   ├ {MakeTrouble|捣乱} {MakeBad|加害:agent={*},instrument={*},patient={*}} 
+          │ │   ├ {damage|损害} {MakeBad|加害:agent={*},instrument={*},patient={*}} 
+          │ │   ├ {attack|攻打} {MakeBad|加害:agent={*},instrument={*},patient={*}} 
+          │ │   │ └ {TerrorAttack|恐怖袭击} {attack|攻打:agent={*},instrument={*},patient={*}} 
+          │ │   ├ {punish|处罚} {MakeBad|加害:ResultContent={*},agent={*},cause={*},patient={*}} 
+          │ │   ├ {revenge|报复} {MakeBad|加害:agent={*},patient={*}} 
+          │ │   ├ {HaveContest|较量} {MakeBad|加害:agent={*},partner={*},scope={*}};{MakeBad|加害:coagent={*},scope={*}} 
+          │ │   │ ├ {compete|比赛} {HaveContest|较量:agent={*},cause={*},instrument={*},partner={*}};{HaveContest|较量:cause={*},coagent={*}} 
+          │ │   │ │ └ {gamble|赌博} {compete|比赛:agent={*},instrument={*},partner={*},scope={wealth|钱财}};{compete|比赛:coagent={*},instrument={*},scope={wealth|钱财}} 
+          │ │   │ ├ {fight|争斗} {HaveContest|较量:agent={*},cause={*},instrument={*},partner={*}};{HaveContest|较量:cause={*},coagent={*},instrument={*}} 
+          │ │   │ │ ├ {uprise|暴动} {fight|争斗:agent={*},cause={*},instrument={*},partner={*}} 
+          │ │   │ │ └ {resist|反抗} {fight|争斗:agent={*},cause={*},instrument={*},partner={*}} 
+          │ │   │ ├ {lawsuit|诉讼} {HaveContest|较量:agent={*},cause={*},partner={*}};{HaveContest|较量:cause={*},coagent={*}} 
+          │ │   │ ├ {defend|防守} {HaveContest|较量:agent={*},cause={*},instrument={*},patient={*}} 
+          │ │   │ └ {defeat|战胜} {HaveContest|较量:agent={*},instrument={*},partner={*}} 
+          │ │   └ {kill|杀害} {MakeBad|加害:agent={*},instrument={*},patient={*}} 
+          │ │     └ {suicide|自杀} {kill|杀害:agent={*},instrument={*},patient={*}} 
+          │ ├ {CauseToBeHidden|使消失} {AlterPhysical|变本体:agent={*},patient={*}} 
+          │ │ ├ {remove|消除} {CauseToBeHidden|使消失:LocationIni={*},agent={*},instrument={*},patient={*}} 
+          │ │ │ └ {destroy|消灭} {remove|消除:LocationIni={*},agent={*},instrument={*},patient={*}} 
+          │ │ ├ {hide|藏匿} {CauseToBeHidden|使消失:LocationFin={*},agent={*},patient={*}} 
+          │ │ └ {cover|遮盖} {CauseToBeHidden|使消失:agent={*},instrument={*},patient={*}} 
+          │ │   ├ {PutOn|穿戴} {cover|遮盖:agent={*},instrument={*},patient={*}} 
+          │ │   └ {wrap|包扎} {cover|遮盖:agent={*},instrument={*},patient={*}} 
+          │ └ {AlterAttribute|变属性} {AlterPhysical|变本体:PatientValue={*},agent={*},patient={*}} 
+          │   ├ {MakeHigher|提高} {AlterAttribute|变属性:PatientValue={*},agent={*},patient={*},scope={*}} 
+          │   ├ {MakeLower|降低} {AlterAttribute|变属性:PatientValue={*},agent={*},patient={*},scope={*}} 
+          │   ├ {AlterAppearance|变外观} {AlterAttribute|变属性:PatientValue={AppearanceValue|外观值},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {AlterForm|变形状} {AlterAppearance|变外观:PatientValue={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {touch|触} {AlterForm|变形状:PartOfTouch={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {stroke|抚} {AlterForm|变形状:PartOfTouch={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {stab|扎} {AlterForm|变形状:PartOfTouch={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {sting|叮} {AlterForm|变形状:PartOfTouch={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {beat|打} {AlterForm|变形状:PartOfTouch={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {bump|撞} {AlterForm|变形状:PartOfTouch={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {kick|踢踩} {AlterForm|变形状:PartOfTouch={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {firing|射击} {AlterForm|变形状:LocationFin={*},PartOfTouch={*},agent={*},direction={*},instrument={*},patient={*}} 
+          │   │ │ ├ {break|折断} {AlterForm|变形状:PartOfTouch={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {rub|摩擦} {AlterForm|变形状:PartOfTouch={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {scratch|抓挠} {AlterForm|变形状:PartOfTouch={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {press|按压} {AlterForm|变形状:PartOfTouch={*},StateFin={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {unfold|铺摊} {AlterForm|变形状:PartOfTouch={*},StateFin={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {grind|研磨} {AlterForm|变形状:PartOfTouch={*},StateFin={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {split|破开} {AlterForm|变形状:PartOfTouch={*},StateFin={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {cut|切削} {AlterForm|变形状:PartOfTouch={*},StateFin={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {bite|啃咬} {AlterForm|变形状:PartOfTouch={*},StateFin={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {masticate|咀嚼} {AlterForm|变形状:PartOfTouch={*},StateFin={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {fold|摺叠} {AlterForm|变形状:PartOfTouch={*},StateFin={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {PlayWith|揉弄} {AlterForm|变形状:PartOfTouch={*},StateFin={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {weave|辫编} {AlterForm|变形状:PartOfTouch={*},StateFin={*},agent={*},instrument={*},patient={*}} 
+          │   │ │ └ {dig|挖掘} {AlterForm|变形状:PatientProduct={*},agent={*},instrument={*},location={*}};{AlterForm|变形状:agent={*},instrument={*},patient={*}} 
+          │   │ ├ {clean|使净} {AlterAppearance|变外观:PatientValue={spotless|洁},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {wash|洗涤} {clean|使净:PatientValue={spotless|洁},agent={*},instrument={*},patient={*}} 
+          │   │ │ └ {wipe|擦拭} {clean|使净:PatientValue={spotless|洁},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {pollute|使脏} {AlterAppearance|变外观:PatientValue={dirty|龊},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {apply|涂抹} {AlterAppearance|变外观:PatientValue={*},agent={*},instrument={*},material={*},patient={*}} 
+          │   │ ├ {beautify|美化} {AlterAppearance|变外观:PatientValue={beautiful|美},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {decorate|装饰} {beautify|美化:PatientValue={beautiful|美},agent={*},instrument={*},patient={*}} 
+          │   │ │ └ {MakeUp|化妆} {beautify|美化:PatientValue={beautiful|美},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {uglify|丑化} {AlterAppearance|变外观:PatientValue={ugly|丑},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {illuminate|照射} {AlterAppearance|变外观:PatientValue={bright|明},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {AlterColor|变颜色} {AlterAppearance|变外观:PatientValue={Color|颜色},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {AlterBrightness|变亮度} {AlterAppearance|变外观:PatientValue={Brightness|明暗},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {straighten|拉直} {AlterAppearance|变外观:PatientValue={straight|直},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {bend|折弯} {AlterAppearance|变外观:PatientValue={curved|弯},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {sharpen|使锋利} {AlterAppearance|变外观:PatientValue={sharp|利},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {filter|滤清} {AlterAppearance|变外观:PatientValue={clear|清},agent={*},instrument={*},patient={*}} 
+          │   │ └ {lubricate|润滑} {AlterAppearance|变外观:PatientValue={polished|光},agent={*},instrument={*},patient={*}} 
+          │   ├ {AlterMeasurement|变量度} {AlterAttribute|变属性:PatientValue={MeasurementValue|量度值},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {WarmUp|加热} {AlterMeasurement|变量度:PatientValue={hot|热},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {lighting|点燃} {WarmUp|加热:PatientValue={hot|热},agent={*},instrument={*},patient={*}} 
+          │   │ │ └ {burn|焚烧} {WarmUp|加热:PatientValue={hot|热},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {cool|制冷} {AlterMeasurement|变量度:PatientValue={cold|冷},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {moisten|加湿} {AlterMeasurement|变量度:PatientValue={wet|湿},agent={*},instrument={*},patient={*}} 
+          │   │ │ └ {irrigate|浇灌} {moisten|加湿:PatientValue={wet|湿},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {dry|干燥} {AlterMeasurement|变量度:PatientValue={dried|干},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {enlarge|扩大} {AlterMeasurement|变量度:PatientValue={big|大},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {shrink|缩小} {AlterMeasurement|变量度:PatientValue={small|小},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {tighten|勒紧} {AlterMeasurement|变量度:PatientValue={tight|紧},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {loosen|放松} {AlterMeasurement|变量度:PatientValue={loose|松},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {SpeedUp|加快} {AlterMeasurement|变量度:PatientValue={fast|快},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {SlowDown|减慢} {AlterMeasurement|变量度:PatientValue={slow|慢},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {MakeHeavier|加重} {AlterMeasurement|变量度:PatientValue={heavy|重},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {deepen|加深} {AlterMeasurement|变量度:PatientValue={deep|深},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {MakeEarlier|提早} {AlterMeasurement|变量度:PatientValue={TimeShort|短时间},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {delay|拖延} {AlterMeasurement|变量度:PatientValue={TimeLong|长时间},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {thicken|加浓} {AlterMeasurement|变量度:PatientValue={concentrated|稠},agent={*},instrument={*},patient={*}} 
+          │   │ └ {dilute|冲淡} {AlterMeasurement|变量度:PatientValue={watery|稀},agent={*},instrument={*},patient={*}} 
+          │   ├ {AlterProperty|变特性} {AlterAttribute|变属性:PatientValue={PropertyValue|特性值},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {strengthen|加固} {AlterProperty|变特性:PatientValue={durable|牢},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {weaken|削弱} {AlterProperty|变特性:PatientValue={weak|弱},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {dredge|疏通} {AlterProperty|变特性:PatientValue={*},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {BlockUp|堵塞} {AlterProperty|变特性:PatientValue={*},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {AlterGrade|变级} {AlterProperty|变特性:PatientValue={RankValue|等级值},agent={*},instrument={*},patient={*}} 
+          │   │ │ ├ {upgrade|升级} {AlterGrade|变级:PatientValue={RankValue|等级值},agent={*},instrument={*},patient={*}} 
+          │   │ │ └ {degrade|降级} {AlterGrade|变级:PatientValue={RankValue|等级值},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {PlayUp|鼓吹} {AlterProperty|变特性:PatientValue={glorious|荣},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {PlayDown|贬低} {AlterProperty|变特性:PatientValue={disgraced|辱},agent={*},instrument={*},patient={*}} 
+          │   │ │ └ {slander|诽谤} {PlayDown|贬低:PatientValue={disgraced|辱},agent={*},instrument={*},patient={*}} 
+          │   │ ├ {delimit|划定} {AlterProperty|变特性:PatientValue={RangeValue|幅度值},agent={*},instrument={*},patient={*}} 
+          │   │ └ {refine|纯化} {AlterProperty|变特性:PatientValue={pure|纯},agent={*},instrument={*},patient={*}} 
+          │   └ {ize|变性态} {AlterPhysical|变本体:PatientValue={*},agent={*},instrument={*},patient={*}} 
+          ├ {MakeAct|使之动} {AlterState|变状态} 
+          │ ├ {CauseToDo|使动} {MakeAct|使之动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {request|要求} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {call|召唤} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {invite|邀请} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {dispatch|差遣} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {order|命令} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {entrust|委托} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {urge|促使} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {force|强迫} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {guide|引导} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {persuade|劝说} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ │ └ {mediate|调解} {persuade|劝说:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {incite|指使} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {entice|勾引} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {indulge|放纵} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ └ {TurnOn|启动} {CauseToDo|使动:ResultEvent={*},agent={*},patient={*}} 
+          │ ├ {CauseNotToDo|阻动} {MakeAct|使之动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {restrain|制止} {CauseNotToDo|阻动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {obstruct|阻止} {CauseNotToDo|阻动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {prohibit|禁止} {CauseNotToDo|阻动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ ├ {TurnOff|止动} {CauseNotToDo|阻动:ResultEvent={*},agent={*},patient={*}} 
+          │ │ └ {exempt|免除} {CauseNotToDo|阻动:ResultEvent={*},agent={*},patient={*}} 
+          │ └ {use|利用} {MakeAct|使之动:ResultEvent={*},agent={*},patient={*}} 
+          │   ├ {TakeVehicle|搭乘} {use|利用:ResultEvent={*},agent={*},patient={*}} 
+          │   ├ {employ|雇用} {use|利用:ResultEvent={*},agent={*},patient={*}} 
+          │   └ {spend|花费} {use|利用:ResultEvent={*},agent={*},patient={*}} 
+          │     └ {lavish|浪费} {spend|花费:agent={*},patient={*}} 
+          └ {AlterMental|变精神} {AlterState|变状态} 
+            ├ {AlterEmotion|变情感} {AlterMental|变精神} 
+            │ ├ {soothe|安慰} {AlterEmotion|变情感:agent={*},target={*}} 
+            │ └ {excite|感动} {AlterEmotion|变情感:agent={*},target={*}} 
+            │   ├ {MakeHappy|使喜悦} {excite|感动:agent={*},target={*}} 
+            │   │ ├ {please|取悦} {MakeHappy|使喜悦:agent={*},target={*}} 
+            │   │ └ {tease|取乐} {MakeHappy|使喜悦:agent={*},instrument={*},target={human|人:modifier={self|己}}} 
+            │   ├ {irritate|激怒} {excite|感动:agent={*},target={*}} 
+            │   ├ {frighten|吓唬} {excite|感动:agent={*},target={*}} 
+            │   ├ {discourage|泼冷水} {excite|感动:agent={*},target={*}} 
+            │   ├ {offend|得罪} {excite|感动:agent={*},target={*}} 
+            │   ├ {disappoint|辜负} {excite|感动:agent={*},target={*}} 
+            │   ├ {MakeWorried|困扰} {excite|感动:agent={*},target={*}} 
+            │   └ {attract|吸引} {excite|感动:agent={*},target={*}} 
+            ├ {ShowEmotion|表示情感} {AlterMental|变精神:agent={*},content={*},target={*}} 
+            │ └ {treat|对待} {ShowEmotion|表示情感:agent={*},manner={*},target={*}} 
+            │   ├ {ShowGoodEmotion|表示好情感} {treat|对待:agent={*},content={*},target={*}} 
+            │   │ ├ {ShowInterest|理睬} {treat|对待:agent={*},content={*},target={*}} 
+            │   │ ├ {ShowJoy|示喜} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   │ │ └ {laugh|笑} {ShowJoy|示喜:agent={*},cause={*},target={*}} 
+            │   │ ├ {ShowLove|示爱} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   │ ├ {praise|夸奖} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   │ │ └ {reward|奖励} {praise|夸奖:agent={*},cause={*},possession={*},target={*}} 
+            │   │ ├ {congratulate|祝贺} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   │ ├ {thank|致谢} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   │ ├ {apologize|道歉} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   │ ├ {SayHello|问候} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   │ │ └ {visit|看望} {SayHello|问候:agent={*},cause={*},target={*}} 
+            │   │ ├ {welcome|欢迎} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   │ ├ {salute|致敬} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   │ ├ {ExpressAgreement|示同意} {ShowGoodEmotion|表示好情感:agent={*},content={*}} 
+            │   │ │ ├ {accept|接受} {ExpressAgreement|示同意:agent={*},content={*}} 
+            │   │ │ └ {appreciate|赞成} {ExpressAgreement|示同意:agent={*},content={*}} 
+            │   │ ├ {endorse|拥护} {ShowGoodEmotion|表示好情感:agent={*},content={*}} 
+            │   │ ├ {guarantee|保证} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   │ ├ {WellTreat|善待} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   │ │ └ {entertain|招待} {WellTreat|善待:ResultEvent={*},agent={*},cause={*},target={*}} 
+            │   │ └ {commemorate|示思念} {ShowGoodEmotion|表示好情感:agent={*},cause={*},target={*}} 
+            │   └ {ShowBadEmotion|表示坏情感} {treat|对待:agent={*},content={*},target={*}} 
+            │     ├ {IllBehave|胡闹} {ShowBadEmotion|表示坏情感:agent={*},cause={*},target={*}} 
+            │     ├ {sigh|叹气} {ShowBadEmotion|表示坏情感:agent={*},cause={*},target={*}} 
+            │     ├ {condole|致哀} {ShowBadEmotion|表示坏情感:agent={*},cause={*},target={*}} 
+            │     ├ {weep|哭泣} {ShowBadEmotion|表示坏情感:agent={*},cause={*},target={*}} 
+            │     ├ {ExpressDissatisfaction|示不满} {ShowBadEmotion|表示坏情感:agent={*},content={*},target={*}} 
+            │     │ ├ {protest|抗议} {ExpressDissatisfaction|示不满:agent={*},content={*},target={*}} 
+            │     │ ├ {ExpressAgainst|谴责} {ExpressDissatisfaction|示不满:agent={*},cause={*},target={*}} 
+            │     │ ├ {mock|嘲讽} {ExpressDissatisfaction|示不满:agent={*},cause={*},target={*}} 
+            │     │ └ {IllTreat|慢待} {ExpressDissatisfaction|示不满:agent={*},cause={*},target={*}} 
+            │     ├ {ExpressDisagreement|示不同意} {ShowBadEmotion|表示坏情感:agent={*},content={*},target={*}} 
+            │     │ ├ {oppose|反对} {ExpressDisagreement|示不同意:agent={*},content={*},target={*}} 
+            │     │ └ {reject|回绝} {ExpressDisagreement|示不同意:agent={*},content={*},target={*}} 
+            │     ├ {betray|背叛} {ShowBadEmotion|表示坏情感:agent={*},cause={*},target={*}} 
+            │     └ {ExpressAnger|示怒} {ShowBadEmotion|表示坏情感:agent={*},cause={*},target={*}} 
+            └ {AlterKnowledge|变感知} {AlterMental|变精神} 
+              ├ {MakeOwnKnowledge|使自我感知} {AlterKnowledge|变感知} 
+              │ ├ {sense|感觉} {MakeOwnKnowledge|使自我感知:agent={*},content={*}} 
+              │ │ ├ {look|看} {sense|感觉:agent={*},content={*}} 
+              │ │ ├ {listen|听} {sense|感觉:agent={*},content={*}} 
+              │ │ ├ {smell|闻} {sense|感觉:agent={*},content={*}} 
+              │ │ ├ {feel|摸} {sense|感觉:agent={*},content={*}} 
+              │ │ └ {savor|舔} {sense|感觉:agent={*},content={*}} 
+              │ ├ {GetKnowledge|认知} {MakeOwnKnowledge|使自我感知:agent={*},content={*}} 
+              │ │ └ {TryToKnow|弄懂} {GetKnowledge|认知:agent={*},content={*}} 
+              │ │   ├ {read|读} {TryToKnow|弄懂:agent={*},content={*}} 
+              │ │   ├ {ask|问} {TryToKnow|弄懂:agent={*},content={*},target={*}} 
+              │ │   │ └ {interrogate|审问} {TryToKnow|弄懂:agent={*},content={*},domain={police|警},target={*}} 
+              │ │   ├ {LookFor|寻} {TryToKnow|弄懂:agent={*},content={*},location={*}} 
+              │ │   ├ {check|查} {TryToKnow|弄懂:agent={*},content={*}} 
+              │ │   │ ├ {scout|侦察} {check|查:agent={*},content={*},domain={military|军}{police|警}} 
+              │ │   │ ├ {diagnose|诊察} {check|查:agent={*},content={*},domain={medical|医},target={*}} 
+              │ │   │ ├ {supervise|监察} {check|查:agent={*},content={*}} 
+              │ │   │ ├ {investigate|调查} {check|查:agent={*},content={*}} 
+              │ │   │ └ {exam|考试} {check|查:agent={*},content={*},target={*}} 
+              │ │   ├ {calculate|计算} {TryToKnow|弄懂:agent={*},content={*}} 
+              │ │   │ ├ {count|计数} {calculate|计算:agent={*},content={*}} 
+              │ │   │ └ {measure|测量} {calculate|计算:agent={*},content={*}} 
+              │ │   ├ {distinguish|分辨} {TryToKnow|弄懂:agent={*},content={*}} 
+              │ │   ├ {think|思考} {TryToKnow|弄懂:agent={*},content={*}} 
+              │ │   │ ├ {deduce|推理} {think|思考:agent={*},content={*}} 
+              │ │   │ │ ├ {guess|猜测} {deduce|推理:agent={*},content={*}} 
+              │ │   │ │ └ {predict|预料} {deduce|推理:agent={*},content={*}} 
+              │ │   │ └ {LookBack|回想} {think|思考:agent={*},content={*}} 
+              │ │   ├ {study|学习} {TryToKnow|弄懂:agent={*},content={*},source={*}} 
+              │ │   │ ├ {drill|练习} {study|学习:agent={*},content={*}} 
+              │ │   │ └ {imitate|模仿} {study|学习:agent={*},content={*}} 
+              │ │   ├ {research|研究} {TryToKnow|弄懂:agent={*},content={*}} 
+              │ │   ├ {compare|比较} {TryToKnow|弄懂:agent={*},content={*}};{TryToKnow|弄懂:agent={*},content={*},contrast={*}} 
+              │ │   ├ {analyze|分析} {TryToKnow|弄懂:agent={*},content={*}} 
+              │ │   └ {experiment|实验} {TryToKnow|弄懂:agent={*},content={*}} 
+              │ ├ {prove|证明} {MakeOwnKnowledge|使自我感知:agent={*},content={*}} 
+              │ ├ {decide|决定} {MakeOwnKnowledge|使自我感知:agent={*},content={*}} 
+              │ │ ├ {judge|裁定} {decide|决定:agent={*},content={*}} 
+              │ │ └ {MakeAppointment|约定} {decide|决定:agent={*},content={*},partner={*}};{decide|决定:coagent={*},content={*}} 
+              │ ├ {estimate|评估} {MakeOwnKnowledge|使自我感知:agent={*},content={*}} 
+              │ ├ {plan|计划} {MakeOwnKnowledge|使自我感知:agent={*},content={*}} 
+              │ └ {choose|选择} {MakeOwnKnowledge|使自我感知:agent={*},content={*},whole={*}} 
+              │   └ {select|选拔} {choose|选择:agent={*},content={*},whole={*}} 
+              ├ {MakeOthersKnowledge|使他人感知} {AlterKnowledge|变感知} 
+              │ ├ {express|表示} {MakeOthersKnowledge|使他人感知:agent={*},content={*},target={*}} 
+              │ │ ├ {mention|提及} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {MakeSound|发声} {express|表示:agent={*},content={*}} 
+              │ │ │ ├ {cry|喊} {express|表示:agent={*},content={*},target={*}} 
+              │ │ │ ├ {recite|诵读} {express|表示:agent={*},content={*},target={*}} 
+              │ │ │ ├ {sing|唱} {express|表示:agent={*},content={*},target={*}} 
+              │ │ │ └ {speak|说} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {boast|夸大} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {swear|发誓} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {propose|提出} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {quote|引用} {express|表示:agent={*},content={*}} 
+              │ │ ├ {explain|说明} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {emphasize|着重} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {tell|告诉} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {describe|描写} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {announce|发表} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {disseminate|传播} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {accuse|控告} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {recommend|推荐} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {reply|答} {express|表示:agent={*},content={*},target={*}} 
+              │ │ │ └ {refute|反驳} {reply|答:agent={*},content={*},target={*}} 
+              │ │ ├ {admit|承认} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {deny|否认} {express|表示:agent={*},content={*},target={*}} 
+              │ │ ├ {write|写} {express|表示:ContentProduct={*},LocationFin={*},agent={*}} 
+              │ │ │ ├ {copy|抄写} {write|写:ContentProduct={*},LocationFin={*},agent={*},contrast={*}} 
+              │ │ │ └ {sign|题写} {write|写:ContentProduct={*},LocationFin={*},agent={*}} 
+              │ │ ├ {translate|翻译} {express|表示:StateFin={*},StateIni={*},agent={*},content={*}} 
+              │ │ ├ {record|记录} {express|表示:LocationFin={*},agent={*},content={*}} 
+              │ │ │ └ {TakePicture|拍摄} {record|记录:LocationFin={*},agent={*},content={*}} 
+              │ │ ├ {draw|画} {express|表示:ContentProduct={*},LocationFin={*},agent={*}} 
+              │ │ ├ {carve|雕刻} {express|表示:ContentProduct={*},LocationFin={*},agent={*}} 
+              │ │ ├ {print|印刷} {express|表示:ContentProduct={*},LocationFin={*},agent={*}} 
+              │ │ ├ {publish|出版} {express|表示:ContentProduct={*},LocationFin={*},agent={*}} 
+              │ │ └ {show|表现} {express|表示:agent={*},content={*},target={*}} 
+              │ │   ├ {perform|表演} {show|表现:agent={*},content={*},target={*}} 
+              │ │   ├ {display|展示} {show|表现:agent={*},content={*},target={*}} 
+              │ │   └ {ShowOff|炫耀} {show|表现:agent={*},content={*},target={*}} 
+              │ ├ {teach|教} {MakeOthersKnowledge|使他人感知:StateFin={HaveKnowledge|有知},agent={*},content={*},target={*}};{MakeOthersKnowledge|使他人感知:ResultEvent={*},StateFin={HaveKnowledge|有知},agent={*},patient={*}} 
+              │ └ {communicate|交流} {MakeOthersKnowledge|使他人感知:StateFin={HaveKnowledge|有知},agent={*},content={*},partner={*}};{MakeOthersKnowledge|使他人感知:StateFin={HaveKnowledge|有知},coagent={*},content={*}} 
+              │   ├ {talk|谈话} {communicate|交流:agent={*},content={*},partner={*}};{communicate|交流:coagent={*},content={*}} 
+              │   ├ {discuss|商讨} {communicate|交流:agent={*},content={*},partner={*}};{communicate|交流:coagent={*},content={*}} 
+              │   ├ {debate|辩论} {communicate|交流:agent={*},content={*},partner={*}};{communicate|交流:coagent={*},content={*}} 
+              │   └ {quarrel|争吵} {communicate|交流:agent={*},content={*},partner={*}};{communicate|交流:coagent={*},content={*}} 
+              ├ {MakeNoKnowledge|使不知} {MakeOthersKnowledge|使他人感知:StateFin={ignorant|不知},agent={*},content={*},target={*}} 
+              │ ├ {HideTruth|瞒} {MakeMisunderstand|使误知:agent={*},content={*},target={*}} 
+              │ └ {KeepSilence|不说} {MakeMisunderstand|使误知:agent={*},content={*},target={*}} 
+              └ {MakeMisunderstand|使误知} {MakeOthersKnowledge|使他人感知:StateFin={misunderstand|误信},agent={*},content={*},target={*}} 
+                ├ {TalkNonsense|瞎说} {MakeMisunderstand|使误知:agent={*},content={*},target={*}};{MakeMisunderstand|使误知:agent={*},scope={*},target={*}} 
+                └ {deceive|欺骗} {MakeMisunderstand|使误知:agent={*},content={*},target={*}} 
