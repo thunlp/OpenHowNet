@@ -54,9 +54,8 @@ pip install OpenHowNet
 
 ```bash
 git clone https://github.com/thunlp/OpenHowNet/
-cd OpenHowNet/OpenHowNet-API
-chmod +x run.sh
-./run.sh
+cd OpenHowNet/OpenHowNet
+bash merge.sh
 ```
 
 
