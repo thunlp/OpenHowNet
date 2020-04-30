@@ -1,0 +1,887 @@
+- {AttributeValue|属性值}  
+  ├ {AppearanceValue|外观值}  
+  │ ├ {PalpabilityValue|有形性值}  
+  │ │ ├ {palpable|有形}  
+  │ │ └ {impalpable|无形}  
+  │ ├ {FormValue|形状值}  
+  │ │ ├ {formed|成形}  
+  │ │ ├ {unformed|不成形}  
+  │ │ ├ {netlike|网}  
+  │ │ ├ {square|方}  
+  │ │ ├ {round|圆}  
+  │ │ └ {angular|角}  
+  │ ├ {GeoRegularityValue|形状规则性值}  
+  │ │ ├ {GeoRegular|形状规则}  
+  │ │ ├ {GeoIrregular|形状不规则}  
+  │ │ └ {malformed|畸}  
+  │ ├ {SymmetryValue|匀称性值}  
+  │ │ ├ {symmetrical|匀称}  
+  │ │ └ {asymmetrical|不匀称}  
+  │ ├ {CurvatureValue|弯度值}  
+  │ │ ├ {straight|直}  
+  │ │ └ {curved|弯}  
+  │ ├ {EvennessValue|平坦性值}  
+  │ │ ├ {level|平}  
+  │ │ ├ {rugged|崎岖}  
+  │ │ └ {wrinkled|皱}  
+  │ ├ {SharpnessValue|锐利度值}  
+  │ │ ├ {blunt|钝}  
+  │ │ ├ {sharp|利}  
+  │ │ ├ {pointed|尖}  
+  │ │ └ {pointless|秃}  
+  │ ├ {DimensionalityValue|维值}  
+  │ │ ├ {dot|点}  
+  │ │ ├ {linear|线}  
+  │ │ ├ {planar|面}  
+  │ │ ├ {cubic|体}  
+  │ │ ├ {flat|扁}  
+  │ │ ├ {protruding|凸}  
+  │ │ ├ {dented|凹}  
+  │ │ └ {layered|叠}  
+  │ ├ {BrightnessValue|明暗值}  
+  │ │ ├ {bright|明}  
+  │ │ └ {dark|暗}  
+  │ ├ {ClearnessValue|清浑值}  
+  │ │ ├ {clear|清}  
+  │ │ └ {blurred|浑}  
+  │ ├ {BeautyValue|美丑值}  
+  │ │ ├ {GoodLooking|好看}  
+  │ │ ├ {beautiful|美}  
+  │ │ ├ {unsightly|难看}  
+  │ │ └ {ugly|丑}  
+  │ ├ {AttractivenessValue|诱人性值}  
+  │ │ ├ {attractive|诱人}  
+  │ │ └ {unattractive|不诱人}  
+  │ ├ {ResplendenceValue|辉煌值}  
+  │ │ ├ {magnificent|灿烂}  
+  │ │ ├ {bewitching|妖媚}  
+  │ │ ├ {grand|壮观}  
+  │ │ └ {unimpressive|失色}  
+  │ ├ {PatternValue|样式值}  
+  │ │ ├ {fashionable|时髦}  
+  │ │ └ {unfashionable|背令}  
+  │ ├ {SmoothFinishValue|光洁度值}  
+  │ │ ├ {coarse|糙}  
+  │ │ └ {polished|光}  
+  │ ├ {ColorValue|颜色值}  
+  │ │ ├ {colored|彩}  
+  │ │ ├ {plain|素}  
+  │ │ ├ {red|红}  
+  │ │ ├ {yellow|黄}  
+  │ │ ├ {blue|蓝}  
+  │ │ ├ {green|绿}  
+  │ │ ├ {purple|紫}  
+  │ │ ├ {brown|褐}  
+  │ │ ├ {white|白}  
+  │ │ ├ {black|黑}  
+  │ │ ├ {grey|灰}  
+  │ │ ├ {RedBrown|赭}  
+  │ │ ├ {BlueGreen|青}  
+  │ │ └ {colorless|无色}  
+  │ ├ {HueValue|浓淡值}  
+  │ │ ├ {NotLight|浓}  
+  │ │ └ {light|淡}  
+  │ ├ {OdorValue|气味值}  
+  │ │ ├ {fragrant|香}  
+  │ │ └ {stinky|臭}  
+  │ ├ {TasteValue|味道值}  
+  │ │ ├ {GoodTaste|好吃}  
+  │ │ ├ {PoorTaste|难吃}  
+  │ │ ├ {tasteful|有味}  
+  │ │ ├ {tasteless|无味}  
+  │ │ ├ {TasteLight|味淡}  
+  │ │ ├ {TasteStrong|味浓}  
+  │ │ ├ {sour|酸}  
+  │ │ ├ {sweet|甜}  
+  │ │ ├ {bitter|苦}  
+  │ │ ├ {peppery|辣}  
+  │ │ └ {salty|咸}  
+  │ ├ {PostureValue|姿势值}  
+  │ │ ├ {upright|正}  
+  │ │ └ {slanted|歪}  
+  │ ├ {SceneValue|景象值}  
+  │ │ ├ {exuberant|茂}  
+  │ │ ├ {desolate|荒}  
+  │ │ ├ {threatening|险}  
+  │ │ └ {stately|庄}  
+  │ ├ {CleannessValue|洁净值}  
+  │ │ ├ {spotless|洁}  
+  │ │ └ {dirty|龊}  
+  │ ├ {FatnessValue|胖瘦值}  
+  │ │ ├ {fat|胖}  
+  │ │ └ {bony|瘦}  
+  │ ├ {BearingValue|仪态值}  
+  │ │ ├ {GraceValue|典雅值}  
+  │ │ │ ├ {gracious|雅}  
+  │ │ │ ├ {unaffected|落落大方}  
+  │ │ │ ├ {dignified|神气}  
+  │ │ │ ├ {luxurious|豪华}  
+  │ │ │ ├ {ungracious|不雅}  
+  │ │ │ └ {affected|矫揉造作}  
+  │ │ └ {VulgarityValue|俗气值}  
+  │ │   ├ {vulgar|俗}  
+  │ │   ├ {couth|脱俗}  
+  │ │   ├ {uncouth|土气}  
+  │ │   └ {westernized|洋气}  
+  │ ├ {CoveringValue|外表值}  
+  │ │ ├ {PackingValue|外包装值}  
+  │ │ │ ├ {hardback|精装}  
+  │ │ │ └ {paperback|平装}  
+  │ │ └ {AttireValue|装束值}  
+  │ │   ├ {tidy|整洁}  
+  │ │   ├ {sloppy|邋遢}  
+  │ │   ├ {naked|赤裸}  
+  │ │   └ {clad|非赤裸}  
+  │ ├ {StyleValue|风格值}  
+  │ ├ {DemeanorValue|风度值}  
+  │ ├ {CountenanceValue|表情值}  
+  │ │ └ {austere|冷峻}  
+  │ └ {PhysicStateValue|物理状态值}  
+  │   ├ {StateLiquid|液态}  
+  │   ├ {StateSolid|固态}  
+  │   └ {StateGas|气态}  
+  ├ {MeasurementValue|量度值}  
+  │ ├ {LengthValue|长度值}  
+  │ │ ├ {LengthLong|长}  
+  │ │ └ {LengthShort|短}  
+  │ ├ {StatureValue|高矮值}  
+  │ │ ├ {StatureTall|身高}  
+  │ │ └ {StatureShort|身矮}  
+  │ ├ {HeightValue|高度值}  
+  │ │ ├ {high|高}  
+  │ │ └ {low|低}  
+  │ ├ {SizeValue|尺寸值}  
+  │ │ ├ {big|大}  
+  │ │ ├ {medium|中}  
+  │ │ └ {small|小}  
+  │ ├ {AreaValue|面积值}  
+  │ ├ {WidthValue|宽度值}  
+  │ │ ├ {broad|广}  
+  │ │ ├ {wide|阔}  
+  │ │ └ {narrow|窄}  
+  │ ├ {DepthValue|深度值}  
+  │ │ ├ {deep|深}  
+  │ │ └ {shallow|浅}  
+  │ ├ {ThicknessValue|厚度值}  
+  │ │ ├ {thick|厚}  
+  │ │ └ {thin|薄}  
+  │ ├ {FinenessValue|粗细值}  
+  │ │ ├ {fine|纤}  
+  │ │ └ {widediameter|粗}  
+  │ ├ {SlopeValue|坡度值}  
+  │ │ ├ {steep|陡}  
+  │ │ └ {gradual|缓}  
+  │ ├ {DensityValue|密度值}  
+  │ │ ├ {dense|密}  
+  │ │ └ {sparse|疏}  
+  │ ├ {TightnessValue|松紧值}  
+  │ │ ├ {loose|松}  
+  │ │ └ {tight|紧}  
+  │ ├ {HardnessValue|硬度值}  
+  │ │ ├ {hard|硬}  
+  │ │ ├ {soft|软}  
+  │ │ ├ {crisp|脆}  
+  │ │ ├ {tender|嫩}  
+  │ │ └ {tough|韧}  
+  │ ├ {ConcentrationValue|浓度值}  
+  │ │ ├ {watery|稀}  
+  │ │ └ {concentrated|稠}  
+  │ ├ {WeightValue|重量值}  
+  │ │ ├ {heavy|重}  
+  │ │ └ {NotHeavy|轻}  
+  │ ├ {SoundVolumeValue|音量值}  
+  │ │ ├ {loud|高声}  
+  │ │ ├ {LowVoice|低声}  
+  │ │ ├ {shrill|尖声}  
+  │ │ ├ {hoarse|沙哑}  
+  │ │ ├ {silent|无声}  
+  │ │ └ {talking|有声}  
+  │ ├ {DistanceValue|距离值}  
+  │ │ ├ {OutOfTheWay|偏僻}  
+  │ │ ├ {far|远}  
+  │ │ └ {near|近}  
+  │ ├ {SpeedValue|速度值}  
+  │ │ ├ {fast|快}  
+  │ │ ├ {prompt|旋即}  
+  │ │ ├ {slow|慢}  
+  │ │ ├ {unhurried|从容}  
+  │ │ └ {hasty|仓促}  
+  │ ├ {GradualityValue|渐进性值}  
+  │ │ ├ {sudden|骤然}  
+  │ │ └ {stepwise|渐进}  
+  │ ├ {TimeLengthValue|久暂值}  
+  │ │ ├ {TimeLong|长时间}  
+  │ │ ├ {TimeShort|短时间}  
+  │ │ ├ {temporary|临时}  
+  │ │ └ {permanent|永久性}  
+  │ ├ {DampnessValue|湿度值}  
+  │ │ ├ {dried|干}  
+  │ │ ├ {wet|湿}  
+  │ │ ├ {waterless|旱}  
+  │ │ └ {waterlogging|涝}  
+  │ ├ {TemperatureValue|温度值}  
+  │ │ ├ {cold|冷}  
+  │ │ ├ {hot|热}  
+  │ │ ├ {chilly|凉}  
+  │ │ └ {warm|温}  
+  │ ├ {PriceValue|价格值}  
+  │ │ ├ {cheap|贱}  
+  │ │ ├ {expensive|贵}  
+  │ │ └ {FreeOfCharge|免费}  
+  │ ├ {StickinessValue|黏度值}  
+  │ │ ├ {sticky|黏}  
+  │ │ └ {nonadhesive|不黏}  
+  │ ├ {VolumeValue|容积值}  
+  │ ├ {BulkValue|体积值}  
+  │ ├ {PhysicsPowerValue|功率值}  
+  │ ├ {ChargeQuantityValue|电量值}  
+  │ ├ {VoltageValue|电压值}  
+  │ ├ {ResistanceValue|电阻值}  
+  │ ├ {HeatValue|热量值}  
+  │ └ {AngleValue|角度值}  
+  ├ {PropertyValue|特性值}  
+  │ ├ {NewnessValue|新旧值}  
+  │ │ ├ {new|新}  
+  │ │ └ {used|旧}  
+  │ ├ {AgeValue|年龄值}  
+  │ │ ├ {aged|老年}  
+  │ │ ├ {MiddleAge|中年}  
+  │ │ ├ {adult|成年}  
+  │ │ ├ {young|青年}  
+  │ │ ├ {child|少儿}  
+  │ │ ├ {AgeOlder|龄大}  
+  │ │ └ {AgeYounger|龄小}  
+  │ ├ {QualityValue|质量值}  
+  │ │ ├ {TruenessValue|真伪值}  
+  │ │ │ ├ {true|真}  
+  │ │ │ ├ {fishy|疑似}  
+  │ │ │ └ {fake|伪}  
+  │ │ ├ {ProConValue|肯定否定值}  
+  │ │ │ ├ {positive|正面}  
+  │ │ │ └ {negative|反面}  
+  │ │ ├ {GoodBadValue|好坏值}  
+  │ │ │ ├ {BestQuality|最佳}  
+  │ │ │ ├ {flawless|无疵}  
+  │ │ │ ├ {HighQuality|优质}  
+  │ │ │ ├ {fantastic|非常好}  
+  │ │ │ ├ {atoxic|无毒}  
+  │ │ │ ├ {inferior|劣质}  
+  │ │ │ ├ {refined|精}  
+  │ │ │ ├ {crude|陋}  
+  │ │ │ ├ {mediocre|可}  
+  │ │ │ ├ {great|伟}  
+  │ │ │ ├ {negligible|渺}  
+  │ │ │ ├ {durable|牢}  
+  │ │ │ └ {poisonous|有毒}  
+  │ │ ├ {SuitabilityValue|适宜性值}  
+  │ │ │ ├ {suitable|适宜}  
+  │ │ │ └ {unsuitable|不宜}  
+  │ │ ├ {FertilityValue|地力值}  
+  │ │ │ ├ {fertile|沃}  
+  │ │ │ └ {barren|瘠}  
+  │ │ └ {ProgressivityValue|先进性值}  
+  │ │   ├ {progressive|先进}  
+  │ │   └ {regressive|落后}  
+  │ ├ {EasinessValue|难易值}  
+  │ │ ├ {easy|易}  
+  │ │ └ {difficult|难}  
+  │ ├ {EffortfulnessValue|艰苦性值}  
+  │ │ ├ {effortful|费力}  
+  │ │ └ {effortless|不费力}  
+  │ ├ {SoundQualityValue|音质值}  
+  │ │ ├ {euphonious|好听}  
+  │ │ └ {cacophonic|难听}  
+  │ ├ {ContentValue|内容值}  
+  │ │ ├ {AbstractValue|抽象性值}  
+  │ │ │ ├ {abstract|抽象}  
+  │ │ │ └ {concrete|具体}  
+  │ │ ├ {OrdinarinessValue|普通性值}  
+  │ │ ├ {PeculiarityValue|特殊性值}  
+  │ │ │ ├ {ProperName|专}  
+  │ │ │ ├ {ordinary|普通}  
+  │ │ │ ├ {extraordinary|不凡}  
+  │ │ │ ├ {unique|独特}  
+  │ │ │ └ {special|特别}  
+  │ │ ├ {GeneralityValue|一般性值}  
+  │ │ │ ├ {general|共通}  
+  │ │ │ └ {specific|特定}  
+  │ │ ├ {SubstantialityValue|充实性值}  
+  │ │ │ ├ {substantial|充实}  
+  │ │ │ └ {insubstantial|空洞}  
+  │ │ ├ {AbstrusenessValue|深浅值}  
+  │ │ │ ├ {profound|深奥}  
+  │ │ │ └ {superficial|浅薄}  
+  │ │ ├ {PopularityValue|通俗性值}  
+  │ │ │ ├ {popular|通俗}  
+  │ │ │ └ {classic|经典}  
+  │ │ ├ {LucidityValue|清晰度值}  
+  │ │ │ ├ {lucid|清晰}  
+  │ │ │ └ {vague|含混}  
+  │ │ ├ {InterestValue|趣味值}  
+  │ │ │ ├ {interesting|趣}  
+  │ │ │ └ {boring|乏}  
+  │ │ ├ {ComplexityValue|复杂度值}  
+  │ │ │ ├ {detailed|详}  
+  │ │ │ ├ {concise|扼要}  
+  │ │ │ ├ {simple|简}  
+  │ │ │ └ {complicated|繁}  
+  │ │ ├ {PurityValue|纯正度值}  
+  │ │ │ ├ {pure|纯}  
+  │ │ │ └ {mixed|杂}  
+  │ │ ├ {TidinessValue|齐整性值}  
+  │ │ │ ├ {neat|齐}  
+  │ │ │ ├ {disorder|乱}  
+  │ │ │ ├ {unattached|散}  
+  │ │ │ ├ {trivial|琐}  
+  │ │ │ └ {balanced|均衡}  
+  │ │ ├ {LogicalityValue|逻辑性值}  
+  │ │ │ ├ {logical|合逻辑}  
+  │ │ │ └ {illogical|不合逻辑}  
+  │ │ ├ {ConsistencyValue|条理性值}  
+  │ │ │ ├ {consistent|有条理}  
+  │ │ │ └ {inconsistent|没条理}  
+  │ │ ├ {CorrectnessValue|正误值}  
+  │ │ │ ├ {correct|正确}  
+  │ │ │ └ {wrong|误}  
+  │ │ ├ {ReasonablenessValue|合理性值}  
+  │ │ │ ├ {reasonable|合理}  
+  │ │ │ └ {unreasonable|不合理}  
+  │ │ ├ {ObviousnessValue|明显性值}  
+  │ │ ├ {AccuracyValue|准确性值}  
+  │ │ │ ├ {accurate|精确}  
+  │ │ │ ├ {roughly|大概}  
+  │ │ │ └ {inaccurate|不精确}  
+  │ │ ├ {ReliabilityValue|可靠性值}  
+  │ │ │ ├ {reliable|可靠}  
+  │ │ │ └ {unreliable|不可靠}  
+  │ │ └ {ClassifyLevelValue|密级值}  
+  │ │   ├ {classified|机密}  
+  │ │   └ {declassified|解密}  
+  │ ├ {FrequencyValue|频度值}  
+  │ │ ├ {always|总是}  
+  │ │ ├ {never|从不}  
+  │ │ ├ {often|经常}  
+  │ │ ├ {rarely|偶尔}  
+  │ │ ├ {again|再}  
+  │ │ ├ {regular|定期}  
+  │ │ └ {habitual|习惯性}  
+  │ ├ {ContinuityValue|连续性值}  
+  │ │ ├ {continuous|连续}  
+  │ │ ├ {spasmodic|阵发性}  
+  │ │ └ {interrupted|间断}  
+  │ ├ {DegreeValue|程度值}  
+  │ │ ├ {extreme|极}  
+  │ │ ├ {insufficiently|欠}  
+  │ │ ├ {very|很}  
+  │ │ ├ {ish|稍}  
+  │ │ ├ {more|较}  
+  │ │ ├ {most|最}  
+  │ │ └ {over|超}  
+  │ ├ {RangeValue|幅度值}  
+  │ │ ├ {extensive|泛}  
+  │ │ ├ {nonextensive|狭}  
+  │ │ ├ {wholly|全面}  
+  │ │ └ {pieced|片面}  
+  │ ├ {BehaviorValue|举止值}  
+  │ │ ├ {EmotionalityValue|感情特性值}  
+  │ │ │ ├ {passionate|有情}  
+  │ │ │ │ └ {ardent|热情}  
+  │ │ │ └ {passionless|无情}  
+  │ │ │   └ {indifferent|冷漠}  
+  │ │ ├ {ThriftinessValue|节俭性值}  
+  │ │ │ ├ {thrifty|俭}  
+  │ │ │ └ {extravagant|奢}  
+  │ │ ├ {DeftnessValue|灵巧性值}  
+  │ │ │ ├ {fluent|畅}  
+  │ │ │ ├ {nimble|捷}  
+  │ │ │ ├ {dexterous|巧}  
+  │ │ │ └ {NotQuick|讷}  
+  │ │ ├ {AdaptabilityValue|适应性值}  
+  │ │ │ ├ {flexible|活}  
+  │ │ │ └ {stiff|呆}  
+  │ │ ├ {ConstancyValue|稳定性值}  
+  │ │ │ ├ {constant|恒定}  
+  │ │ │ └ {changeable|易变}  
+  │ │ ├ {SocialityValue|社交性值}  
+  │ │ │ ├ {sociable|善交往}  
+  │ │ │ ├ {unsociable|不善交往}  
+  │ │ │ ├ {eccentric|僻}  
+  │ │ │ ├ {mischievous|淘}  
+  │ │ │ └ {BadTemper|坏脾气}  
+  │ │ ├ {PublicityValue|公开性值}  
+  │ │ │ ├ {overt|公开}  
+  │ │ │ └ {covert|隐秘}  
+  │ │ ├ {FranknessValue|直率性值}  
+  │ │ │ ├ {frank|直率}  
+  │ │ │ ├ {NotFrank|不直率}  
+  │ │ │ ├ {tactful|婉}  
+  │ │ │ ├ {direct|直接}  
+  │ │ │ └ {indirect|间接}  
+  │ │ ├ {SeverityValue|严厉性值}  
+  │ │ │ ├ {severe|严厉}  
+  │ │ │ └ {lenient|宽大}  
+  │ │ ├ {PropernessValue|适当性值}  
+  │ │ │ ├ {proper|当}  
+  │ │ │ └ {improper|不当}  
+  │ │ ├ {DiligenceValue|勤懒值}  
+  │ │ │ ├ {diligent|勤}  
+  │ │ │ └ {lazy|懒}  
+  │ │ ├ {FreedomValue|自由度值}  
+  │ │ │ ├ {free|自由}  
+  │ │ │ ├ {controlled|受限}  
+  │ │ │ └ {strict|严格}  
+  │ │ ├ {TemperamentValue|心地值}  
+  │ │ │ ├ {benevolent|仁}  
+  │ │ │ └ {wicked|歹}  
+  │ │ ├ {SelfishnessValue|私心值}  
+  │ │ │ ├ {selfish|自私}  
+  │ │ │ └ {unselfish|无私}  
+  │ │ ├ {SensiblenessValue|理智值}  
+  │ │ │ ├ {sensible|讲理}  
+  │ │ │ └ {NotSensible|不讲理}  
+  │ │ │   └ {autocratic|霸道}  
+  │ │ ├ {AcquisitivenessValue|贪欲值}  
+  │ │ │ ├ {acquisitive|贪心}  
+  │ │ │ └ {unacquisitive|不贪心}  
+  │ │ ├ {BroadmindnessValue|宽宏性值}  
+  │ │ │ ├ {broadminded|心胸开阔}  
+  │ │ │ └ {narrowminded|心胸狭窄}  
+  │ │ ├ {ToleranceValue|气量值}  
+  │ │ │ ├ {generous|慷}  
+  │ │ │ └ {miser|吝}  
+  │ │ ├ {FriendlinessValue|友善性值}  
+  │ │ │ ├ {earnest|诚心}  
+  │ │ │ ├ {frivolous|无诚心}  
+  │ │ │ ├ {amiable|友善}  
+  │ │ │ ├ {unfriendly|不友善}  
+  │ │ │ ├ {gentle|柔}  
+  │ │ │ ├ {fierce|暴}  
+  │ │ │ ├ {faithful|忠}  
+  │ │ │ └ {treacherous|逆}  
+  │ │ ├ {CourtesyValue|礼貌值}  
+  │ │ │ ├ {polite|有礼}  
+  │ │ │ └ {impolite|无礼}  
+  │ │ ├ {DisciplineValue|纪律性值}  
+  │ │ │ ├ {disciplined|有纪律}  
+  │ │ │ └ {undisciplined|无纪律}  
+  │ │ ├ {WillValue|意志值}  
+  │ │ ├ {AmbitiousnessValue|志气值}  
+  │ │ │ ├ {ambitious|有志气}  
+  │ │ │ └ {unambitious|没志气}  
+  │ │ ├ {ResolutenessValue|坚定性值}  
+  │ │ │ ├ {resolute|坚决}  
+  │ │ │ └ {irresolute|不坚决}  
+  │ │ ├ {ObstinacyValue|倔劲值}  
+  │ │ │ ├ {docile|恭顺}  
+  │ │ │ └ {stubborn|倔强}  
+  │ │ ├ {CourageValue|胆量值}  
+  │ │ │ ├ {brave|勇}  
+  │ │ │ ├ {composed|沉着}  
+  │ │ │ └ {timid|怯}  
+  │ │ ├ {ActivenessValue|积极性值}  
+  │ │ │ ├ {active|积极}  
+  │ │ │ ├ {inactive|消极}  
+  │ │ │ └ {passive|被动}  
+  │ │ ├ {PatienceValue|耐性值}  
+  │ │ │ ├ {patient|有耐性}  
+  │ │ │ └ {eager|急切}  
+  │ │ ├ {IntentionalityValue|意图性值}  
+  │ │ │ ├ {voluntary|自愿}  
+  │ │ │ ├ {compulsory|强制性}  
+  │ │ │ ├ {intentional|特意}  
+  │ │ │ └ {unintentional|无意}  
+  │ │ │   └ {accidental|偶发}  
+  │ │ ├ {AttentivenessValue|注意力值}  
+  │ │ │ ├ {attentive|专注}  
+  │ │ │ └ {absentminded|心不在焉}  
+  │ │ ├ {CreativenessValue|创造性值}  
+  │ │ │ ├ {creative|有创意}  
+  │ │ │ └ {uninventive|无创意}  
+  │ │ ├ {ReadinessValue|有备性值}  
+  │ │ │ ├ {ready|有准备}  
+  │ │ │ └ {unready|无准备}  
+  │ │ ├ {PrideValue|傲气值}  
+  │ │ │ ├ {arrogant|傲}  
+  │ │ │ └ {modest|谦}  
+  │ │ ├ {CarefulnessValue|悉心值}  
+  │ │ │ ├ {careful|细心}  
+  │ │ │ └ {careless|粗心}  
+  │ │ ├ {PerceptivenessValue|洞察力值}  
+  │ │ │ ├ {perceptive|深刻}  
+  │ │ │ └ {unperceptive|不深刻}  
+  │ │ ├ {CautiousnessValue|谨慎性值}  
+  │ │ │ ├ {cautious|慎}  
+  │ │ │ ├ {flighty|浮}  
+  │ │ │ └ {rash|莽}  
+  │ │ ├ {IntensityValue|强度值}  
+  │ │ │ ├ {strong|强}  
+  │ │ │ └ {weak|弱}  
+  │ │ ├ {CooperativenessValue|合作性值}  
+  │ │ │ ├ {alone|独自}  
+  │ │ │ ├ {collective|集体的}  
+  │ │ │ ├ {individual|分别的}  
+  │ │ │ ├ {self|己}  
+  │ │ │ ├ {EachOther|相互}  
+  │ │ │ └ {together|共同}  
+  │ │ ├ {MoralityValue|道德值}  
+  │ │ │ ├ {moral|有道德}  
+  │ │ │ │ └ {noble|高尚}  
+  │ │ │ └ {immoral|不道德}  
+  │ │ │   ├ {despicable|卑劣}  
+  │ │ │   └ {vicious|罪恶}  
+  │ │ ├ {DecencyValue|守规矩值}  
+  │ │ │ ├ {lascivious|淫}  
+  │ │ │ └ {decent|正经}  
+  │ │ ├ {HonestyValue|诚信值}  
+  │ │ │ ├ {honest|诚实}  
+  │ │ │ ├ {dishonest|不诚实}  
+  │ │ │ ├ {trusty|可信}  
+  │ │ │ ├ {untrusty|不可信}  
+  │ │ │ └ {sly|狡}  
+  │ │ ├ {ChastityValue|贞操值}  
+  │ │ │ ├ {chaste|贞洁}  
+  │ │ │ └ {unchaste|不贞}  
+  │ │ ├ {PunctualityValue|守时性值}  
+  │ │ │ ├ {punctual|按时}  
+  │ │ │ └ {unpunctual|不按时}  
+  │ │ ├ {FairnessValue|公正性值}  
+  │ │ │ ├ {fair|公正}  
+  │ │ │ └ {biased|不公正}  
+  │ │ ├ {RectitudeValue|正义性值}  
+  │ │ │ ├ {righteous|正义}  
+  │ │ │ └ {unrighteous|非正义}  
+  │ │ └ {GloryValue|荣辱值}  
+  │ │   ├ {glorious|荣}  
+  │ │   └ {disgraced|辱}  
+  │ ├ {ReputationValue|名声值}  
+  │ │ ├ {famous|著名}  
+  │ │ ├ {Notwellknown|无名}  
+  │ │ └ {infamous|臭名}  
+  │ ├ {SocialModeValue|风气值}  
+  │ │ ├ {GoodSocial|好风气}  
+  │ │ └ {BadSocial|坏风气}  
+  │ ├ {WorthValue|价值值}  
+  │ │ ├ {valueless|无价值}  
+  │ │ └ {precious|珍}  
+  │ ├ {WorthinessValue|功过值}  
+  │ │ ├ {MeritValue|功值}  
+  │ │ │ └ {meritorious|有功劳}  
+  │ │ └ {DemeritValue|过值}  
+  │ │   └ {unmeritorious|无功劳}  
+  │ ├ {EffectivityValue|效果值}  
+  │ │ ├ {effective|有效}  
+  │ │ ├ {LowEffective|效果差}  
+  │ │ └ {ineffective|无效果}  
+  │ ├ {RoleValue|功用值}  
+  │ │ ├ {useful|有用}  
+  │ │ ├ {useless|无用}  
+  │ │ ├ {waste|废}  
+  │ │ ├ {feminine|与女性相关}  
+  │ │ └ {masculine|与男性相关}  
+  │ ├ {AbilityValue|能力值}  
+  │ │ ├ {CompetenceValue|本领值}  
+  │ │ │ ├ {able|能}  
+  │ │ │ └ {unable|庸}  
+  │ │ ├ {WisdomValue|智慧值}  
+  │ │ │ ├ {wise|智}  
+  │ │ │ └ {foolish|愚}  
+  │ │ ├ {QuickwittednessValue|机敏性值}  
+  │ │ │ ├ {clever|灵}  
+  │ │ │ ├ {naif|不精明}  
+  │ │ │ ├ {potty|糊涂}  
+  │ │ │ └ {clearheaded|清醒}  
+  │ │ └ {LearningValue|学问值}  
+  │ │   ├ {erudite|有学问}  
+  │ │   └ {unscholarly|没学问}  
+  │ ├ {StatusValue|身分值}  
+  │ │ ├ {MarriageValue|婚姻状况值}  
+  │ │ │ ├ {married|已婚}  
+  │ │ │ ├ {unmarried|未婚}  
+  │ │ │ ├ {divorced|离异}  
+  │ │ │ └ {widowed|丧偶}  
+  │ │ └ {OriginValue|出身值}  
+  │ │   └ {LineageValue|血统值}  
+  │ │     ├ {wellborn|高贵}  
+  │ │     └ {humble|卑微}  
+  │ ├ {BreedingValue|教养值}  
+  │ │ ├ {WellBred|有教养}  
+  │ │ └ {PoorlyBred|没教养}  
+  │ ├ {OccupationValue|职位值}  
+  │ │ ├ {HeadOfState|元首}  
+  │ │ └ {official|官}  
+  │ ├ {SexValue|性别值}  
+  │ │ ├ {male|男}  
+  │ │ └ {female|女}  
+  │ ├ {NameValue|姓名值}  
+  │ │ ├ {surname|姓}  
+  │ │ ├ {GivenName|名}  
+  │ │ └ {SpeBrand|特定牌子}  
+  │ ├ {NumberValue|编号值}  
+  │ ├ {ImportanceValue|重要性值}  
+  │ │ ├ {important|重要}  
+  │ │ └ {unimportant|不重要}  
+  │ ├ {PriorityValue|主次值}  
+  │ │ ├ {primary|主}  
+  │ │ ├ {secondary|次}  
+  │ │ ├ {main|总}  
+  │ │ └ {branch|支}  
+  │ ├ {NecessityValue|必要性值}  
+  │ │ ├ {necessary|必要}  
+  │ │ ├ {unnecessary|不必要}  
+  │ │ └ {redundant|多余}  
+  │ ├ {RankValue|等级值}  
+  │ │ ├ {HighRank|高等}  
+  │ │ ├ {intermediate|中等}  
+  │ │ ├ {LowRank|低等}  
+  │ │ └ {elementary|初等}  
+  │ ├ {StandardValue|标准值}  
+  │ │ ├ {NormalityValue|常态值}  
+  │ │ │ ├ {normal|正常}  
+  │ │ │ ├ {abnormal|不正常}  
+  │ │ │ ├ {GreaterThanNormal|高于正常}  
+  │ │ │ └ {LessThanNormal|低于正常}  
+  │ │ ├ {FormalityValue|形式值}  
+  │ │ │ ├ {formal|正式}  
+  │ │ │ └ {informal|非正式}  
+  │ │ ├ {QualificationValue|合格性值}  
+  │ │ │ ├ {qualified|合格}  
+  │ │ │ └ {unqualified|不合格}  
+  │ │ ├ {ConventionalityValue|正宗性值}  
+  │ │ │ ├ {orthodox|正统}  
+  │ │ │ └ {unorthodox|非正统}  
+  │ │ └ {LawfulnessValue|合法性值}  
+  │ │   ├ {lawful|合法}  
+  │ │   ├ {unlawful|非法}  
+  │ │   ├ {guiltless|无罪}  
+  │ │   └ {guilty|有罪}  
+  │ ├ {AdvantageousnessValue|利弊值}  
+  │ │ ├ {AdvantageValue|利值}  
+  │ │ │ └ {advantageous|有利}  
+  │ │ └ {DisadvantageValue|弊值}  
+  │ │   └ {disadvantageous|有弊}  
+  │ ├ {FamiliarityValue|熟悉性值}  
+  │ │ ├ {familiar|熟悉}  
+  │ │ └ {unfamiliar|不熟悉}  
+  │ ├ {PerformanceValue|性能值}  
+  │ │ ├ {MobilityValue|机动性值}  
+  │ │ │ ├ {automatic|自动}  
+  │ │ │ └ {manual|非自动}  
+  │ │ ├ {convenient|便}  
+  │ │ ├ {inconvenient|不便}  
+  │ │ ├ {wieldy|好用}  
+  │ │ └ {cumbersome|不好用}  
+  │ ├ {ProspectValue|前景值}  
+  │ │ ├ {promissing|前景佳}  
+  │ │ ├ {dismal|前景差}  
+  │ │ ├ {hopeful|有望}  
+  │ │ ├ {hopeless|无望}  
+  │ │ ├ {optimistic|乐观}  
+  │ │ └ {pessimistic|悲观}  
+  │ ├ {PowerValue|势力值}  
+  │ ├ {StrengthValue|力量值}  
+  │ │ ├ {powerful|有威力}  
+  │ │ └ {powerless|无威力}  
+  │ ├ {HabitValue|习惯值}  
+  │ └ {ImpressionValue|印象值}  
+  ├ {RelationshipValue|关系值}  
+  │ ├ {PertinenceValue|相关性值}  
+  │ │ ├ {relevant|相关}  
+  │ │ └ {irrelevant|不相关}  
+  │ ├ {IntimacyValue|亲疏值}  
+  │ │ ├ {intimate|亲密}  
+  │ │ ├ {distant|疏远}  
+  │ │ ├ {friend|友}  
+  │ │ ├ {enemy|敌}  
+  │ │ └ {antagonistic|不容}  
+  │ ├ {AttachmentValue|归属值}  
+  │ │ ├ {central|归属中央}  
+  │ │ ├ {local|归属地方}  
+  │ │ ├ {public|共}  
+  │ │ ├ {private|私}  
+  │ │ ├ {civil|民事}  
+  │ │ ├ {criminal|刑事}  
+  │ │ ├ {martial|军用}  
+  │ │ └ {civilian|民用}  
+  │ ├ {NationalityValue|国籍值}  
+  │ ├ {KindValue|类型值}  
+  │ │ ├ {various|多种}  
+  │ │ ├ {certain|某}  
+  │ │ ├ {other|另}  
+  │ │ └ {queer|怪}  
+  │ ├ {SourceValue|来源值}  
+  │ │ ├ {original|原}  
+  │ │ ├ {alien|外来}  
+  │ │ ├ {native|本土}  
+  │ │ ├ {foreign|外国}  
+  │ │ ├ {international|国际}  
+  │ │ ├ {RelatingToCountry|与特定国家相关}  
+  │ │ ├ {artificial|人为}  
+  │ │ ├ {natural|天然}  
+  │ │ ├ {domesticated|家养}  
+  │ │ ├ {wild|野生}  
+  │ │ ├ {innate|先天}  
+  │ │ └ {acquired|后天}  
+  │ ├ {PositioningValue|方位特性值}  
+  │ │ ├ {centre|中位}  
+  │ │ ├ {aspect|侧}  
+  │ │ ├ {upper|上}  
+  │ │ ├ {beneath|下}  
+  │ │ ├ {left|左}  
+  │ │ ├ {right|右}  
+  │ │ ├ {InFront|前}  
+  │ │ ├ {hind|后}  
+  │ │ ├ {EndPosition|端}  
+  │ │ ├ {surrounding|周围}  
+  │ │ ├ {InBetween|之间}  
+  │ │ ├ {OnSite|现场}  
+  │ │ ├ {internal|内}  
+  │ │ └ {external|外}  
+  │ ├ {DirectioningValue|方向特性值}  
+  │ │ ├ {east|东}  
+  │ │ ├ {west|西}  
+  │ │ ├ {south|南}  
+  │ │ ├ {north|北}  
+  │ │ ├ {vertical|纵}  
+  │ │ └ {horizontal|横}  
+  │ ├ {ContrarinessValue|正反值}  
+  │ │ ├ {forward|正向}  
+  │ │ └ {backward|反向}  
+  │ ├ {TimingValue|时间特性值}  
+  │ │ ├ {past|过去}  
+  │ │ ├ {recent|新近}  
+  │ │ ├ {present|现在}  
+  │ │ ├ {RightNow|此刻}  
+  │ │ ├ {future|将来}  
+  │ │ ├ {soon|即将}  
+  │ │ ├ {already|已经}  
+  │ │ └ {NotYet|尚未}  
+  │ ├ {EarlinessValue|迟早值}  
+  │ │ ├ {early|早}  
+  │ │ ├ {late|迟}  
+  │ │ ├ {StageEarly|早期}  
+  │ │ └ {StageLate|晚期}  
+  │ ├ {ClanValue|辈分值}  
+  │ │ ├ {forefathers|祖先}  
+  │ │ ├ {senior|长辈}  
+  │ │ ├ {SameClan|同辈}  
+  │ │ │ └ {spouse|配偶}  
+  │ │ ├ {junior|小辈}  
+  │ │ ├ {descendant|后裔}  
+  │ │ ├ {lineal|直系}  
+  │ │ └ {collateral|旁系}  
+  │ ├ {DivergenceValue|分歧值}  
+  │ ├ {BoundaryValue|界限值}  
+  │ └ {SequenceValue|次序值}  
+  │   ├ {simultaneous|同步}  
+  │   ├ {asynchronous|异步}  
+  │   ├ {InSequence|有序}  
+  │   ├ {OutOfOrder|无序}  
+  │   ├ {first|首次}  
+  │   ├ {preceding|上次}  
+  │   ├ {next|下次}  
+  │   ├ {last|最后}  
+  │   └ {ordinal|序数}  
+  ├ {SituationValue|状况值}  
+  │ ├ {CircumstancesValue|境况值}  
+  │ │ ├ {FateValue|命运值}  
+  │ │ │ ├ {fortunate|好运}  
+  │ │ │ ├ {misfortunate|倒霉}  
+  │ │ │ ├ {auspicious|吉祥}  
+  │ │ │ └ {inauspicuous|不祥}  
+  │ │ ├ {SeriousnessValue|严重性值}  
+  │ │ │ ├ {serious|严重}  
+  │ │ │ └ {noncritical|轻微}  
+  │ │ ├ {UrgencyValue|缓急值}  
+  │ │ │ ├ {urgent|急}  
+  │ │ │ └ {relax|弛}  
+  │ │ ├ {PeacefulnessValue|宁乱值}  
+  │ │ │ ├ {peaceful|宁}  
+  │ │ │ └ {chaotic|纷乱}  
+  │ │ ├ {RiseFallValue|兴衰值}  
+  │ │ │ ├ {flourishing|兴}  
+  │ │ │ └ {wane|衰}  
+  │ │ ├ {SteadinessValue|稳固性值}  
+  │ │ │ ├ {steady|稳固}  
+  │ │ │ └ {shaky|不稳}  
+  │ │ ├ {SafetyValue|安危值}  
+  │ │ │ ├ {safe|安}  
+  │ │ │ └ {dangerous|危}  
+  │ │ ├ {LivingValue|生活状况值}  
+  │ │ │ ├ {HappinessValue|祸福值}  
+  │ │ │ │ ├ {happy|幸福}  
+  │ │ │ │ └ {miserable|悲惨}  
+  │ │ │ ├ {HarmonyValue|和谐性值}  
+  │ │ │ │ ├ {harmonious|和谐}  
+  │ │ │ │ └ {inharmonious|不和谐}  
+  │ │ │ ├ {BusyIdleValue|忙闲值}  
+  │ │ │ │ ├ {busy|忙}  
+  │ │ │ │ └ {idle|闲}  
+  │ │ │ └ {RichnessValue|贫富值}  
+  │ │ │   ├ {rich|富}  
+  │ │ │   └ {poor|穷}  
+  │ │ ├ {SimilarityValue|异同值}  
+  │ │ │ ├ {alike|似}  
+  │ │ │ └ {different|异}  
+  │ │ ├ {UniformityValue|一致性值}  
+  │ │ │ ├ {accordant|一致}  
+  │ │ │ └ {discordant|不一致}  
+  │ │ ├ {OccasionValue|场面值}  
+  │ │ │ ├ {bustling|闹}  
+  │ │ │ ├ {inactive|冷清}  
+  │ │ │ ├ {lonely|孤}  
+  │ │ │ ├ {crowded|挤}  
+  │ │ │ ├ {uncrowded|不挤}  
+  │ │ │ ├ {noisy|嘈杂}  
+  │ │ │ ├ {quiet|静}  
+  │ │ │ ├ {stuffy|闷}  
+  │ │ │ └ {cosy|惬}  
+  │ │ ├ {LifeValue|生命值}  
+  │ │ │ ├ {animate|有生命}  
+  │ │ │ └ {inanimate|无生命}  
+  │ │ ├ {PhysiqueValue|体格值}  
+  │ │ │ ├ {sturdy|健壮}  
+  │ │ │ └ {frail|单弱}  
+  │ │ ├ {HealthValue|健康值}  
+  │ │ │ ├ {healthy|康健}  
+  │ │ │ └ {unhealthy|不健}  
+  │ │ ├ {RipenessValue|成熟度值}  
+  │ │ │ ├ {unripe|未成熟}  
+  │ │ │ └ {ripe|成熟}  
+  │ │ ├ {ProcessingStateValue|加工状况值}  
+  │ │ │ ├ {processed|已加工}  
+  │ │ │ └ {unprocessed|未加工}  
+  │ │ ├ {WholenessValue|整缺值}  
+  │ │ │ ├ {complete|整}  
+  │ │ │ └ {incomplete|缺}  
+  │ │ ├ {FullnessValue|空满值}  
+  │ │ │ ├ {full|满}  
+  │ │ │ └ {empty|空}  
+  │ │ └ {PossibilityValue|可能值}  
+  │ │   ├ {possible|会}  
+  │ │   ├ {impossible|不会}  
+  │ │   └ {almost|几乎}  
+  │ └ {EnvironmentValue|情况值}  
+  ├ {QuantityPropertyValue|数量特性值}  
+  │ ├ {approximate|概数}  
+  │ ├ {cardinal|基数}  
+  │ ├ {overall|全额}  
+  │ ├ {net|净额}  
+  │ ├ {average|平均}  
+  │ └ {only|仅}  
+  └ {QuantityValue|数量值}  
+    ├ {AmountValue|多少值}  
+    │ ├ {many|多}  
+    │ ├ {few|少}  
+    │ ├ {single|单}  
+    │ ├ {double|复}  
+    │ ├ {mass|众}  
+    │ ├ {all|全}  
+    │ ├ {fragment|部}  
+    │ ├ {some|些}  
+    │ ├ {sufficient|足}  
+    │ ├ {insufficient|不足}  
+    │ └ {half|半}  
+    ├ {RateValue|比率值}  
+    ├ {UnitValue|单位值}  
+    ├ {ActUnitValue|动量值}  
+    └ {NounUnitValue|名量值}  
