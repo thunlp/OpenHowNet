@@ -1,12 +1,14 @@
 .idea
 __pycache__
 .ipynb_checkpoints
+.py[cod]
 /build/
 /dist/
 /MANIFEST.in
 /*.py
 *.swp
 *.egg-info
-/OpenHowNet/HowNet_dict*
 .DS_Store
+/OpenHowNet/HowNet_dict_complete
 /output.md
+
