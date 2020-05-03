@@ -64,7 +64,7 @@ class HowNetDict(object):
         :return:(List) candidates HowNet annotation, if the target word does not exist, return an empty list.
         """
         res = list()
-        if item == "I WANT ALL!" or item == "*":
+        if item == "I WANT ALL!":
             for item in self.ids.values():
                 res.extend(item)
             return res

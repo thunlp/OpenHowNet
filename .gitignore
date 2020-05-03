@@ -5,10 +5,9 @@ __pycache__
 /build/
 /dist/
 /MANIFEST.in
-/*.py
 *.swp
 *.egg-info
 .DS_Store
 /OpenHowNet/HowNet_dict_complete
-/output.md
-
+/*.py
+/*.sh
