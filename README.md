@@ -178,7 +178,7 @@ You could specify the number of the expanded layers:
 You could get all flattened sememe trees for all words as well as specify the number of the expanded layers:
 
 ```python
->>> hownet_dict.get_sememes_by_word("*",structured=False,merge=True)
+>>> hownet_dict.get_sememes_by_word("I WANT ALL!",structured=False,merge=True)
 # the result is too large, just try it yourself.
 ```
 

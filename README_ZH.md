@@ -174,7 +174,7 @@ Display #1 sememe tree
 你可以在获取所有词的义原树时指定展开层数：
 
 ```python
->>> hownet_dict.get_sememes_by_word("*",structured=False,merge=True)
+>>> hownet_dict.get_sememes_by_word("I WANT ALL!",structured=False,merge=True)
 # 结果太长请自己尝试
 ```
 
