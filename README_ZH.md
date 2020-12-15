@@ -1,7 +1,8 @@
-# OpenHowNet
-
-<img src="openhownet-logo.png" width = "300"  alt="OpenHowNet Logo" align=center />
-
+<p align="center">
+  <a href="https://openhownet.thunlp.org/">
+  	<img src="openhownet-logo.png" width = "300"  alt="OpenHowNet Logo" align=center />
+  </a>
+</p>
 ### [English Version](README.md)
 
 本项目存放HowNet核心数据和清华大学自然语言处理实验室（THUNLP）开发的OpenHowNet API，提供方便的义原信息查询、义原树展示、基于义原的词相似度计算等功能。您还可以访问我们的[网站](https://openhownet.thunlp.org)体验义原在线查询和展示功能。
