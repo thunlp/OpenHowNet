@@ -3,6 +3,7 @@
   	<img src="openhownet-logo.png" width = "300"  alt="OpenHowNet Logo" align=center />
   </a>
 </p>
+
 ### [中文版本](README_ZH.md)
 
 This project contains core data of HowNet and OpenHowNet API developed by THUNLP, which provides a convenient way to search information in HowNet, display sememe trees, calculate word similarity via sememes, etc. You can also visit our [website](https://openhownet.thunlp.org) to enjoy searching and exhibiting sememes of words online.
