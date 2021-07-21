@@ -6,6 +6,13 @@ import pickle, zipfile
 OPENHOWNET_DATA_URL = "https://thunlp.oss-cn-qingdao.aliyuncs.com/OpenHowNet/openhownet_data.zip"
 
 def get_resource(path, mode='r', encoding='utf-8'):
+    '''
+    Get the resource file.
+    :param path: the file path.
+    :param mode: the open mode of the target file.
+    :param encoding: the encoding of the target file.
+    :return: the target file.
+    '''
     try:
         package_directory = os.path.dirname(os.path.abspath(__file__))
         if 'b' in mode:
@@ -20,6 +27,12 @@ def get_resource(path, mode='r', encoding='utf-8'):
         raise FileNotFoundError(error_msg)
 
 def download_file(url, dest_file=None):
+    '''
+    Download files from url to dest path.
+    :param url: download url of resource file.
+    :param dest_file: target download path.
+    :return:(Str) the path of target files.
+    '''
     req = requests.get(url, stream=True)
     total_size = int(req.headers['Content-Length']) / 1024
 
@@ -36,6 +49,20 @@ def download_file(url, dest_file=None):
     return dest_path
 
 def download():
+    '''
+    Download the HowNet resource file.
+    The HowNet resource file is openhownet_data.zip, which contains:
+        openhownet_data
+        ├── HowNet_dict
+        ├── HowNet_dict_complete
+        ├── sememe_all.txt
+        ├── pack
+        │     └── submit_user
+        |           ├── pickle
+        │           └── data
+        └── sememe_triples_taxonomy.txt
+    :return:
+    '''
     package_directory = os.path.dirname(os.path.abspath(__file__))
     data_zip_path = download_file(OPENHOWNET_DATA_URL, dest_file="openhownet_data.zip")
     with zipfile.ZipFile(data_zip_path, 'r') as zip_ref:

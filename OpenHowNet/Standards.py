@@ -77,6 +77,10 @@ class HowNetDict(object):
         return res
 
     def __len__(self):
+        """
+        Get the num of the concepts in HowNet.
+        :return:(Int) the num of the concepts in HowNet.
+        """
         return len(self.ids)
 
     def get(self, word, language=None):
@@ -113,6 +117,13 @@ class HowNetDict(object):
         return list(self.en_map.keys())
 
     def _expand_tree(self, tree, propertyName, layer, isRoot=True):
+        """
+        Expand the sememe tree by iteration.
+        :param tree: the sememe tree to expand.
+        :param propertyName: the language of the name of every sememe node.
+        :param layer: the layer num to expand the tree.
+        :return:(Set) the sememe set of the sememe tree.
+        """
         res = set()
         if layer == 0:
             return res
