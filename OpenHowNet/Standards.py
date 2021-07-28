@@ -247,19 +247,21 @@ class HowNetDict(object):
 
         return item in self.en_map or item in self.zh_map or item in self.ids
 
-    def get_all_sememes(self):
+    def get_all_sememes(self, freq=False):
         """
         Get the complete sememe list in HowNet
-        :return: (List) a list of sememes
+        Also can get the frequency of occurrence of sememe in HowNet
+        :param freq: (Bool) whether to get the frequency
+        :return: (List) a list of sememes or (Dict) a dict of sememe and its frequency
         """
         if hasattr(self, "sememe_all"):
-            return self.sememe_all
+            return self.sememe_all if freq else list(self.sememe_all.keys())
         else:
             package_directory = os.path.dirname(os.path.abspath(__file__))
-            f = get_resource("sememe_all.txt", 'r')
-            buf = f.readlines()[0]
-            self.sememe_all = buf.strip().split()
-            return self.sememe_all
+            f = get_resource("sememe_all", 'rb')
+            sememe_all = pickle.load(f)
+            self.sememe_all = sememe_all
+            return self.sememe_all if freq else list(self.sememe_all.keys())
     
     def initialize_sememe_similarity_calculation(self):
         """
