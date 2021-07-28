@@ -160,21 +160,19 @@ class HowNetDict(object):
             for pre, fill, node in tree:
                 print("%s[%s]%s" % (pre, node.role, node.name))
 
-    def get_sememes_by_word(self, word, structured=False, lang="ch", merge=False, expanded_layer=-1):
+    def get_sememes_by_word(self, word, structured=False, merge=False, expanded_layer=-1):
         """
         Given specific word, you can get corresponding HowNet annotation.
         :param word: (str)specific word(en/zh/id) you want to search in HowNet.
                       You can use "I WANT ALL" or "*" to specify that you need annotations of all words.
         :param structured: (bool)whether you want to retrieve structured sememe trees
-        :param lang: (str)only works when structured == False. You can determine the language of words.
-                    There are two options("en"/"ch") for this param.
         :param merge: (boolean)only works when structured == False. Decide whether to merge multi-sense word query results into one
         :param expanded_layer: (int)only works when structured == False. Continously expand k layer
                                 By default, it will be set to -1 (expand full layers)
         :return: list of converted sememe trees in accordance with requirements specified by the params
         """
         queryResult = self[word]
-        result = list()
+        result = set() if merge else list()
         if structured:
             for item in queryResult:
                 try:
@@ -184,29 +182,20 @@ class HowNetDict(object):
                     print("Exception:", e)
                     continue
         else:       
-            name = lang + "_word"
-            if merge:
-                result = dict()
             for item in queryResult:
                 try:
                     if not merge:
                         result.append(
-                            {"word": item[name],
+                            {"ch_word": item['ch_word'],
+                             "en_word": item['en_word'],
                              "sememes": self._expand_tree(GenSememeTree(item["Def"], word), expanded_layer)})
                     else:
-                        if item[name] not in result:
-                            result[item[name]] = set()
-                        result[item[name]] |= set(
-                            self._expand_tree(GenSememeTree(item["Def"], word), expanded_layer))
+                        result |= set(self._expand_tree(GenSememeTree(item["Def"], word), expanded_layer))
                 except Exception as e:
                     print(word)
                     print("Wrong Item:", item)
                     print("Exception:", e)
                     raise e
-            if merge:
-                if len(result.keys()) == 1:
-                    key = list(result.keys())[0]
-                    result = result[key]
         return result
 
     def __str__(self):
