@@ -12,7 +12,6 @@ from OpenHowNet.pack.submit_user.main import sense_similarity, word_similarity
 from OpenHowNet.Download import get_resource
 
 class HowNetDict(object):
-    name_choices = ["name_en", "name_ch", "all"]
 
     def __init__(self, use_sim=False):
         '''
@@ -43,11 +42,6 @@ class HowNetDict(object):
                 if now_dict["No"] not in self.ids:
                     self.ids[now_dict["No"]] = list()
                 self.ids[now_dict['No']].append(now_dict)
-                #     self.ids[now_dict["No"]] = now_dict
-                # else:
-                #     now_dict['No'] = str(self.max_count)
-                #     self.ids[now_dict["No"]] = now_dict
-                #     self.max_count += 1
             if use_sim:
                 if not self.initialize_sememe_similarity_calculation():
                     self.hownet = None
@@ -116,7 +110,7 @@ class HowNetDict(object):
         """
         return list(self.en_map.keys())
 
-    def _expand_tree(self, tree, propertyName, layer, isRoot=True):
+    def _expand_tree(self, tree, layer, isRoot=True):
         """
         Expand the sememe tree by iteration.
         :param tree: the sememe tree to expand.
@@ -136,19 +130,10 @@ class HowNetDict(object):
         for item in target:
             try:
                 if not isRoot:
-                    if propertyName not in HowNetDict.name_choices:
-                        res.add(item[propertyName])
-                    else:
-                        choice = HowNetDict.name_choices.index(propertyName)
-                        if choice < 2:
-                            res.add(item["name"].split("|")[choice])
-                        else:
-                            res.add(item["name"])
-
+                    res.add(item["name"])
                 if "children" in item:
-                    res |= self._expand_tree(item["children"], propertyName, layer - 1, isRoot=False)
+                    res |= self._expand_tree(item["children"], layer - 1, isRoot=False)
             except Exception as e:
-                # print("Bad Nodes:",item)
                 if isinstance(e, IndexError):
                     continue
                 raise e
@@ -175,14 +160,14 @@ class HowNetDict(object):
             for pre, fill, node in tree:
                 print("%s[%s]%s" % (pre, node.role, node.name))
 
-    def get_sememes_by_word(self, word, structured=False, lang="zh", merge=False, expanded_layer=-1):
+    def get_sememes_by_word(self, word, structured=False, lang="ch", merge=False, expanded_layer=-1):
         """
         Given specific word, you can get corresponding HowNet annotation.
         :param word: (str)specific word(en/zh/id) you want to search in HowNet.
                       You can use "I WANT ALL" or "*" to specify that you need annotations of all words.
         :param structured: (bool)whether you want to retrieve structured sememe trees
-        :param lang: (str)only works when structured == False. You can determine the language of the name of every sememe node in the retrieved tree.
-                    There are two options("en"/"zh") for this param.
+        :param lang: (str)only works when structured == False. You can determine the language of words.
+                    There are two options("en"/"ch") for this param.
         :param merge: (boolean)only works when structured == False. Decide whether to merge multi-sense word query results into one
         :param expanded_layer: (int)only works when structured == False. Continously expand k layer
                                 By default, it will be set to -1 (expand full layers)
@@ -198,11 +183,8 @@ class HowNetDict(object):
                     print("Generate Sememe Tree Failed for", item["No"])
                     print("Exception:", e)
                     continue
-        else:
-            if lang == 'zh': lang = 'ch'
-            
+        else:       
             name = lang + "_word"
-            lang = "name_" + lang
             if merge:
                 result = dict()
             for item in queryResult:
@@ -210,16 +192,15 @@ class HowNetDict(object):
                     if not merge:
                         result.append(
                             {"word": item[name],
-                             "sememes": self._expand_tree(GenSememeTree(item["Def"], word), lang, expanded_layer)})
+                             "sememes": self._expand_tree(GenSememeTree(item["Def"], word), expanded_layer)})
                     else:
                         if item[name] not in result:
                             result[item[name]] = set()
                         result[item[name]] |= set(
-                            self._expand_tree(GenSememeTree(item["Def"], word), lang, expanded_layer))
+                            self._expand_tree(GenSememeTree(item["Def"], word), expanded_layer))
                 except Exception as e:
                     print(word)
                     print("Wrong Item:", item)
-                    # print("Generate Sememe Tree Failed for", item["No"])
                     print("Exception:", e)
                     raise e
             if merge:
