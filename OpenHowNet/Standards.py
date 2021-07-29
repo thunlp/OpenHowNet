@@ -160,7 +160,7 @@ class HowNetDict(object):
             for pre, fill, node in tree:
                 print("%s[%s]%s" % (pre, node.role, node.name))
     '''
-    def get_sememes_by_word(self, word, display='json', merge=False, expanded_layer=-1):
+    def get_sememes_by_word(self, word, display='json', merge=False, expanded_layer=-1, K=None):
         """
         Given specific word, you can get corresponding HowNet annotation.
         :param word: (str)specific word(en/zh/id) you want to search in HowNet.
@@ -169,6 +169,8 @@ class HowNetDict(object):
         :param merge: (boolean)only works when display == 'list'. Decide whether to merge multi-sense word query results into one
         :param expanded_layer: (int)only works when display == 'list'. Continously expand k layer
                                 By default, it will be set to -1 (expand full layers)
+        :param K: (int)only works when display == 'visual'.The maximum number of visualized words, ordered by id (ascending). 
+                                Illegal number will be automatically ignored and the function will display all retrieved results.
         :return: list of converted sememe trees in accordance with requirements specified by the params
         """
         queryResult = self[word]
@@ -199,6 +201,8 @@ class HowNetDict(object):
         elif display == 'visual':
             queryResult.sort(key=lambda x: x["No"])
             print("Find {0} result(s)".format(len(queryResult)))
+            if K is not None and K >= 1 and type(K) == int:
+                queryResult = queryResult[:K]
             for index, item in enumerate(queryResult):
                 tree = GenSememeTree(item["Def"], word, returnNode=True)
                 tree = RenderTree(tree)
