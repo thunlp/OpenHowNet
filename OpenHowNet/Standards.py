@@ -346,20 +346,47 @@ class HowNetDict(object):
         return word_similarity(word0, word1, self.hownet, self.sememe_sim_table)
     
     def _load_taxonomy(self):
+        """
+        Load taxonomy from file to follow dicts:
+            sememe_taxonomy: (head sememe, tail sememe) as key and relation as value
+            sememe_dict: (head sememe, relation) as key and tail sememe as value
+            sememe_related: sememe as key and ((head_sememe, relation, tail sememe)) as value
+        """
         package_directory = os.path.dirname(os.path.abspath(__file__))
         f = get_resource("sememe_triples_taxonomy.txt", "r")
         self.sememe_taxonomy = {}
         self.sememe_dict = {}
+        self.sememe_related = {}
         for line in f.readlines():
             line = line.strip().split(" ")
+
+            self.sememe_taxonomy[(line[0], line[2])] = line[1]
+            
+            if not (line[0], line[1]) in self.sememe_dict:
+                self.sememe_dict[(line[0], line[1])] = []
+            self.sememe_dict[(line[0], line[1])].append(line[2])
+            
+            if not line[0] in self.sememe_related:
+                self.sememe_related[line[0]] = set()
+            self.sememe_related[line[0]].add((line[0], line[1], line[2]))
+            if not line[2] in self.sememe_related:
+                self.sememe_related[line[2]] = set()
+            self.sememe_related[line[2]].add((line[0], line[1], line[2]))
+
             for u in line[0].split("|"):
                 for v in line[2].split("|"):
-                    self.sememe_taxonomy[(u, v)] = line[1]
+                    self.sememe_taxonomy[(u, v)] = self.sememe_taxonomy[(line[0], v)] = self.sememe_taxonomy[(u, line[2])] = line[1]
                 if not (u, line[1]) in self.sememe_dict:
                     self.sememe_dict[(u, line[1])] = []
                 self.sememe_dict[(u, line[1])].append(line[2])
+                if not u in self.sememe_related:
+                    self.sememe_related[u] = set()
+                self.sememe_related[u].add((line[0], line[1], line[2]))
+                if not v in self.sememe_related:
+                    self.sememe_related[v] = set()
+                self.sememe_related[v].add((line[0], line[1], line[2]))
 
-    def get_sememe_relation(self, x, y, lang='zh'):
+    def get_sememe_relation(self, x, y):
         """
         Show relationship between two sememes.
         :return: (String) a string represents the relation.
@@ -369,7 +396,7 @@ class HowNetDict(object):
 
         return self.sememe_taxonomy.get((x, y), "none")
     
-    def get_sememe_via_relation(self, x, relation, lang='zh'):
+    def get_sememe_via_relation(self, x, relation):
         """
         Show all sememes that x has relation with.
         :return: (List) a string represents all related sememes.
@@ -377,5 +404,15 @@ class HowNetDict(object):
         if not hasattr(self, "sememe_dict"):
             self._load_taxonomy()
         
-        return [x.split("|")[lang=='zh'] for x in self.sememe_dict.get((x, relation), [])]
-
+        return [x for x in self.sememe_dict.get((x, relation), [])]
+    
+    def get_related_sememes(self, x):
+        """
+        Show all sememes that x has any relation with.
+        :param x: target sememe, you can use any language(en/zh).
+        :return: (List) a list contains sememe triples.
+        """
+        if not hasattr(self, "sememe_dict"):
+            self._load_taxonomy()
+        
+        return list(self.sememe_related.get(x, "none"))
