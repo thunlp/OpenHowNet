@@ -352,7 +352,6 @@ class HowNetDict(object):
             sememe_dict: (head sememe, relation) as key and tail sememe as value
             sememe_related: sememe as key and ((head_sememe, relation, tail sememe)) as value
         """
-        package_directory = os.path.dirname(os.path.abspath(__file__))
         f = get_resource("sememe_triples_taxonomy.txt", "r")
         self.sememe_taxonomy = {}
         self.sememe_dict = {}
@@ -416,3 +415,22 @@ class HowNetDict(object):
             self._load_taxonomy()
         
         return list(self.sememe_related.get(x, "none"))
+
+    def _load_sememe_sense_dic(self):
+        """
+        Load sememe to sense dict from file
+        """
+        f = get_resource("sememe_sense_dic", "rb")
+        
+        self.sememe_sense_dic = pickle.load(f)
+    
+    def get_senses_by_sememe(self, x):
+        """
+        Get the senses labeled by sememe x.
+        :param x: (str)Target sememe
+        :return: the list of senses which contains No, ch_word and en_word.
+        """
+        if not hasattr(self, "sememe_sense_dic"):
+            self._load_sememe_sense_dic()
+        
+        return self.sememe_sense_dic.get(x, [])

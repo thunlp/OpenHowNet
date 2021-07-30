@@ -9,4 +9,7 @@ __pycache__
 *.egg-info
 .DS_Store
 /OpenHowNet/HowNet_dict_complete
+/OpenHowNet/sememe_sense_dic
+/OpenHowNet/sememe_all
+/OpenHowNet/sememe_triples_taxonomy.txt
 /*.sh
