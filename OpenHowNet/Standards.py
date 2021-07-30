@@ -11,6 +11,64 @@ from OpenHowNet.pack.submit_user.main import sense_similarity, word_similarity
 
 from OpenHowNet.Download import get_resource
 
+class Sememe(object):
+    """Sememe class.
+
+    The smallest semantic unit. Described in English and Chinese.
+
+    Attributes:
+        en: English word to describe the sememe.
+        ch: Chinese word to describe the sememe.
+        freq: the sememe occurence frequency in HowNet
+    """
+    def __init__(self, hownet_sememe):
+        """Initialize a sememe by sememe annotations.
+
+        :param hownet_sememe: sememe annotiation in HowNet.
+        """
+        self.en, self.ch = hownet_sememe.split('|')
+
+class Sense(object):
+    """Contains variables of a sense.
+
+    Initialized by an item in HowNet.
+    Contains numbering, word, POS of word, sememe tree, etc.
+
+    Attributes:
+        No: the id of the sense in HowNet.
+        en_word: the word describing the sense in HowNet in English.
+        en_grammar: the POS of the word in English.
+        ch_word: the word describing the sense in HowNet in Chinese.
+        ch_grammar: the POS of the word in Chinese.
+        Def: the sememe tree of the sense.
+    """
+    def __init__(self, hownet_sense):
+        """Initialize a sense object by a hownet item.
+
+        Initialize the attributes of the sense.
+
+        :param hownet_sense: (Dict)The Annotation of the sense in HowNet.
+        """
+        self.No = hownet_sense['No']
+        self.en_word = hownet_sense['en_word']
+        self.en_grammar = hownet_sense['en_grammar']
+        self.ch_word = hownet_sense['ch_word']
+        self.ch_grammar = hownet_sense['ch_grammar']
+        self.Def = hownet_sense['Def']
+    
+    
+    def get_sememes(self, display = "list"):
+        """Get the sememe annotiation of the sense.
+
+        You can retrieve sememes of the sense in different display mode.
+
+        :param display: (str)The display mode of sememes.
+            You can choose from list/json/visual.
+        :return: sememe list or sememe tree or sememe dict
+        """
+        pass
+
+
 class HowNetDict(object):
 
     def __init__(self, use_sim=False):
