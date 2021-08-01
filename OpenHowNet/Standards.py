@@ -94,7 +94,7 @@ class Sense(object):
         """
         Define how to print the sense.
         """
-        return self.No
+        return 'No.'+self.No
 
     def get_sememes(self, display="list"):
         """Get the sememe annotiation of the sense.
@@ -122,6 +122,7 @@ class HowNetDict(object):
 
             # Initialize sememe list from sememe_all.
             self.sememe_dic = dict()
+            self.sememe_relation_dic = dict()
             with get_resource(sememe_dir, 'rb') as sememe_dict:
                 sememe_all = pickle.load(sememe_dict)
             sememe_dict.close()
@@ -134,6 +135,8 @@ class HowNetDict(object):
                     self.sememe_dic[line[0]], line[1], self.sememe_dic[line[2]])
                 self.sememe_dic[line[2]].add_related_sememes_backward(
                     self.sememe_dic[line[0]], line[1], self.sememe_dic[line[2]])
+                self.sememe_relation_dic[(
+                    line[0], line[2])] = line[1]
             sememe_triples.close()
 
             # Initialize sense list from HowNet_dict_complete
@@ -227,6 +230,18 @@ class HowNetDict(object):
         :return: (list) All annotated English words in HowNet.
         """
         return list(self.en_map.keys())
+
+    def sememe_fuzzy_match(self, s):
+        """To fuzzy match the sememe by english/language word.
+
+        :param s: (str)the string to match the sememe.
+        :return: (List)the sememe list.
+        """
+        res = []
+        for k in self.sememe_dic.keys():
+            if k.find(s) != -1:
+                res.append(k)
+        return res
 
     def _gen_sememe_tree(self, sense, return_node=False):
         """Generate sememe tree for the sense by the Def.
@@ -362,7 +377,7 @@ class HowNetDict(object):
     def _visualize_sememe_trees(self, sense):
         """Visualize the sememe tree by sense Def.
 
-        :param sense: The sense the visualized sememe tree belongs to.  
+        :param sense: The sense the visualized sememe tree belongs to.
         :return:
         """
         tree = self._gen_sememe_tree(sense, return_node=True)
@@ -447,6 +462,62 @@ class HowNetDict(object):
         """
         return self.sememe_dic
 
+    # Sememe relation
+    def get_sememe_relation(self, x, y):
+        """
+        Show relationship between two sememes.
+        :return: (String) a string represents the relation.
+        """
+        res = []
+        sememe_x = self.sememe_fuzzy_match(x)
+        sememe_y = self.sememe_fuzzy_match(y)
+        for s_x in sememe_x:
+            for s_y in sememe_y:
+                if (s_x, s_y) in self.sememe_relation_dic.keys():
+                    res.append((self.sememe_dic[s_x], self.sememe_relation_dic[(
+                        s_x, s_y)], self.sememe_dic[s_y]))
+        return res
+
+    def get_sememe_via_relation(self, x, relation):
+        """
+        Show all sememes that x has relation with.
+        :return: (List) a string represents all related sememes.
+        """
+        res = []
+        sememe_x = self.sememe_fuzzy_match(x)
+        for s_x in sememe_x:
+            if relation in self.sememe_dic[s_x].related_sememes_forward.keys():
+                res.append(self.sememe_dic[s_x].related_sememes_forward[relation])
+        return res
+
+    def get_related_sememes(self, x):
+        """
+        Show all sememes that x has any relation with.
+        :param x: target sememe, you can use any language(en/zh).
+        :return: (List) a list contains sememe triples.
+        """
+        res = []
+        sememe_x = self.sememe_fuzzy_match(x)
+        for s_x in sememe_x:
+            for r in self.sememe_dic[s_x].related_sememes_forward.keys():
+                res.append((self.sememe_dic[s_x], r, self.sememe_dic[s_x].related_sememes_forward[r]))
+            for r in self.sememe_dic[s_x].related_sememes_backward.keys():
+                res.append((self.sememe_dic[s_x].related_sememes_backward[r], r, self.sememe_dic[s_x]))
+        return res
+
+    def get_senses_by_sememe(self, x):
+        """
+        Get the senses labeled by sememe x.
+        :param x: (str)Target sememe
+        :return: the list of senses which contains No, ch_word and en_word.
+        """
+        res = []
+        sememe_x = self.sememe_fuzzy_match(x)
+        for s_x in sememe_x:
+            res.extend(self.sememe_dic[s_x].senses)
+        return res
+
+    # Sememe similarity calculation
     def initialize_sememe_similarity_calculation(self):
         """
         Initialize the word similarity calculation via sememes.
@@ -546,53 +617,3 @@ class HowNetDict(object):
             print(word1 + ' is not annotated in HowNet.')
             return res
         return word_similarity(word0, word1, self.hownet, self.sememe_sim_table)
-
-    def get_sememe_relation(self, x, y):
-        """
-        Show relationship between two sememes.
-        :return: (String) a string represents the relation.
-        """
-        if not hasattr(self, "sememe_taxonomy"):
-            self._load_taxonomy()
-
-        return self.sememe_taxonomy.get((x, y), "none")
-
-    def get_sememe_via_relation(self, x, relation):
-        """
-        Show all sememes that x has relation with.
-        :return: (List) a string represents all related sememes.
-        """
-        if not hasattr(self, "sememe_dict"):
-            self._load_taxonomy()
-
-        return [x for x in self.sememe_dict.get((x, relation), [])]
-
-    def get_related_sememes(self, x):
-        """
-        Show all sememes that x has any relation with.
-        :param x: target sememe, you can use any language(en/zh).
-        :return: (List) a list contains sememe triples.
-        """
-        if not hasattr(self, "sememe_dict"):
-            self._load_taxonomy()
-
-        return list(self.sememe_related.get(x, "none"))
-
-    def _load_sememe_sense_dic(self):
-        """
-        Load sememe to sense dict from file
-        """
-        f = get_resource("sememe_sense_dic", "rb")
-
-        self.sememe_sense_dic = pickle.load(f)
-
-    def get_senses_by_sememe(self, x):
-        """
-        Get the senses labeled by sememe x.
-        :param x: (str)Target sememe
-        :return: the list of senses which contains No, ch_word and en_word.
-        """
-        if not hasattr(self, "sememe_sense_dic"):
-            self._load_sememe_sense_dic()
-
-        return self.sememe_sense_dic.get(x, [])
