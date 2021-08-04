@@ -1,1 +1,0 @@
-from OpenHowNet.pack import *
