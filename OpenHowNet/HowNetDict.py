@@ -18,11 +18,26 @@ from .Download import get_resource
 
 
 class HowNetDict(object):
+    """Class for running the OpenHowNet API. 
+    Provides a convenient way to search information in HowNet, 
+    display sememe trees, calculate word similarity via sememes, etc.
 
-    def __init__(self, use_sim=False):
-        '''
-        Initialize HowNetDict
-        :param use_sim: "lazy" option for loading similarity computation file.
+    Example::
+
+        >>> # Initialize the OpenHowNet
+        >>> import OpenHowNet
+        >>> hownet_dict = OpenHowNet.HowNetDict()
+
+        >>> # Search a word in HowNet and get a list of senses contain the word
+        >>> result_list = hownet_dict.get("苹果")
+
+        >>> # Visualize the sememe tree of the sense
+        >>> hownet_dict.get_sememes_by_word('苹果', display='visual')
+
+    """
+
+    def __init__(self):
+        '''Initialize HowNetDict
         '''
         try:
             package_directory = os.path.dirname(os.path.abspath(__file__))
@@ -80,11 +95,6 @@ class HowNetDict(object):
                     self.zh_map[zh_word] = list()
                 self.zh_map[zh_word].append(self.sense_dic[k])
 
-            if use_sim:
-                if not self.initialize_sememe_similarity_calculation():
-                    self.hownet = None
-                    self.sememe_root = None
-                    self.sememe_sim_table = None
         except FileNotFoundError as e:
             print(e)
 
