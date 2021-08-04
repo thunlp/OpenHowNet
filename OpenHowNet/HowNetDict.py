@@ -1,3 +1,8 @@
+"""
+HowNetDict Class
+=============
+"""
+
 import os
 import pickle
 import sys
@@ -6,105 +11,10 @@ from typing import Dict, Any
 from anytree import Node, RenderTree
 from anytree.exporter import DictExporter, JsonExporter
 
-from OpenHowNet.SememeTreeParser import GenSememeTree
-
-from OpenHowNet.Download import get_resource
-
-
-class Sememe(object):
-    """Sememe class.
-
-    The smallest semantic unit. Described in English and Chinese.
-
-    Attributes:
-        en: English word to describe the sememe.
-        ch: Chinese word to describe the sememe.
-        freq: the sememe occurence frequency in HowNet.
-        related_sememes_forward: the sememes related with the sememe in HowNet and the sememe is head sememe in triples.
-        related_sememes_backward: the sememes related with the sememe in HowNet and the sememe is tail sememe in triples.
-    """
-
-    def __init__(self, hownet_sememe, freq):
-        """Initialize a sememe by sememe annotations.
-
-        :param hownet_sememe: sememe annotiation in HowNet.
-        :param freq: sememe occurence freqency.
-        """
-        self.en, self.ch = hownet_sememe.split('|')
-        self.en_ch = hownet_sememe
-        self.freq = freq
-        self.related_sememes_forward = {}
-        self.related_sememes_backward = {}
-        self.senses = []
-
-    def __repr__(self):
-        """
-        Define how to print the sememe.
-        """
-        return self.en_ch
-
-    def add_related_sememes_forward(self, head, relation, tail):
-        """Add a sememe triple to the sememe.
-
-        Sememe triple contains (head sememe, relation, tail sememe).
-        """
-        self.related_sememes_forward[relation] = tail
-
-    def add_related_sememes_backward(self, head, relation, tail):
-        """Add a sememe triple to the sememe.
-
-        Sememe triple contains (head sememe, relation, tail sememe).
-        """
-        self.related_sememes_backward[relation] = head
-
-
-class Sense(object):
-    """Contains variables of a sense.
-
-    Initialized by an item in HowNet.
-    Contains numbering, word, POS of word, sememe tree, etc.
-
-    Attributes:
-        No: the id of the sense in HowNet.
-        en_word: the word describing the sense in HowNet in English.
-        en_grammar: the POS of the word in English.
-        ch_word: the word describing the sense in HowNet in Chinese.
-        ch_grammar: the POS of the word in Chinese.
-        Def: the sememe tree of the sense.
-    """
-
-    def __init__(self, hownet_sense):
-        """Initialize a sense object by a hownet item.
-
-        Initialize the attributes of the sense.
-
-        :param hownet_sense: (Dict)The Annotation of the sense in HowNet.
-        """
-        self.No = hownet_sense['No']
-        self.en_word = hownet_sense['en_word']
-        self.en_grammar = hownet_sense['en_grammar']
-        self.ch_word = hownet_sense['ch_word']
-        self.ch_grammar = hownet_sense['ch_grammar']
-        self.Def = hownet_sense['Def']
-        self.sememes = []
-        self.synonym = []
-
-    def __repr__(self):
-        """
-        Define how to print the sense.
-        """
-        return 'No.'+self.No
-
-    def get_sememes(self, display="list"):
-        """Get the sememe annotiation of the sense.
-
-        You can retrieve sememes of the sense in different display mode.
-
-        :param display: (str)The display mode of sememes.
-            You can choose from list/json/visual.
-        :return: sememe list or sememe tree or sememe dict
-        """
-        pass
+from .Sense import Sense
+from .Sememe import Sememe
+from .SememeTreeParser import GenSememeTree
+from .Download import get_resource
 
 
 class HowNetDict(object):
