@@ -7,8 +7,6 @@ from anytree import Node, RenderTree
 from anytree.exporter import DictExporter, JsonExporter
 
 from OpenHowNet.SememeTreeParser import GenSememeTree
-from OpenHowNet.pack.submit_user import util
-from OpenHowNet.pack.submit_user.main import sense_similarity, word_similarity
 
 from OpenHowNet.Download import get_resource
 
@@ -119,7 +117,7 @@ class HowNetDict(object):
         try:
             package_directory = os.path.dirname(os.path.abspath(__file__))
             sememe_dir, sememe_triples_dir, data_dir = [os.path.join(package_directory, file_name) for file_name in [
-                'sememe_all', 'sememe_triples_taxonomy.txt', 'HowNet_dict_complete']]
+                'resources/sememe_all', 'resources/sememe_triples_taxonomy.txt', 'resources/HowNet_dict_complete']]
 
             # Initialize sememe list from sememe_all.
             self.sememe_dic = dict()
@@ -536,15 +534,15 @@ class HowNetDict(object):
         "Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP"
         :return: (Boolean) whether the initialization succeed.
         """
-        sememe_sim_table_pickle_path = 'sememe_sim_table.pkl'
-        sense_tree_path = 'sense_tree'
+        sememe_sim_table_pickle_path = 'resources/sememe_sim_table.pkl'
+        sense_tree_path = 'resources/sense_tree'
 
         package_directory = os.path.dirname(os.path.abspath(__file__))
         try:
             self.sememe_sim_table = pickle.load(
-                open(os.path.join(package_directory, sememe_sim_table_pickle_path), "rb"))
+                get_resource(os.path.join(package_directory, sememe_sim_table_pickle_path), "rb"))
             self.sense_tree_dic = pickle.load(
-                open(os.path.join(package_directory, sense_tree_path), 'rb'))
+                get_resource(os.path.join(package_directory, sense_tree_path), 'rb'))
         except FileNotFoundError as e:
             print(
                 "Enabling Word Similarity Calculation requires specific data files, please check the completeness of your download package.")
@@ -572,7 +570,9 @@ class HowNetDict(object):
                         flag1[i] = 0
                         flag2[j] = 0
                         role_match = role_match + 1
-                        relation_sim = relation_sim + self.sense_similarity(node1.children[i], node2.children[j], sememe_sim_table)
+                        relation_sim = relation_sim + \
+                            self.sense_similarity(
+                                node1.children[i], node2.children[j], sememe_sim_table)
             relation_sim = relation_sim + (sum(flag1) + sum(flag2)) * delta
             relation_sim = relation_sim / (N - role_match)
 
@@ -608,7 +608,7 @@ class HowNetDict(object):
             tree1 = self.sense_tree_dic[i.No]
             score = {}
             for j in self.sense_dic.keys():
-                if j not in banned_id and int(j)>=3378:
+                if j not in banned_id and int(j) >= 3378:
                     tree2 = self.sense_tree_dic[j]
                     sim = self.sense_similarity(
                         tree1, tree2, self.sememe_sim_table)
@@ -643,4 +643,13 @@ class HowNetDict(object):
         if not self.has(word1):
             print(word1 + ' is not annotated in HowNet.')
             return res
-        return self.word_similarity(word0, word1, self.sememe_sim_table)
+        senses1 = self[word0]
+        senses2 = self[word1]
+        max_sim = -1
+        for id1 in senses1:
+            for id2 in senses2:
+                sim = self.sense_similarity(
+                    self.sense_tree_dic[id1.No], self.sense_tree_dic[id2.No],  self.sememe_sim_table)
+                if sim > max_sim:
+                    max_sim = sim
+        return max_sim
