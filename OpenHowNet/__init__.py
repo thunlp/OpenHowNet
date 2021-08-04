@@ -1,6 +1,8 @@
 from __future__ import absolute_import
 
-from OpenHowNet.Standards import HowNetDict
-from OpenHowNet.Download import download
+from .Sense import Sense
+from .Sememe import Sememe
+from .HowNetDict import HowNetDict
+from .Download import download
 
 name = "OpenHowNet"
