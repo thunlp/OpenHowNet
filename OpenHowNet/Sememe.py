@@ -27,9 +27,6 @@ class Sememe(object):
 
     def __init__(self, hownet_sememe, freq):
         """Initialize a sememe by sememe annotations.
-
-        :param hownet_sememe: sememe annotiation in HowNet.
-        :param freq: sememe occurence freqency.
         """
         self.en, self.ch = hownet_sememe.split('|')
         self.en_ch = hownet_sememe
@@ -77,7 +74,7 @@ class Sememe(object):
                 You can choose to return the list of triples or return the list of related sememes.
 
         Returns:
-            (list) the list of triples or return the list of related sememes.
+            (`list`) the list of triples or return the list of related sememes.
         """
         res = []
         if return_triples:
@@ -91,6 +88,18 @@ class Sememe(object):
         return res
     
     def get_sememe_via_relation(self, relation, return_triples=False):
+        """Get the sememes that have relation with the sememe.
+
+        Args:
+            relation (`str`):
+                The relation between the sememes to search and the sememe.
+            return_triples (`bool`):
+                You can choose to return the list of triples or return the list of related sememes.
+        
+        Returns:
+            (`list`) the list of triples or the list of related sememes.
+        """
+
         res = []
         if relation in self.related_sememes_forward.keys():
             if return_triples:
