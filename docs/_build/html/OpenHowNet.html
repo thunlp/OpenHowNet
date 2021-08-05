@@ -287,16 +287,18 @@ display sememe trees, calculate word similarity via sememes, etc.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.calculate_word_similarity">
 <span class="sig-name descname"><span class="pre">calculate_word_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.calculate_word_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.calculate_word_similarity" title="Permalink to this definition">¶</a></dt>
-<dd><p>calculate the word similarity between two words via sememes
+<dd><p>Calculate the word similarity between two words via sememes
 :param word0: target word #0
+:type word0: <cite>str</cite>
 :param word1: target word #1
-:return: (Float) the word similarity calculated via sememes.</p>
-<blockquote>
-<div><blockquote>
-<div><p>If word0 or word1 does not exist in HowNet annotation, it will return 0.0</p>
-</div></blockquote>
-<p>If the initialization method of word similarity calculation has not been called yet, it will also return 0.0 and print corresponding error message.</p>
-</div></blockquote>
+:type word1: <cite>str</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(<cite>float</cite>) the word similarity calculated via sememes.
+If word0 or word1 does not exist in HowNet annotation, it will return 0.0
+If the initialization method of word similarity calculation has not been called yet, it will also return 0.0 and print corresponding error message.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -344,12 +346,16 @@ display sememe trees, calculate word similarity via sememes, etc.</p>
 <dd><p>Get the topK nearest words of the given word, the word similarity is calculated based on HowNet annotation.
 If the given word does not exist in HowNet annotations, this function will return an empty list.
 :param word: target word
+:type word: <cite>str</cite>
 :param K: specify the number of the nearest words you want to retrieve.
-:return: (List) a list of the nearest K words.</p>
-<blockquote>
-<div><p>If the given word does not exist in HowNet annotations, this function will return an empty list.
+:type K: <cite>int</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(<cite>list</cite>) a list of the nearest K words.
+If the given word does not exist in HowNet annotations, this function will return an empty list.
 If the initialization method of word similarity calculation has not been called yet, it will also return an empty list and print corresponding error message.</p>
-</div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -431,7 +437,7 @@ Illegal number will be automatically ignored and the function will display all r
 <dd><p>Get the senses labeled by sememe x.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>x</strong> (<em>str</em>) – Target sememe</p>
+<dd class="field-odd"><p><strong>x</strong> (<cite>str</cite>) – Target sememe</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>(<cite>list[Sense]</cite>) The list of senses which contains No, ch_word and en_word.</p>
@@ -474,8 +480,12 @@ By default, it will search the target word in both the English vocabulary and th
 <span class="sig-name descname"><span class="pre">initialize_sememe_similarity_calculation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.initialize_sememe_similarity_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.initialize_sememe_similarity_calculation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize the word similarity calculation via sememes.
 Implementation is contributed by Jun Yan, which is based on the paper :
-“Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP”
-:return: (Boolean) whether the initialization succeed.</p>
+“Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(<cite>bool</cite>) whether the initialization succeed.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -495,7 +505,8 @@ Implementation is contributed by Jun Yan, which is based on the paper :
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.sense_similarity">
 <span class="sig-name descname"><span class="pre">sense_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sememe_sim_table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.sense_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.sense_similarity" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate the similarity between two senses.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -597,7 +608,7 @@ The smallest semantic unit. Described in English and Chinese.</p>
 <dd class="field-odd"><p><strong>return_triples</strong> (<cite>bool</cite>) – You can choose to return the list of triples or return the list of related sememes.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(list) the list of triples or return the list of related sememes.</p>
+<dd class="field-even"><p>(<cite>list</cite>) the list of triples or return the list of related sememes.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -605,7 +616,19 @@ The smallest semantic unit. Described in English and Chinese.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.Sememe.Sememe.get_sememe_via_relation">
 <span class="sig-name descname"><span class="pre">get_sememe_via_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_triples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/Sememe.html#Sememe.get_sememe_via_relation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.Sememe.Sememe.get_sememe_via_relation" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get the sememes that have relation with the sememe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>relation</strong> (<cite>str</cite>) – The relation between the sememes to search and the sememe.</p></li>
+<li><p><strong>return_triples</strong> (<cite>bool</cite>) – You can choose to return the list of triples or return the list of related sememes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(<cite>list</cite>) the list of triples or the list of related sememes.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.Sememe.Sememe.get_senses">
@@ -627,7 +650,16 @@ The smallest semantic unit. Described in English and Chinese.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="OpenHowNet.SememeTreeParser.GenSememeTree">
 <span class="sig-prename descclassname"><span class="pre">OpenHowNet.SememeTreeParser.</span></span><span class="sig-name descname"><span class="pre">GenSememeTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kdml</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returnNode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/SememeTreeParser.html#GenSememeTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.SememeTreeParser.GenSememeTree" title="Permalink to this definition">¶</a></dt>
-<dd><p>输入义原描述字符串，返回义原结构树：dict形式</p>
+<dd><p>Get the sememe tree by the Knowledge Database Mark-up Language.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kdml</strong> (<cite>str</cite>) – Knowledge Database Mark-up Language of the sense.</p></li>
+<li><p><strong>word</strong> (<cite>str</cite>) – The word annotated of the sense.</p></li>
+<li><p><strong>returnNode</strong> (<cite>bool</cite>) – Whether to return the root node of the sememe tree.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -660,7 +692,8 @@ Contains numbering, word, POS of word, sememe tree, etc.</p>
 <dd class="field-odd"><p><strong>return_node</strong> (<cite>bool</cite>) – whether to return as anytree node.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(<cite>dict</cite>) the sememe tree of the sense.</p>
+<dd class="field-even"><p>(<cite>dict`or`anytree.Node</cite>) the sememe tree of the sense in the form of dict
+or the root node of the sememe tree.</p>
 </dd>
 </dl>
 </dd></dl>

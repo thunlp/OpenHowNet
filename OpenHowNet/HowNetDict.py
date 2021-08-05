@@ -1,6 +1,6 @@
 """
 HowNetDict Class
-=============
+=================
 """
 
 import os
@@ -332,7 +332,8 @@ class HowNetDict(object):
         res = []
         sememe_x = self.sememe_fuzzy_match(x)
         for s_x in sememe_x:
-            res.extend(self.sememe_dic[s_x].get_sememe_via_relation(relation, return_triples=return_triples))
+            res.extend(self.sememe_dic[s_x].get_sememe_via_relation(
+                relation, return_triples=return_triples))
         return res
 
     def get_related_sememes(self, x, return_triples=False):
@@ -341,8 +342,8 @@ class HowNetDict(object):
         Returns:
             (`list`) a list contains sememe triples.
         """
-        res=[]
-        sememe_x=self.sememe_fuzzy_match(x)
+        res = []
+        sememe_x = self.sememe_fuzzy_match(x)
         for s_x in sememe_x:
             res.extend(s_x.get_related_sememes(return_triples=return_triples))
         return res
@@ -351,33 +352,34 @@ class HowNetDict(object):
         """Get the senses labeled by sememe x.
 
         Args:
-            x (str):
+            x (`str`):
                 Target sememe
         Returns:
             (`list[Sense]`) The list of senses which contains No, ch_word and en_word.
         """
-        res=[]
-        sememe_x=self.sememe_fuzzy_match(x)
+        res = []
+        sememe_x = self.sememe_fuzzy_match(x)
         for s_x in sememe_x:
             res.extend(self.sememe_dic[s_x].senses)
         return res
 
     # Sememe similarity calculation
     def initialize_sememe_similarity_calculation(self):
-        """
-        Initialize the word similarity calculation via sememes.
+        """Initialize the word similarity calculation via sememes.
         Implementation is contributed by Jun Yan, which is based on the paper :
         "Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP"
-        :return: (Boolean) whether the initialization succeed.
-        """
-        sememe_sim_table_pickle_path='resources/sememe_sim_table.pkl'
-        sense_tree_path='resources/sense_tree'
 
-        package_directory=os.path.dirname(os.path.abspath(__file__))
+        Returns: 
+            (`bool`) whether the initialization succeed.
+        """
+        sememe_sim_table_pickle_path = 'resources/sememe_sim_table.pkl'
+        sense_tree_path = 'resources/sense_tree'
+
+        package_directory = os.path.dirname(os.path.abspath(__file__))
         try:
-            self.sememe_sim_table=pickle.load(
+            self.sememe_sim_table = pickle.load(
                 get_resource(os.path.join(package_directory, sememe_sim_table_pickle_path), "rb"))
-            self.sense_tree_dic=pickle.load(
+            self.sense_tree_dic = pickle.load(
                 get_resource(os.path.join(package_directory, sense_tree_path), 'rb'))
         except FileNotFoundError as e:
             print(
@@ -386,49 +388,55 @@ class HowNetDict(object):
             return False
         return True
 
-    def sense_similarity(self, node1, node2, sememe_sim_table):  # 计算两个sense的相似度
-        delta=0.1
-        beta_relation=0.3
-        beta_sememe=0.7
+    def sense_similarity(self, node1, node2, sememe_sim_table):
+        """Calculate the similarity between two senses.
+        """
+        delta = 0.1
+        beta_relation = 0.3
+        beta_sememe = 0.7
 
-        relation_sim=0
+        relation_sim = 0
         if node1.is_leaf and node2.is_leaf:
-            beta_relation=0
-            beta_sememe=1
+            beta_relation = 0
+            beta_sememe = 1
         else:
-            role_match=0
-            N=len(node1.children) + len(node2.children)
-            flag1=[1] * len(node1.children)
-            flag2=[1] * len(node2.children)
+            role_match = 0
+            N = len(node1.children) + len(node2.children)
+            flag1 = [1] * len(node1.children)
+            flag2 = [1] * len(node2.children)
             for i in range(len(node1.children)):
                 for j in range(len(node2.children)):
                     if node1.children[i].role == node2.children[j].role and flag1[i] == 1 and flag2[j] == 1:
-                        flag1[i]=0
-                        flag2[j]=0
-                        role_match=role_match + 1
-                        relation_sim=relation_sim + \
+                        flag1[i] = 0
+                        flag2[j] = 0
+                        role_match = role_match + 1
+                        relation_sim = relation_sim + \
                             self.sense_similarity(
                                 node1.children[i], node2.children[j], sememe_sim_table)
-            relation_sim=relation_sim + (sum(flag1) + sum(flag2)) * delta
-            relation_sim=relation_sim / (N - role_match)
+            relation_sim = relation_sim + (sum(flag1) + sum(flag2)) * delta
+            relation_sim = relation_sim / (N - role_match)
 
         if (node1.name, node2.name) in sememe_sim_table:
-            sememe_sim=sememe_sim_table[(node1.name, node2.name)]
+            sememe_sim = sememe_sim_table[(node1.name, node2.name)]
         else:
-            sememe_sim=sememe_sim_table[(node2.name, node1.name)]
+            sememe_sim = sememe_sim_table[(node2.name, node1.name)]
         return beta_relation * relation_sim + beta_sememe * sememe_sim
 
     def get_nearest_words_via_sememes(self, word, K=10):
         """
         Get the topK nearest words of the given word, the word similarity is calculated based on HowNet annotation.
         If the given word does not exist in HowNet annotations, this function will return an empty list.
-        :param word: target word
-        :param K: specify the number of the nearest words you want to retrieve.
-        :return: (List) a list of the nearest K words.
-                If the given word does not exist in HowNet annotations, this function will return an empty list.
-                If the initialization method of word similarity calculation has not been called yet, it will also return an empty list and print corresponding error message.
+        Args: 
+            word (`str`): 
+                target word
+            K (`int`): 
+                specify the number of the nearest words you want to retrieve.
+        Returns: 
+            (`list`) a list of the nearest K words.
+            If the given word does not exist in HowNet annotations, this function will return an empty list.
+            If the initialization method of word similarity calculation has not been called yet, it will also return an empty list and print corresponding error message.
         """
-        res=list()
+        res = list()
         if not hasattr(self, "sense_tree_dic") or not hasattr(self, "sememe_sim_table"):
             print("Please initialize the similarity calculation firstly!")
             return res
@@ -438,35 +446,38 @@ class HowNetDict(object):
         if not self.has(word):
             print(word + ' is not annotated in HowNet.')
             return res
-        sense_list=self[word]
-        banned_id=[i.No for i in sense_list]
+        sense_list = self[word]
+        banned_id = [i.No for i in sense_list]
         for i in sense_list:
-            tree1=self.sense_tree_dic[i.No]
-            score={}
+            tree1 = self.sense_tree_dic[i.No]
+            score = {}
             for j in self.sense_dic.keys():
                 if j not in banned_id and int(j) >= 3378:
-                    tree2=self.sense_tree_dic[j]
-                    sim=self.sense_similarity(
+                    tree2 = self.sense_tree_dic[j]
+                    sim = self.sense_similarity(
                         tree1, tree2, self.sememe_sim_table)
-                    score[self.sense_dic[j]]=sim
-            result=sorted(score.items(), key=lambda x: x[1], reverse=True)
-            topK=result[0:K]
-            queryRes=dict()
-            queryRes["sense"]=i
-            queryRes["synset"]=topK
+                    score[self.sense_dic[j]] = sim
+            result = sorted(score.items(), key=lambda x: x[1], reverse=True)
+            topK = result[0:K]
+            queryRes = dict()
+            queryRes["sense"] = i
+            queryRes["synset"] = topK
             res.append(queryRes)
         return res
 
     def calculate_word_similarity(self, word0, word1):
+        """Calculate the word similarity between two words via sememes
+        Args:
+            word0 (`str`): 
+                target word #0
+            word1 (`str`): 
+                target word #1
+        Returns: 
+            (`float`) the word similarity calculated via sememes.
+            If word0 or word1 does not exist in HowNet annotation, it will return 0.0
+            If the initialization method of word similarity calculation has not been called yet, it will also return 0.0 and print corresponding error message.
         """
-        calculate the word similarity between two words via sememes
-        :param word0: target word #0
-        :param word1: target word #1
-        :return: (Float) the word similarity calculated via sememes.
-                 If word0 or word1 does not exist in HowNet annotation, it will return 0.0
-                If the initialization method of word similarity calculation has not been called yet, it will also return 0.0 and print corresponding error message.
-        """
-        res=0.0
+        res = 0.0
         if not hasattr(self, "sense_tree_dic") or not hasattr(self, "sememe_sim_table"):
             print("Please initialize the similarity calculation firstly!")
             return res
@@ -479,13 +490,13 @@ class HowNetDict(object):
         if not self.has(word1):
             print(word1 + ' is not annotated in HowNet.')
             return res
-        senses1=self[word0]
-        senses2=self[word1]
-        max_sim=-1
+        senses1 = self[word0]
+        senses2 = self[word1]
+        max_sim = -1
         for id1 in senses1:
             for id2 in senses2:
-                sim=self.sense_similarity(
+                sim = self.sense_similarity(
                     self.sense_tree_dic[id1.No], self.sense_tree_dic[id2.No],  self.sememe_sim_table)
                 if sim > max_sim:
-                    max_sim=sim
+                    max_sim = sim
         return max_sim
