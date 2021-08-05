@@ -432,6 +432,17 @@ Illegal number will be automatically ignored and the function will display all r
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_sense_synonyms">
+<span class="sig-name descname"><span class="pre">get_sense_synonyms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sense</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_sense_synonyms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_sense_synonyms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the senses that have the same sememe annotation with the sense</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(<cite>list[Sense]</cite>) the list of senses that have the same sememe annotation with the sense.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_senses_by_sememe">
 <span class="sig-name descname"><span class="pre">get_senses_by_sememe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_senses_by_sememe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_senses_by_sememe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the senses labeled by sememe x.</p>
@@ -441,6 +452,20 @@ Illegal number will be automatically ignored and the function will display all r
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>(<cite>list[Sense]</cite>) The list of senses which contains No, ch_word and en_word.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_senses_by_word">
+<span class="sig-name descname"><span class="pre">get_senses_by_word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_senses_by_word"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_senses_by_word" title="Permalink to this definition">¶</a></dt>
+<dd><p>Commen sense search API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<cite>str</cite>) – Specific word(en/zh/id) you want to search in HowNet.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(<cite>list[Sense]</cite>) the list of Sense.</p>
 </dd>
 </dl>
 </dd></dl>

@@ -7,7 +7,7 @@ Welcome to OpenHowNet's documentation!
 ======================================
 
 .. toctree::
-   :maxdepth: 10
+   :maxdepth: 4
    :caption: Contents:
 
    modules.rst
