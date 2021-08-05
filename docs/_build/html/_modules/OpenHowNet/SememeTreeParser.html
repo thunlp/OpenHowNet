@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>OpenHowNet.SememeTreeParser &mdash; OpenHowNet  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> OpenHowNet
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">OpenHowNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../OpenHowNet.html">OpenHowNet package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OpenHowNet</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>OpenHowNet.SememeTreeParser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for OpenHowNet.SememeTreeParser</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding:utf-8</span>
+<span class="kn">from</span> <span class="nn">anytree</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">RenderTree</span>
+<span class="kn">from</span> <span class="nn">anytree.exporter</span> <span class="kn">import</span> <span class="n">DictExporter</span><span class="p">,</span> <span class="n">JsonExporter</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span>
+
+
+<div class="viewcode-block" id="trim_pattern"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.SememeTreeParser.trim_pattern">[docs]</a><span class="k">def</span> <span class="nf">trim_pattern</span><span class="p">(</span><span class="n">kdml</span><span class="p">):</span>
+    <span class="c1"># remove RMK</span>
+    <span class="n">rmk_pos</span> <span class="o">=</span> <span class="n">kdml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;RMK=&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rmk_pos</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">kdml</span> <span class="o">=</span> <span class="n">kdml</span><span class="p">[:</span><span class="n">rmk_pos</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">kdml</span></div>
+
+
+<div class="viewcode-block" id="GenSememeTree"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.SememeTreeParser.GenSememeTree">[docs]</a><span class="k">def</span> <span class="nf">GenSememeTree</span><span class="p">(</span><span class="n">kdml</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">returnNode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="s2">&quot;输入义原描述字符串，返回义原结构树：dict形式&quot;</span>
+
+    <span class="c1"># 将有&quot;;&quot;符号的kdml拆分成多个子树</span>
+    <span class="n">kdml</span> <span class="o">=</span> <span class="n">trim_pattern</span><span class="p">(</span><span class="n">kdml</span><span class="p">)</span>
+    <span class="n">kdml_list</span> <span class="o">=</span> <span class="n">kdml</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;sense&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">kdml</span> <span class="ow">in</span> <span class="n">kdml_list</span><span class="p">:</span>
+
+        <span class="n">entity_idx</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 义原起止位置集合</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 树的节点集合</span>
+        <span class="n">pointer</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># idx of &#39;~&#39; cases</span>
+
+        <span class="c1"># 识别义原</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kdml</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">kdml</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;~&#39;</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="s1">&#39;$&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">kdml</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;~&#39;</span><span class="p">:</span>
+                    <span class="n">pointer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+                <span class="n">entity_idx</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="n">kdml</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">kdml</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;|&#39;</span><span class="p">:</span>
+                <span class="n">start_idx</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="n">end_idx</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">while</span> <span class="n">kdml</span><span class="p">[</span><span class="n">start_idx</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">]:</span>
+                    <span class="n">start_idx</span> <span class="o">=</span> <span class="n">start_idx</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="k">while</span> <span class="n">kdml</span><span class="p">[</span><span class="n">end_idx</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">]:</span>
+                    <span class="n">end_idx</span> <span class="o">=</span> <span class="n">end_idx</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">entity_idx</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">])</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="n">kdml</span><span class="p">[</span><span class="n">start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">end_idx</span><span class="p">],</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">))</span>
+                <span class="c1"># Dictionary.sememes.add(kdml[start_idx + 1: end_idx])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">entity_idx</span><span class="p">)):</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="n">entity_idx</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">left_brace</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">right_brace</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">quotation</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1"># 找到当前义原所属的主义原位置</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">kdml</span><span class="p">[</span><span class="n">cursor</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;:&#39;</span> <span class="ow">and</span> <span class="p">((</span><span class="n">quotation</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">left_brace</span> <span class="o">==</span> <span class="n">right_brace</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span>
+                                                <span class="p">(</span><span class="n">quotation</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">left_brace</span> <span class="o">==</span> <span class="n">right_brace</span><span class="p">))):</span>
+                <span class="k">if</span> <span class="n">cursor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="n">kdml</span><span class="p">[</span><span class="n">cursor</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">:</span>
+                    <span class="n">left_brace</span> <span class="o">=</span> <span class="n">left_brace</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">kdml</span><span class="p">[</span><span class="n">cursor</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;}&#39;</span><span class="p">:</span>
+                    <span class="n">right_brace</span> <span class="o">=</span> <span class="n">right_brace</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">kdml</span><span class="p">[</span><span class="n">cursor</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">:</span>
+                    <span class="n">quotation</span> <span class="o">=</span> <span class="n">quotation</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">cursor</span> <span class="o">=</span> <span class="n">cursor</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">parent_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>  <span class="c1"># 从当前位置往前找可以对应上的义原</span>
+                <span class="k">if</span> <span class="n">entity_idx</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">cursor</span><span class="p">:</span>
+                    <span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                    <span class="n">parent_idx</span> <span class="o">=</span> <span class="n">j</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">parent_idx</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">right_range</span> <span class="o">=</span> <span class="n">entity_idx</span><span class="p">[</span><span class="n">parent_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">right_range</span> <span class="o">=</span> <span class="n">entity_idx</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">role_begin_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="n">role_end_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="c1"># 修改：在当前义原和父义原之间找</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">entity_idx</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">right_range</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">kdml</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;=&#39;</span><span class="p">:</span>
+                        <span class="n">role_end_idx</span> <span class="o">=</span> <span class="n">j</span>
+                    <span class="k">elif</span> <span class="n">kdml</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">]:</span>
+                        <span class="n">role_begin_idx</span> <span class="o">=</span> <span class="n">j</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="n">role_end_idx</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">kdml</span><span class="p">[</span><span class="n">role_begin_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">role_end_idx</span><span class="p">]</span>
+                    <span class="c1"># Dictionary.roles.add(node[i].role)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pointer</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">role</span>
+            <span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">root</span>
+
+    <span class="c1"># exporter = JsonExporter(indent=2, sort_keys=True)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">returnNode</span><span class="p">:</span>
+        <span class="c1"># 转化成dict形式</span>
+        <span class="c1"># exporter = DictExporter()</span>
+        <span class="k">return</span> <span class="n">DictExporter</span><span class="p">()</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">root</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">kdml</span> <span class="o">=</span> <span class="s2">&quot;{place|地方:PlaceSect={city|市}};{place|地方:PlaceSect={county|县}}&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">GenSememeTree</span><span class="p">(</span><span class="n">kdml</span><span class="p">,</span> <span class="s2">&quot;市县&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, THUNLP.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
