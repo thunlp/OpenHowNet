@@ -18,8 +18,8 @@ from .Download import get_resource
 
 
 class HowNetDict(object):
-    """Class for running the OpenHowNet API. 
-    Provides a convenient way to search information in HowNet, 
+    """Class for running the OpenHowNet API.
+    Provides a convenient way to search information in HowNet,
     display sememe trees, calculate word similarity via sememes, etc.
 
     Example::
@@ -72,15 +72,8 @@ class HowNetDict(object):
                 self.sense_dic[k] = Sense(v)
                 self.sense_dic[k].sememes = self._gen_sememe_list(
                     self.sense_dic[k])
-                for s in self.sense_dic[k].sememes:
+                for s in self.sense_dic[k].sememes.values():
                     s.senses.append(self.sense_dic[k])
-            # Initialize the sense synonym
-            '''
-            for k, v in hownet_dict.items():
-                for n in v['syn'].keys():
-                    self.sense_dic[k].synonym.append(
-                        {'sense': self.sense_dic[n], 'similarity': v['syn'][n]})
-            '''
 
             # Initialize the sense dic to retrieve by word.
             self.en_map = dict()
@@ -99,15 +92,19 @@ class HowNetDict(object):
             print(e)
 
     def __getitem__(self, item):
-        """
-        Shortcut for Get(self,item,None)
-        :param item: target word.
-        :return:(List) candidates HowNet annotation, if the target word does not exist, return an empty list.
+        """Shortcut for Get(self,item,None)
+
+        Args:
+            item (`str`):
+                target word. if item == '*', return the list of all senses.
+
+        Returns:
+            (`list[Sense]`) candidates HowNet senses, if the target word does not exist, return an empty list.
         """
         res = list()
-        if item == "I WANT ALL!":
+        if item == "*":
             for item in self.sense_dic.values():
-                res.extend(item)
+                res.append(item)
             return res
         if item in self.en_map:
             res.extend(self.en_map[item])
@@ -118,19 +115,22 @@ class HowNetDict(object):
         return res
 
     def __len__(self):
-        """
-        Get the num of the concepts in HowNet.
-        :return:(Int) the num of the concepts in HowNet.
+        """Get the num of the concepts in HowNet.
+
+        Returns:
+            (`Int`): the num of the concepts in HowNet.
         """
         return len(self.sense_dic)
 
     def get(self, word, language=None):
-        """
-        Common word search API, you can specify the language of the target word to boost the search performance
-        :param word: target word
-        :param language: target language, default: None
-                (The func will search both in English and Chinese, which will consume a lot of time.)
-        :return:(List) candidates HowNet annotation, if the target word does not exist, return an empty list.
+        """Common word search API, you can specify the language of the target word to boost the search performance
+
+        Args:
+            word (`str`): target word.
+            language (`str`): target language, default: None. (The func will search both in English and Chinese, which will consume a lot of time.)
+
+        Returns:
+            (`list[Sense]`) candidates HowNet senses, if the target word does not exist, return an empty list.
         """
         res = list()
         if language == "en":
@@ -144,24 +144,30 @@ class HowNetDict(object):
         return res
 
     def get_zh_words(self):
-        """
-        Get all Chinese words annotated in HowNet
-        :return: (list) All annotated Chinese words in HowNet.
+        """Get all Chinese words annotated in HowNet
+
+        Returns:
+            (`list`) All annotated Chinese words in HowNet.
         """
         return list(self.zh_map.keys())
 
     def get_en_words(self):
-        """
-        Get all English words annotated in HowNet
-        :return: (list) All annotated English words in HowNet.
+        """Get all English words annotated in HowNet
+
+        Returns:
+            (`list`) All annotated English words in HowNet.
         """
         return list(self.en_map.keys())
 
     def sememe_fuzzy_match(self, s):
         """To fuzzy match the sememe by english/language word.
 
-        :param s: (str)the string to match the sememe.
-        :return: (List)the sememe list.
+        Args:
+            s (`str`):
+                the string to match the sememe.
+
+        Returns:
+            (`list[Sememe]`) the sememe list which is annotated with s.
         """
         res = []
         for k in self.sememe_dic.keys():
@@ -169,97 +175,18 @@ class HowNetDict(object):
                 res.append(k)
         return res
 
-    def _gen_sememe_tree(self, sense, return_node=False):
-        """Generate sememe tree for the sense by the Def.
-
-        :param sense: the sense to generate sememe tree.
-        :param return_node: (bool)whether to return as anttree node.
-        :return :(Dict)the sememe tree of the sense.
-        """
-        kdml = sense.Def
-        rmk_pos = kdml.find('RMK=')
-        if rmk_pos >= 0:
-            kdml = kdml[:rmk_pos]
-        kdml_list = kdml.split(";")
-        root = Node(sense, role='sense')
-        for kdml in kdml_list:
-            entity_idx = []  # 义原起止位置集合
-            node = []  # 树的节点集合
-            pointer = []  # idx of '~' cases
-            for i in range(len(kdml)):
-                if kdml[i] in ['~', '?', '$']:
-                    if kdml[i] == '~':
-                        pointer.append(len(node))
-                    entity_idx.append([i, i + 1])
-                    node.append(Node(kdml[i], role='None'))
-                elif kdml[i] == '|':
-                    start_idx = i
-                    end_idx = i
-                    while kdml[start_idx] not in ['{', '"']:
-                        start_idx = start_idx - 1
-                    while kdml[end_idx] not in ['}', ':', '"']:
-                        end_idx = end_idx + 1
-                    entity_idx.append([start_idx + 1, end_idx])
-                    node.append(Node(
-                        self.sememe_dic[kdml[start_idx + 1: end_idx].replace(' ', '_')], role='None'))
-            for i in range(len(entity_idx)):
-                cursor = entity_idx[i][0]
-                left_brace = 0
-                right_brace = 0
-                quotation = 0
-                # 找到当前义原所属的主义原位置
-                while not (kdml[cursor] == ':' and ((quotation % 2 == 0 and left_brace == right_brace + 1) or
-                                                    (quotation % 2 == 1 and left_brace == right_brace))):
-                    if cursor == 0:
-                        break
-                    if kdml[cursor] == '{':
-                        left_brace = left_brace + 1
-                    elif kdml[cursor] == '}':
-                        right_brace = right_brace + 1
-                    elif kdml[cursor] == '"':
-                        quotation = quotation + 1
-                    cursor = cursor - 1
-                parent_idx = -1
-                for j in range(i - 1, -1, -1):  # 从当前位置往前找可以对应上的义原
-                    if entity_idx[j][1] == cursor:
-                        node[i].parent = node[j]
-                        parent_idx = j
-                        break
-                if i != 0:
-                    if parent_idx != -1:
-                        right_range = entity_idx[parent_idx][1] - 1
-                    else:
-                        right_range = entity_idx[i - 1][1] - 1
-                    role_begin_idx = -1
-                    role_end_idx = -1
-                    # 修改：在当前义原和父义原之间找
-                    for j in range(entity_idx[i][0] - 1, right_range, -1):
-                        if kdml[j] == '=':
-                            role_end_idx = j
-                        elif kdml[j] in [',', ':']:
-                            role_begin_idx = j
-                            break
-                    if role_end_idx != -1:
-                        node[i].role = kdml[role_begin_idx + 1: role_end_idx]
-            for i in pointer:
-                node[i].parent.role = node[i].role
-                node[i].parent = None
-            node[0].parent = root
-            if not return_node:
-                # 转化成dict形式
-                # exporter = DictExporter()
-                return DictExporter().export(root)
-            else:
-                return root
-
     def _gen_sememe_list(self, sense):
         """Get sememe list for the sense by the Def.
 
-        :param sense: the sense to generate sememe tree.
-        :return :(List)the sememe list of the sense.
+        Args:
+            sense(`Sense`):
+                the sense to generate sememe tree.
+
+        Returns:
+            (`list[Sememe]`) the sememe list of the sense.
         """
         kdml = sense.Def
-        res = list()
+        res = dict()
         for i in range(len(kdml)):
             if kdml[i] == '|':
                 start_idx = i
@@ -268,61 +195,44 @@ class HowNetDict(object):
                     start_idx = start_idx - 1
                 while kdml[end_idx] not in ['}', ':', '"']:
                     end_idx = end_idx + 1
-                res.append(self.sememe_dic[kdml[start_idx + 1:end_idx]])
+                res[kdml[start_idx + 1:end_idx]
+                    ] = self.sememe_dic[kdml[start_idx + 1:end_idx]]
         return res
-
-    def _expand_tree(self, tree, layer, isRoot=True):
-        """
-        Expand the sememe tree by iteration.
-        :param tree: the sememe tree to expand.
-        :param layer: the layer num to expand the tree.
-        :return:(Set) the sememe set of the sememe tree.
-        """
-        res = set()
-        if layer == 0:
-            return res
-        target = tree
-
-        if isinstance(tree, dict):
-            target = list()
-            target.append(tree)
-        for item in target:
-            try:
-                if not isRoot:
-                    if item['name'] != '$' and item['name'] != '?':
-                        res.add(item["name"])
-                if "children" in item:
-                    res |= self._expand_tree(
-                        item["children"], layer - 1, isRoot=False)
-            except Exception as e:
-                if isinstance(e, IndexError):
-                    continue
-                raise e
-        return res
-
-    def _visualize_sememe_trees(self, sense):
-        """Visualize the sememe tree by sense Def.
-
-        :param sense: The sense the visualized sememe tree belongs to.
-        :return:
-        """
-        tree = self._gen_sememe_tree(sense, return_node=True)
-        tree = RenderTree(tree)
-        for pre, fill, node in tree:
-            print("%s[%s]%s" % (pre, node.role, node.name))
 
     def get_sememes_by_word(self, word, display='dict', merge=False, expanded_layer=-1, K=None):
-        """
-        Given specific word, you can get corresponding HowNet annotation.
-        :param word: (str)specific word(en/zh/id) you want to search in HowNet.
-                      You can use "I WANT ALL" or "*" to specify that you need annotations of all words.
-        :param display: (str)how to display the sememes you retrieved, you can choose from tree/dict/list/visual.
-        :param merge: (boolean)only works when display == 'list'. Decide whether to merge multi-sense word query results into one
-        :param expanded_layer: (int)only works when display == 'list'. Continously expand k layer.
-                                By default, it will be set to -1 (expand full layers)
-        :param K: (int)only works when display == 'visual'.The maximum number of visualized words, ordered by id (ascending).
-                                Illegal number will be automatically ignored and the function will display all retrieved results.
-        :return: list of converted sememe trees in accordance with requirements specified by the params
+        """Commen sememe search API.
+        Given specific word, you can get corresponding HowNet annotations.
+
+        Args:
+            word (`str`):
+                Specific word(en/zh/id) you want to search in HowNet. You can use "*" to specify that you need annotations of all words.
+            display (`str`):
+                How to display the sememes you retrieved, you can choose from tree/dict/list/visual.
+            merge (`bool`):
+                Only works when display == 'list'. Decide whether to merge multi-sense word query results into one
+            expanded_layer (`int`):
+                Only works when display == 'list'. Continously expand k layer. By default, it will be set to -1 (expand full layers)
+            K (`int`):
+                Only works when display == 'visual'.The maximum number of visualized words, ordered by id (ascending).
+                Illegal number will be automatically ignored and the function will display all retrieved results.
+
+        Examples:
+
+            >>> # Returns the sememe tree of the retrieved senses in the form of dict
+            >>> hownet_dict.get_sememes_by_word('苹果')
+
+            >>> # Returns the root node of sememe tree of the retrieved senses in the form of anytree
+            >>> hownet_dict.get_sememes_by_word('苹果', display='tree')
+
+            >>> # Returns the sememe list of the retrieved senses separately
+            >>> hownet_dict.get_sememes_by_word('苹果', display='list')
+
+            >>> # Returns the sememe list of the retrieved senses merged into one
+            >>> hownet_dict.get_sememes_by_word('苹果', display='list', merge=True)
+
+            >>> # Visualize the sememe tree
+            >>> hownet_dict.get_sememes_by_word('苹果', display='visual')
+
         """
         queryResult = self[word]
         queryResult.sort(key=lambda x: x.No)
@@ -330,8 +240,8 @@ class HowNetDict(object):
         if display == 'dict' or display == 'tree':
             for item in queryResult:
                 try:
-                    result.append(self._gen_sememe_tree(
-                        item, return_node=display == 'tree'))
+                    result.append({'sense': item, 'sememes': item.gen_sememe_tree(
+                        return_node=display == 'tree')})
                 except Exception as e:
                     print("Generate Sememe Tree Failed for", item.No)
                     print("Exception:", e)
@@ -342,10 +252,9 @@ class HowNetDict(object):
                     if not merge:
                         result.append(
                             {"sense": item,
-                             "sememes": self._expand_tree(self._gen_sememe_tree(item), expanded_layer)})
+                             "sememes": item.get_sememe_list(expanded_layer)})
                     else:
-                        result |= set(self._expand_tree(
-                            self._gen_sememe_tree(item), expanded_layer))
+                        result |= set(item.get_sememe_list(expanded_layer))
                 except Exception as e:
                     print(word)
                     print("Wrong Item:", item)
@@ -357,7 +266,7 @@ class HowNetDict(object):
                 queryResult = queryResult[:K]
             for index, item in enumerate(queryResult):
                 print("Display #{0} sememe tree".format(index))
-                self._visualize_sememe_trees(item)
+                item.visualize_sememe_tree()
         else:
             print("Wrong display mode: ", display)
         return result
@@ -366,13 +275,17 @@ class HowNetDict(object):
         return str(type(self))
 
     def has(self, item, language=None):
-        """
-        Check that whether certain word(English Word/Chinese Word/ID) exist in HowNet
+        """Check that whether certain word(English Word/Chinese Word/ID) exist in HowNet
         Only perform exact match because HowNet is case-sensitive
         By default, it will search the target word in both the English vocabulary and the Chinese vocabulary
-        :param item: target word to be searched in HowNet
-        :param language: specify the language of the target search word
-        :return:(Boolean) whether the word exists in HowNet annotation
+
+        Args:
+            item (`str`):
+                target word to be searched in HowNet
+            language (`str`):
+                specify the language of the target search word
+        Returns:
+            (`bool`) whether the word exists in HowNet annotation
         """
         if language == "en":
             return item in self.en_map
@@ -382,17 +295,19 @@ class HowNetDict(object):
         return item in self.en_map or item in self.zh_map or item in self.sense_dic
 
     def get_all_sememes(self):
-        """
-        Get the complete sememe dict in HowNet
-        :return: (Dict) a dict of sememes or (Dict) a dict of sememe and its frequency
+        """Get the complete sememe dict in HowNet
+
+        Returns:
+            (`dict`) a dict of all sememes
         """
         return self.sememe_dic
 
     # Sememe relation
-    def get_sememe_relation(self, x, y):
-        """
-        Show relationship between two sememes.
-        :return: (String) a string represents the relation.
+    def get_sememe_relation(self, x, y, return_triples=False):
+        """Show relationship between two sememes.
+
+        Returns:
+            (`list`) a list contains sememe triples. x is the head sememe and y is the tail sememe.
         """
         res = []
         sememe_x = self.sememe_fuzzy_match(x)
@@ -400,48 +315,49 @@ class HowNetDict(object):
         for s_x in sememe_x:
             for s_y in sememe_y:
                 if (s_x, s_y) in self.sememe_relation_dic.keys():
-                    res.append((self.sememe_dic[s_x], self.sememe_relation_dic[(
-                        s_x, s_y)], self.sememe_dic[s_y]))
+                    if return_triples:
+                        res.append((self.sememe_dic[s_x], self.sememe_relation_dic[(
+                            s_x, s_y)], self.sememe_dic[s_y]))
+                    else:
+                        res.append(self.sememe_relation_dic[(
+                            s_x, s_y)])
         return res
 
-    def get_sememe_via_relation(self, x, relation):
-        """
-        Show all sememes that x has relation with.
-        :return: (List) a string represents all related sememes.
+    def get_sememe_via_relation(self, x, relation, return_triples=False):
+        """Show all sememes that x has relation with.
+
+        Returns:
+            (`list[Sememe]`) a string represents all related sememes.
         """
         res = []
         sememe_x = self.sememe_fuzzy_match(x)
         for s_x in sememe_x:
-            if relation in self.sememe_dic[s_x].related_sememes_forward.keys():
-                res.append(
-                    self.sememe_dic[s_x].related_sememes_forward[relation])
+            res.extend(self.sememe_dic[s_x].get_sememe_via_relation(relation, return_triples=return_triples))
         return res
 
-    def get_related_sememes(self, x):
+    def get_related_sememes(self, x, return_triples=False):
+        """Show all sememes that x has any relation with.
+
+        Returns:
+            (`list`) a list contains sememe triples.
         """
-        Show all sememes that x has any relation with.
-        :param x: target sememe, you can use any language(en/zh).
-        :return: (List) a list contains sememe triples.
-        """
-        res = []
-        sememe_x = self.sememe_fuzzy_match(x)
+        res=[]
+        sememe_x=self.sememe_fuzzy_match(x)
         for s_x in sememe_x:
-            for r in self.sememe_dic[s_x].related_sememes_forward.keys():
-                res.append(
-                    (self.sememe_dic[s_x], r, self.sememe_dic[s_x].related_sememes_forward[r]))
-            for r in self.sememe_dic[s_x].related_sememes_backward.keys():
-                res.append(
-                    (self.sememe_dic[s_x].related_sememes_backward[r], r, self.sememe_dic[s_x]))
+            res.extend(s_x.get_related_sememes(return_triples=return_triples))
         return res
 
     def get_senses_by_sememe(self, x):
+        """Get the senses labeled by sememe x.
+
+        Args:
+            x (str):
+                Target sememe
+        Returns:
+            (`list[Sense]`) The list of senses which contains No, ch_word and en_word.
         """
-        Get the senses labeled by sememe x.
-        :param x: (str)Target sememe
-        :return: the list of senses which contains No, ch_word and en_word.
-        """
-        res = []
-        sememe_x = self.sememe_fuzzy_match(x)
+        res=[]
+        sememe_x=self.sememe_fuzzy_match(x)
         for s_x in sememe_x:
             res.extend(self.sememe_dic[s_x].senses)
         return res
@@ -454,14 +370,14 @@ class HowNetDict(object):
         "Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP"
         :return: (Boolean) whether the initialization succeed.
         """
-        sememe_sim_table_pickle_path = 'resources/sememe_sim_table.pkl'
-        sense_tree_path = 'resources/sense_tree'
+        sememe_sim_table_pickle_path='resources/sememe_sim_table.pkl'
+        sense_tree_path='resources/sense_tree'
 
-        package_directory = os.path.dirname(os.path.abspath(__file__))
+        package_directory=os.path.dirname(os.path.abspath(__file__))
         try:
-            self.sememe_sim_table = pickle.load(
+            self.sememe_sim_table=pickle.load(
                 get_resource(os.path.join(package_directory, sememe_sim_table_pickle_path), "rb"))
-            self.sense_tree_dic = pickle.load(
+            self.sense_tree_dic=pickle.load(
                 get_resource(os.path.join(package_directory, sense_tree_path), 'rb'))
         except FileNotFoundError as e:
             print(
@@ -471,35 +387,35 @@ class HowNetDict(object):
         return True
 
     def sense_similarity(self, node1, node2, sememe_sim_table):  # 计算两个sense的相似度
-        delta = 0.1
-        beta_relation = 0.3
-        beta_sememe = 0.7
+        delta=0.1
+        beta_relation=0.3
+        beta_sememe=0.7
 
-        relation_sim = 0
+        relation_sim=0
         if node1.is_leaf and node2.is_leaf:
-            beta_relation = 0
-            beta_sememe = 1
+            beta_relation=0
+            beta_sememe=1
         else:
-            role_match = 0
-            N = len(node1.children) + len(node2.children)
-            flag1 = [1] * len(node1.children)
-            flag2 = [1] * len(node2.children)
+            role_match=0
+            N=len(node1.children) + len(node2.children)
+            flag1=[1] * len(node1.children)
+            flag2=[1] * len(node2.children)
             for i in range(len(node1.children)):
                 for j in range(len(node2.children)):
                     if node1.children[i].role == node2.children[j].role and flag1[i] == 1 and flag2[j] == 1:
-                        flag1[i] = 0
-                        flag2[j] = 0
-                        role_match = role_match + 1
-                        relation_sim = relation_sim + \
+                        flag1[i]=0
+                        flag2[j]=0
+                        role_match=role_match + 1
+                        relation_sim=relation_sim + \
                             self.sense_similarity(
                                 node1.children[i], node2.children[j], sememe_sim_table)
-            relation_sim = relation_sim + (sum(flag1) + sum(flag2)) * delta
-            relation_sim = relation_sim / (N - role_match)
+            relation_sim=relation_sim + (sum(flag1) + sum(flag2)) * delta
+            relation_sim=relation_sim / (N - role_match)
 
         if (node1.name, node2.name) in sememe_sim_table:
-            sememe_sim = sememe_sim_table[(node1.name, node2.name)]
+            sememe_sim=sememe_sim_table[(node1.name, node2.name)]
         else:
-            sememe_sim = sememe_sim_table[(node2.name, node1.name)]
+            sememe_sim=sememe_sim_table[(node2.name, node1.name)]
         return beta_relation * relation_sim + beta_sememe * sememe_sim
 
     def get_nearest_words_via_sememes(self, word, K=10):
@@ -512,7 +428,7 @@ class HowNetDict(object):
                 If the given word does not exist in HowNet annotations, this function will return an empty list.
                 If the initialization method of word similarity calculation has not been called yet, it will also return an empty list and print corresponding error message.
         """
-        res = list()
+        res=list()
         if not hasattr(self, "sense_tree_dic") or not hasattr(self, "sememe_sim_table"):
             print("Please initialize the similarity calculation firstly!")
             return res
@@ -522,22 +438,22 @@ class HowNetDict(object):
         if not self.has(word):
             print(word + ' is not annotated in HowNet.')
             return res
-        sense_list = self[word]
-        banned_id = [i.No for i in sense_list]
+        sense_list=self[word]
+        banned_id=[i.No for i in sense_list]
         for i in sense_list:
-            tree1 = self.sense_tree_dic[i.No]
-            score = {}
+            tree1=self.sense_tree_dic[i.No]
+            score={}
             for j in self.sense_dic.keys():
                 if j not in banned_id and int(j) >= 3378:
-                    tree2 = self.sense_tree_dic[j]
-                    sim = self.sense_similarity(
+                    tree2=self.sense_tree_dic[j]
+                    sim=self.sense_similarity(
                         tree1, tree2, self.sememe_sim_table)
-                    score[self.sense_dic[j]] = sim
-            result = sorted(score.items(), key=lambda x: x[1], reverse=True)
-            topK = result[0:K]
-            queryRes = dict()
-            queryRes["sense"] = i
-            queryRes["synset"] = topK
+                    score[self.sense_dic[j]]=sim
+            result=sorted(score.items(), key=lambda x: x[1], reverse=True)
+            topK=result[0:K]
+            queryRes=dict()
+            queryRes["sense"]=i
+            queryRes["synset"]=topK
             res.append(queryRes)
         return res
 
@@ -550,7 +466,7 @@ class HowNetDict(object):
                  If word0 or word1 does not exist in HowNet annotation, it will return 0.0
                 If the initialization method of word similarity calculation has not been called yet, it will also return 0.0 and print corresponding error message.
         """
-        res = 0.0
+        res=0.0
         if not hasattr(self, "sense_tree_dic") or not hasattr(self, "sememe_sim_table"):
             print("Please initialize the similarity calculation firstly!")
             return res
@@ -563,13 +479,13 @@ class HowNetDict(object):
         if not self.has(word1):
             print(word1 + ' is not annotated in HowNet.')
             return res
-        senses1 = self[word0]
-        senses2 = self[word1]
-        max_sim = -1
+        senses1=self[word0]
+        senses2=self[word1]
+        max_sim=-1
         for id1 in senses1:
             for id2 in senses2:
-                sim = self.sense_similarity(
+                sim=self.sense_similarity(
                     self.sense_tree_dic[id1.No], self.sense_tree_dic[id2.No],  self.sememe_sim_table)
                 if sim > max_sim:
-                    max_sim = sim
+                    max_sim=sim
         return max_sim

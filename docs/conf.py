@@ -31,8 +31,22 @@ author = 'THUNLP'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['recommonmark', 'sphinx.ext.autodoc'
-              ]
+extensions = [
+    "sphinx.ext.viewcode",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.inheritance_diagram",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.napoleon",
+    "sphinx_rtd_theme",
+    # Enable .ipynb doc files
+    "nbsphinx",
+    # Enable .md doc files
+    "recommonmark",
+    "sphinx_markdown_tables",
+    "IPython.sphinxext.ipython_console_highlighting",
+]
+
+autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
