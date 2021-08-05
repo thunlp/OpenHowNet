@@ -6,6 +6,7 @@ Sense Class
 from anytree import Node, RenderTree
 from anytree.exporter import DictExporter, JsonExporter
 
+
 class Sense(object):
     """Contains variables of a sense. Initialized by an item in HowNet.
     Contains numbering, word, POS of word, sememe tree, etc.
@@ -17,10 +18,7 @@ class Sense(object):
 
     def __init__(self, hownet_sense):
         """Initialize a sense object by a hownet item.
-
         Initialize the attributes of the sense.
-
-        :param hownet_sense: (Dict)The Annotation of the sense in HowNet.
         """
         self.No = hownet_sense['No']
         self.en_word = hownet_sense['en_word']
@@ -34,7 +32,7 @@ class Sense(object):
         """Define how to print the sense.
         """
         return 'No.'+self.No
-    
+
     def _expand_tree(self, tree, layer, isRoot=True):
         """Expand the sememe tree by iteration.
 
@@ -65,7 +63,7 @@ class Sense(object):
                     continue
                 raise e
         return res
-    
+
     def get_sememe_list(self, layer=-1):
         """Expand the sememe tree by iteration.
         Return the sememe set of the tree.
@@ -80,7 +78,7 @@ class Sense(object):
         tree = self.gen_sememe_tree()
         return self._expand_tree(tree, layer)
 
-    def gen_sememe_tree(self, return_node = False):
+    def gen_sememe_tree(self, return_node=False):
         """Generate sememe tree for the sense by the Def.
 
         Args:
@@ -88,7 +86,8 @@ class Sense(object):
                 whether to return as anytree node.
 
         Returns:
-            (`dict`) the sememe tree of the sense.
+            (`dict`or`anytree.Node`) the sememe tree of the sense in the form of dict 
+            or the root node of the sememe tree.
         """
         kdml = self.Def
         rmk_pos = kdml.find('RMK=')
@@ -165,7 +164,7 @@ class Sense(object):
                 return DictExporter().export(root)
             else:
                 return root
-    
+
     def visualize_sememe_tree(self):
         """Visualize the sememe tree by sense Def.
         """
@@ -173,7 +172,3 @@ class Sense(object):
         tree = RenderTree(tree)
         for pre, fill, node in tree:
             print("%s[%s]%s" % (pre, node.role, node.name))
-    
-
-
-
