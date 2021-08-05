@@ -267,10 +267,10 @@
             <span class="k">return</span> <span class="n">res</span>
         <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">en_map</span><span class="p">:</span>
             <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">en_map</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">zh_map</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">zh_map</span><span class="p">:</span>
             <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zh_map</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sense_dic</span><span class="p">:</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sense_dic</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sense_dic</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sense_dic</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">res</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -354,9 +354,21 @@
                     <span class="n">start_idx</span> <span class="o">=</span> <span class="n">start_idx</span> <span class="o">-</span> <span class="mi">1</span>
                 <span class="k">while</span> <span class="n">kdml</span><span class="p">[</span><span class="n">end_idx</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">]:</span>
                     <span class="n">end_idx</span> <span class="o">=</span> <span class="n">end_idx</span> <span class="o">+</span> <span class="mi">1</span>
-                <span class="n">res</span><span class="p">[</span><span class="n">kdml</span><span class="p">[</span><span class="n">start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">end_idx</span><span class="p">]</span>
-                    <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sememe_dic</span><span class="p">[</span><span class="n">kdml</span><span class="p">[</span><span class="n">start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">end_idx</span><span class="p">]]</span>
+                <span class="n">res</span><span class="p">[</span><span class="n">kdml</span><span class="p">[</span><span class="n">start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">end_idx</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sememe_dic</span><span class="p">[</span><span class="n">kdml</span><span class="p">[</span><span class="n">start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">end_idx</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">res</span>
+
+<div class="viewcode-block" id="HowNetDict.get_senses_by_word"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.HowNetDict.HowNetDict.get_senses_by_word">[docs]</a>    <span class="k">def</span> <span class="nf">get_senses_by_word</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Commen sense search API.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            word (`str`):</span>
+<span class="sd">                Specific word(en/zh/id) you want to search in HowNet.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (`list[Sense]`) the list of Sense.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="HowNetDict.get_sememes_by_word"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.HowNetDict.HowNetDict.get_sememes_by_word">[docs]</a>    <span class="k">def</span> <span class="nf">get_sememes_by_word</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="s1">&#39;dict&#39;</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">expanded_layer</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Commen sememe search API.</span>
@@ -533,6 +545,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sememe_sim_table_pickle_path</span> <span class="o">=</span> <span class="s1">&#39;resources/sememe_sim_table.pkl&#39;</span>
         <span class="n">sense_tree_path</span> <span class="o">=</span> <span class="s1">&#39;resources/sense_tree&#39;</span>
+        <span class="n">sense_syn_path</span> <span class="o">=</span> <span class="s1">&#39;resources/synonym&#39;</span>
 
         <span class="n">package_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
         <span class="k">try</span><span class="p">:</span>
@@ -540,6 +553,8 @@
                 <span class="n">get_resource</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package_directory</span><span class="p">,</span> <span class="n">sememe_sim_table_pickle_path</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sense_tree_dic</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
                 <span class="n">get_resource</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package_directory</span><span class="p">,</span> <span class="n">sense_tree_path</span><span class="p">),</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sense_syn_dic</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                <span class="n">get_resource</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package_directory</span><span class="p">,</span> <span class="n">sense_synonym_path</span><span class="p">),</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="s2">&quot;Enabling Word Similarity Calculation requires specific data files, please check the completeness of your download package.&quot;</span><span class="p">)</span>
@@ -658,7 +673,20 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">sense_tree_dic</span><span class="p">[</span><span class="n">id1</span><span class="o">.</span><span class="n">No</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sense_tree_dic</span><span class="p">[</span><span class="n">id2</span><span class="o">.</span><span class="n">No</span><span class="p">],</span>  <span class="bp">self</span><span class="o">.</span><span class="n">sememe_sim_table</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">sim</span> <span class="o">&gt;</span> <span class="n">max_sim</span><span class="p">:</span>
                     <span class="n">max_sim</span> <span class="o">=</span> <span class="n">sim</span>
-        <span class="k">return</span> <span class="n">max_sim</span></div></div>
+        <span class="k">return</span> <span class="n">max_sim</span></div>
+
+<div class="viewcode-block" id="HowNetDict.get_sense_synonyms"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.HowNetDict.HowNetDict.get_sense_synonyms">[docs]</a>    <span class="k">def</span> <span class="nf">get_sense_synonyms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sense</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the senses that have the same sememe annotation with the sense</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (`list[Sense]`) the list of senses that have the same sememe annotation with the sense.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ss</span> <span class="o">=</span> <span class="n">sense</span><span class="o">.</span><span class="n">get_sememe_list</span><span class="p">()</span>
+        <span class="n">ll</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span>
+        <span class="n">ll</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">en_ch</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ll</span><span class="p">]</span>
+        <span class="n">ll</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ll</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sense_dic</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sense_syn_dic</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span></div></div>
 </pre></div>
 
            </div>

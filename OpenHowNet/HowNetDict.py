@@ -108,10 +108,10 @@ class HowNetDict(object):
             return res
         if item in self.en_map:
             res.extend(self.en_map[item])
-        if item in self.zh_map:
+        elif item in self.zh_map:
             res.extend(self.zh_map[item])
-        if item in self.sense_dic:
-            res.extend(self.sense_dic[item])
+        elif item in self.sense_dic:
+            res.append(self.sense_dic[item])
         return res
 
     def __len__(self):
@@ -195,9 +195,21 @@ class HowNetDict(object):
                     start_idx = start_idx - 1
                 while kdml[end_idx] not in ['}', ':', '"']:
                     end_idx = end_idx + 1
-                res[kdml[start_idx + 1:end_idx]
-                    ] = self.sememe_dic[kdml[start_idx + 1:end_idx]]
+                res[kdml[start_idx + 1:end_idx].replace(' ', '_')
+                    ] = self.sememe_dic[kdml[start_idx + 1:end_idx].replace(' ', '_')]
         return res
+
+    def get_senses_by_word(self, word):
+        """Commen sense search API.
+
+        Args:
+            word (`str`):
+                Specific word(en/zh/id) you want to search in HowNet.
+
+        Returns:
+            (`list[Sense]`) the list of Sense.
+        """
+        return self[word]
 
     def get_sememes_by_word(self, word, display='dict', merge=False, expanded_layer=-1, K=None):
         """Commen sememe search API.
@@ -374,6 +386,7 @@ class HowNetDict(object):
         """
         sememe_sim_table_pickle_path = 'resources/sememe_sim_table.pkl'
         sense_tree_path = 'resources/sense_tree'
+        sense_syn_path = 'resources/synonym'
 
         package_directory = os.path.dirname(os.path.abspath(__file__))
         try:
@@ -381,6 +394,8 @@ class HowNetDict(object):
                 get_resource(os.path.join(package_directory, sememe_sim_table_pickle_path), "rb"))
             self.sense_tree_dic = pickle.load(
                 get_resource(os.path.join(package_directory, sense_tree_path), 'rb'))
+            self.sense_syn_dic = pickle.load(
+                get_resource(os.path.join(package_directory, sense_synonym_path), 'rb'))
         except FileNotFoundError as e:
             print(
                 "Enabling Word Similarity Calculation requires specific data files, please check the completeness of your download package.")
@@ -500,3 +515,16 @@ class HowNetDict(object):
                 if sim > max_sim:
                     max_sim = sim
         return max_sim
+
+    def get_sense_synonyms(self, sense):
+        """Get the senses that have the same sememe annotation with the sense
+
+        Returns:
+            (`list[Sense]`) the list of senses that have the same sememe annotation with the sense.
+        """
+        ss = sense.get_sememe_list()
+        ll = list(ss)
+        ll = [i.en_ch for i in ll]
+        ll.sort()
+        k = '_'.join(ll)
+        return [self.sense_dic[i] for i in self.sense_syn_dic[k]]
