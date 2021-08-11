@@ -29,7 +29,7 @@ class HowNetDict(object):
         >>> hownet_dict = OpenHowNet.HowNetDict()
 
         >>> # Search a word in HowNet and get a list of senses contain the word
-        >>> result_list = hownet_dict.get("苹果")
+        >>> result_list = hownet_dict.get_sense("苹果")
 
         >>> # Visualize the sememe tree of the sense
         >>> hownet_dict.get_sememes_by_word('苹果', display='visual')
@@ -92,7 +92,7 @@ class HowNetDict(object):
             print(e)
 
     def __getitem__(self, item):
-        """Shortcut for Get(self,item,None)
+        """Shortcut for get_sense(self,item,None)
 
         Args:
             item (`str`):
@@ -106,11 +106,11 @@ class HowNetDict(object):
             for item in self.sense_dic.values():
                 res.append(item)
             return res
-        if item in self.en_map:
-            res.extend(self.en_map[item])
-        elif item in self.zh_map:
-            res.extend(self.zh_map[item])
-        elif item in self.sense_dic:
+        if item in self.en_map and self.en_map[item] not in res:
+            res.append(self.en_map[item])
+        if item in self.zh_map and self.zh_map[item] not in res:
+            res.append(self.zh_map[item])
+        if item in self.sense_dic and self.sense_dic[item] not in res:
             res.append(self.sense_dic[item])
         return res
 
@@ -122,25 +122,96 @@ class HowNetDict(object):
         """
         return len(self.sense_dic)
 
-    def get(self, word, language=None):
-        """Common word search API, you can specify the language of the target word to boost the search performance
+    def get_sense(self, word, language=None, strict=True):
+        """Common sense search API, you can specify the language of the target word to boost the search performance.
+        Besides if you are not sure about the word, you can set `strict` to False to fuzzy match the sense.
 
         Args:
-            word (`str`): target word.
-            language (`str`): target language, default: None. (The func will search both in English and Chinese, which will consume a lot of time.)
+            word (`str`): 
+                target word.
+            language (`str`): 
+                target language, default: None. (The func will search both in English and Chinese, which will consume a lot of time.)
+                you can set to `en` or `zh`, which means search in English or Chinese
+            strict (`bool`): 
+                whether to search the sense strictly.
 
         Returns:
             (`list[Sense]`) candidates HowNet senses, if the target word does not exist, return an empty list.
         """
         res = list()
-        if language == "en":
-            if (word in self.en_map):
-                res = self.en_map[word]
-        elif language == "zh":
-            if (word in self.zh_map):
-                res = self.zh_map[word]
+        if strict:
+            if language == "en":
+                if (word in self.en_map):
+                    res = self.en_map[word]
+            elif language == "zh":
+                if (word in self.zh_map):
+                    res = self.zh_map[word]
+            else:
+                res = self[word]
         else:
-            res = self[word]
+            if language == "en":
+                for k in self.en_map.keys():
+                    if k.find(word) != -1:
+                        res.append(self.en_map[k])
+            elif language == "zh":
+                for k in self.zh_map.keys():
+                    if k.find(word) != -1:
+                        res.append(self.zh_map[k])
+            else:
+                for k in self.en_map.keys():
+                    if k.find(word) != -1:
+                        res.append(self.en_map[k])
+                for k in self.zh_map.keys():
+                    if k.find(word) != -1:
+                        res.append(self.zh_map[k])
+                for k in self.sense_dic.keys():
+                    if k.find(word) != -1:
+                        res.append(self.sense_dic[k])
+        return res
+
+    def get_sememe(self, word, language=None, strict=True):
+        """The commen sememe search API. you can specify the language of the target word to boost the search performance.
+        Besides if you are not sure about the word, you can set `strict` to False to fuzzy match the sememe.
+
+        Args:
+            word (`str`): 
+                target word.
+            language (`str`): 
+                target language, default: None. (The func will search both in English and Chinese, which will consume a lot of time.)
+                you can set to `en` or `zh`, which means search in English or Chinese
+            strict (`bool`): 
+                whether to search the sense strictly.
+
+        Returns:
+            (`list[Sememe]`) candidates HowNet sememes, if the target word does not exist, return an empty list.
+        """
+        res = []
+        if strict:
+            if language == 'en':
+                for v in self.sememe_dic.values():
+                    if v.en == word and v not in res:
+                        res.append(v)
+            elif language == 'zh':
+                for v in self.sememe_dic.values():
+                    if v.zh == word and v not in res:
+                        res.append(v)
+            else:
+                for v in self.sememe_dic.values():
+                    if (v.en == word or v.zh == word or v.en_zh == word) and v not in res:
+                        res.append(v)
+        else:
+            if language == 'en':
+                for v in self.sememe_dic.values():
+                    if v.en.find(word) != -1 and v not in res:
+                        res.append(v)
+            elif language == 'zh':
+                for v in self.sememe_dic.values():
+                    if v.zh.find(word) != -1 and v not in res:
+                        res.append(v)
+            else:
+                for v in self.sememe_dic.values():
+                    if word or v.en_zh.find(word) != -1 and v not in res:
+                        res.append(v)
         return res
 
     def get_zh_words(self):
@@ -252,7 +323,7 @@ class HowNetDict(object):
         if display == 'dict' or display == 'tree':
             for item in queryResult:
                 try:
-                    result.append({'sense': item, 'sememes': item.gen_sememe_tree(
+                    result.append({'sense': item, 'sememes': item.get_sememe_tree(
                         return_node=display == 'tree')})
                 except Exception as e:
                     print("Generate Sememe Tree Failed for", item.No)
@@ -315,47 +386,79 @@ class HowNetDict(object):
         return self.sememe_dic
 
     # Sememe relation
-    def get_sememe_relation(self, x, y, return_triples=False):
+    def get_sememe_relation(self, x, y, return_triples=False, strict=True):
         """Show relationship between two sememes.
+
+        Args:
+            x (`str`): 
+                the word #0 to search the sememe.
+            y (`str`): 
+                the word #1 to search the sememe.
+            return_triples (`bool`):
+                you can choose to get the list of triples or just the list of the relations.
+            strict (`bool`):
+                you can choose to search the sememe relation strictly by the word.
+                set to False if you are not sure about the x and y.
+
 
         Returns:
             (`list`) a list contains sememe triples. x is the head sememe and y is the tail sememe.
         """
         res = []
-        sememe_x = self.sememe_fuzzy_match(x)
-        sememe_y = self.sememe_fuzzy_match(y)
+        sememe_x = self.get_sememe(x, strict=strict)
+        sememe_y = self.get_sememe(y, strict=strict)
         for s_x in sememe_x:
             for s_y in sememe_y:
-                if (s_x, s_y) in self.sememe_relation_dic.keys():
+                if (s_x.en_zh, s_y.en_zh) in self.sememe_relation_dic.keys():
                     if return_triples:
-                        res.append((self.sememe_dic[s_x], self.sememe_relation_dic[(
-                            s_x, s_y)], self.sememe_dic[s_y]))
+                        res.append(
+                            (s_x, self.sememe_relation_dic[(s_x.en_zh, s_y.en_zh)], s_y))
                     else:
                         res.append(self.sememe_relation_dic[(
-                            s_x, s_y)])
+                            s_x.en_zh, s_y.en_zh)])
         return res
 
-    def get_sememe_via_relation(self, x, relation, return_triples=False):
+    def get_sememe_via_relation(self, x, relation, return_triples=False, strict=True):
         """Show all sememes that x has relation with.
 
+        Args:
+            x (`str`): 
+                the word to search the sememe.
+            relation (`str`):
+                the relaiton to search the sememe.
+            return_triples (`bool`):
+                you can choose to get the list of triples or just the list of the sememes.
+            strict (`bool`):
+                you can choose to search the sememe relation strictly by the word.
+                set to False if you are not sure about the x.
+
         Returns:
-            (`list[Sememe]`) a string represents all related sememes.
+            (`list[Sememe]`) a list contains all related sememes.
         """
         res = []
-        sememe_x = self.sememe_fuzzy_match(x)
+        sememe_x = self.get_sememe(x, strict=strict)
         for s_x in sememe_x:
-            res.extend(self.sememe_dic[s_x].get_sememe_via_relation(
+            res.extend(s_x.get_sememe_via_relation(
                 relation, return_triples=return_triples))
         return res
 
-    def get_related_sememes(self, x, return_triples=False):
+    def get_related_sememes(self, x, return_triples=False, strict=True):
         """Show all sememes that x has any relation with.
+
+        Args:
+            x (`str`): 
+                the word to search the sememe.
+            return_triples (`bool`):
+                you can choose to get the list of triples or just the list of the sememes.
+            strict (`bool`):
+                you can choose to search the sememe relation strictly by the word.
+                set to False if you are not sure about the x.
 
         Returns:
             (`list`) a list contains sememe triples.
         """
         res = []
-        sememe_x = self.sememe_fuzzy_match(x)
+        sememe_x = self.get_sememe(x, strict = strict)
         for s_x in sememe_x:
             res.extend(s_x.get_related_sememes(return_triples=return_triples))
         return res
@@ -375,8 +478,8 @@ class HowNetDict(object):
             res.extend(self.sememe_dic[s_x].senses)
         return res
 
-    # Sememe similarity calculation
-    def initialize_sememe_similarity_calculation(self):
+    # Similarity calculation
+    def initialize_similarity_calculation(self):
         """Initialize the word similarity calculation via sememes.
         Implementation is contributed by Jun Yan, which is based on the paper :
         "Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP"
@@ -395,7 +498,7 @@ class HowNetDict(object):
             self.sense_tree_dic = pickle.load(
                 get_resource(os.path.join(package_directory, sense_tree_path), 'rb'))
             self.sense_syn_dic = pickle.load(
-                get_resource(os.path.join(package_directory, sense_synonym_path), 'rb'))
+                get_resource(os.path.join(package_directory, sense_syn_path), 'rb'))
         except FileNotFoundError as e:
             print(
                 "Enabling Word Similarity Calculation requires specific data files, please check the completeness of your download package.")
