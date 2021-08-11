@@ -31,7 +31,8 @@ class Sense(object):
     def __repr__(self):
         """Define how to print the sense.
         """
-        return 'No.'+self.No
+        nzno = str(int(self.No))
+        return 'No.' + nzno + "|%s|%s|" % (self.en_word, self.ch_word)
 
     def _expand_tree(self, tree, layer, isRoot=True):
         """Expand the sememe tree by iteration.
@@ -75,10 +76,10 @@ class Sense(object):
         Returns:
             (`set[Sememe]`) the sememe set of the sememe tree.
         """
-        tree = self.gen_sememe_tree()
+        tree = self.get_sememe_tree()
         return self._expand_tree(tree, layer)
 
-    def gen_sememe_tree(self, return_node=False):
+    def get_sememe_tree(self, return_node=False):
         """Generate sememe tree for the sense by the Def.
 
         Args:
@@ -167,8 +168,15 @@ class Sense(object):
 
     def visualize_sememe_tree(self):
         """Visualize the sememe tree by sense Def.
+        Print and return the sememe tree str.
+
+        Returns:
+            (`str`) the visualized sememe tree.
         """
-        tree = self.gen_sememe_tree(return_node=True)
+        tree = self.get_sememe_tree(return_node=True)
         tree = RenderTree(tree)
+        tree_str = ''
         for pre, fill, node in tree:
-            print("%s[%s]%s" % (pre, node.role, node.name))
+            tree_str += "%s[%s]%s\n" % (pre, node.role, node.name)
+        print(tree_str)
+        return tree_str

@@ -10,7 +10,7 @@ class Sememe(object):
 
     Attributes:
         en (str): English word to describe the sememe.
-        ch (str): Chinese word to describe the sememe.
+        zh (str): Chinese word to describe the sememe.
         freq (int): 
             the sememe occurence frequency in HowNet.
         related_sememes_forward (dict): 
@@ -28,8 +28,8 @@ class Sememe(object):
     def __init__(self, hownet_sememe, freq):
         """Initialize a sememe by sememe annotations.
         """
-        self.en, self.ch = hownet_sememe.split('|')
-        self.en_ch = hownet_sememe
+        self.en, self.zh = hownet_sememe.split('|')
+        self.en_zh = hownet_sememe
         self.freq = freq
         self.related_sememes_forward = {}
         self.related_sememes_backward = {}
@@ -38,7 +38,7 @@ class Sememe(object):
     def __repr__(self):
         """Define how to print the sememe.
         """
-        return self.en_ch
+        return self.en_zh
 
     def add_related_sememes_forward(self, head, relation, tail):
         """Add a sememe triple to the sememe.
