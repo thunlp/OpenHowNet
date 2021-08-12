@@ -36,7 +36,7 @@ class HowNetDict(object):
 
     """
 
-    def __init__(self):
+    def __init__(self, init_sim = False):
         '''Initialize HowNetDict
         '''
         try:
@@ -80,14 +80,17 @@ class HowNetDict(object):
             self.zh_map = dict()
             for k in self.sense_dic.keys():
                 en_word = self.sense_dic[k].en_word.strip()
-                zh_word = self.sense_dic[k].ch_word.strip()
+                zh_word = self.sense_dic[k].zh_word.strip()
                 if en_word not in self.en_map:
                     self.en_map[en_word] = list()
                 self.en_map[en_word].append(self.sense_dic[k])
                 if zh_word not in self.zh_map:
                     self.zh_map[zh_word] = list()
                 self.zh_map[zh_word].append(self.sense_dic[k])
-
+            
+            # Initialize the similarity calculation
+            if init_sim:
+                self.initialize_similarity_calculation()
         except FileNotFoundError as e:
             print(e)
 
@@ -272,18 +275,6 @@ class HowNetDict(object):
                 res[kdml[start_idx + 1:end_idx].replace(' ', '_')
                     ] = self.sememe_dic[kdml[start_idx + 1:end_idx].replace(' ', '_')]
         return res
-
-    def get_senses_by_word(self, word):
-        """Commen sense search API.
-
-        Args:
-            word (`str`):
-                Specific word(en/zh/id) you want to search in HowNet.
-
-        Returns:
-            (`list[Sense]`) the list of Sense.
-        """
-        return self[word]
 
     def get_sememes_by_word(self, word, display='dict', merge=False, expanded_layer=-1, K=None):
         """Commen sememe search API.
@@ -483,9 +474,6 @@ class HowNetDict(object):
         """Initialize the similarity calculation via sememes.
         Implementation is contributed by Jun Yan, which is based on the paper :
         "Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP"
-
-        Returns: 
-            (`str`) whether the initialization succeed.
         """
         sememe_sim_table_pickle_path = 'resources/sememe_sim_table.pkl'
         sense_tree_path = 'resources/sense_tree'
@@ -503,9 +491,11 @@ class HowNetDict(object):
             print(
                 "Enabling Word Similarity Calculation requires specific data files, please check the completeness of your download package.")
             print(e)
-            return "Initialization failed..."
-        return "Initialization succeeded!"
-
+            return
+        print("Initialization succeeded!")
+        return
+    
+    
     def sense_similarity(self, node1, node2, sememe_sim_table):
         """Calculate the similarity between two senses.
         """
@@ -540,6 +530,7 @@ class HowNetDict(object):
             sememe_sim = sememe_sim_table[(node2.name, node1.name)]
         return beta_relation * relation_sim + beta_sememe * sememe_sim
 
+    '''
     def get_nearest_words_via_sememes(self, word, K=10):
         """
         Get the topK nearest words of the given word, the word similarity is calculated based on HowNet annotation.
@@ -631,3 +622,69 @@ class HowNetDict(object):
         ll.sort()
         k = '_'.join(ll)
         return [self.sense_dic[i] for i in self.sense_syn_dic[k]]
+    '''
+
+    def get_nearest_words(self, word, language=None, merge=False, K=10, strict=True):
+        """
+        Get the topK nearest words of the given word, the word similarity is calculated based on HowNet annotation.
+        If the given word does not exist in HowNet annotations, this function will return an empty list.
+
+        Args: 
+            word (`str`): 
+                target word
+            language (`str`):
+                specify the language of the word and the search result.
+            merge (`bool`):
+                you can choose to merge the words of all the result senses into one list.
+            K (`int`): 
+                specify the number of the nearest words you want to retrieve.
+            strict (`bool`):
+                you can choose to search the word strictly or not.
+        Returns: 
+            (`list`) a list of the nearest K words.
+            if merge==False, returns a list of senses retrieved by the word and their synonym seperately.
+            If the given word does not exist in HowNet annotations, this function will return an empty list.
+        """
+        res = set()
+        if not hasattr(self, "sense_tree_dic") or not hasattr(self, "sememe_sim_table"):
+            print("Please initialize the similarity calculation firstly!")
+            return
+        if self.sense_tree_dic is None or self.sememe_sim_table is None:
+            print("Please initialize the similarity calculation firstly!")
+            return
+        # Retireve the senses annotated with word.
+        senses = self.get_sense(word, strict=strict)
+        res_temp = list()
+        for i in senses:
+            tree1 = self.sense_tree_dic[i.No]
+            score = {}
+            for j in self.sense_dic.keys():
+                if j != i.No and int(j) >= 3378:
+                    tree2 = self.sense_tree_dic[j]
+                    sim = self.sense_similarity(
+                        tree1, tree2, self.sememe_sim_table)
+                    score[self.sense_dic[j]] = sim
+            result = sorted(score.items(), key=lambda x: x[1], reverse=True)
+            res_item = dict()
+            res_item['sense'] = i
+            res_item['synonym'] = result[:K]
+            res_temp.append(res_item)
+        if merge:
+            res = set()
+            for i in res_temp:
+                res |= set([j[0].en_word if language=='en' else j[0].zh_word for j in i['synonym']])
+            return list(res)[:K]
+        else:
+            res = dict()
+            for i in res_temp:
+                res[i['sense']] = set()
+                res[i['sense']] |= set([j[0].en_word if language=='en' else j[0].zh_word for j in i['synonym']])
+                res[i['sense']] = list(res[i['sense']])
+            return res
+
+
+        
+        
+
+
+        

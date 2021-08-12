@@ -23,8 +23,8 @@ class Sense(object):
         self.No = hownet_sense['No']
         self.en_word = hownet_sense['en_word']
         self.en_grammar = hownet_sense['en_grammar']
-        self.ch_word = hownet_sense['ch_word']
-        self.ch_grammar = hownet_sense['ch_grammar']
+        self.zh_word = hownet_sense['ch_word']
+        self.zh_grammar = hownet_sense['ch_grammar']
         self.Def = hownet_sense['Def']
         self.sememes = {}
 
@@ -32,7 +32,7 @@ class Sense(object):
         """Define how to print the sense.
         """
         nzno = str(int(self.No))
-        return 'No.' + nzno + "|%s|%s" % (self.en_word, self.ch_word)
+        return 'No.' + nzno + "|%s|%s" % (self.en_word, self.zh_word)
 
     def _expand_tree(self, tree, layer, isRoot=True):
         """Expand the sememe tree by iteration.
