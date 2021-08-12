@@ -210,7 +210,7 @@ class HowNetDict(object):
                         res.append(v)
             else:
                 for v in self.sememe_dic.values():
-                    if word or v.en_zh.find(word) != -1 and v not in res:
+                    if v.en_zh.find(word) != -1 and v not in res:
                         res.append(v)
         return res
 
@@ -435,12 +435,12 @@ class HowNetDict(object):
         Returns:
             (`list[Sememe]`) a list contains all related sememes.
         """
-        res = []
+        res = set()
         sememe_x = self.get_sememe(x, strict=strict)
         for s_x in sememe_x:
-            res.extend(s_x.get_sememe_via_relation(
+            res|=set(s_x.get_sememe_via_relation(
                 relation, return_triples=return_triples))
-        return res
+        return list(res)
 
     def get_related_sememes(self, x, return_triples=False, strict=True):
         """Show all sememes that x has any relation with.
@@ -457,13 +457,13 @@ class HowNetDict(object):
         Returns:
             (`list`) a list contains sememe triples.
         """
-        res = []
+        res = set()
         sememe_x = self.get_sememe(x, strict = strict)
         for s_x in sememe_x:
-            res.extend(s_x.get_related_sememes(return_triples=return_triples))
-        return res
+            res|=set(s_x.get_related_sememes(return_triples=return_triples))
+        return list(res)
 
-    def get_senses_by_sememe(self, x):
+    def get_senses_by_sememe(self, x, strict=True):
         """Get the senses labeled by sememe x.
 
         Args:
@@ -472,11 +472,11 @@ class HowNetDict(object):
         Returns:
             (`list[Sense]`) The list of senses which contains No, ch_word and en_word.
         """
-        res = []
-        sememe_x = self.sememe_fuzzy_match(x)
+        res = set()
+        sememe_x = self.get_sense(x, strict=strict)
         for s_x in sememe_x:
-            res.extend(self.sememe_dic[s_x].senses)
-        return res
+            res|=set(self.sememe_dic[s_x].senses)
+        return list(res)
 
     # Similarity calculation
     def initialize_similarity_calculation(self):

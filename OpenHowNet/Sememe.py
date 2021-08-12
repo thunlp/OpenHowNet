@@ -60,6 +60,7 @@ class Sememe(object):
 
     def get_senses(self):
         """Get the senses annotated with the sememe.
+        Initialized by HowNetDict.__init__()
 
         Returns:
             (`list[Sense]`) the list of the senses annotated with the sememe.
@@ -76,16 +77,18 @@ class Sememe(object):
         Returns:
             (`list`) the list of triples or return the list of related sememes.
         """
-        res = []
+        res = set()
         if return_triples:
             for k, v in self.related_sememes_forward.items():
-                res.extend([(self, k, i) for i in v])
+                res|=set([(self, k, i) for i in v])
             for k, v in self.related_sememes_backward.items():
-                res.extend([(i, k, self) for i in v])
+                res|=set([(i, k, self) for i in v])
         else:
             for i in self.related_sememes_forward.values():
-                res.extend(i)
-        return res
+                res|=set(i)
+            for i in self.related_sememes_backward.values():
+                res|=set(i)
+        return list(res)
     
     def get_sememe_via_relation(self, relation, return_triples=False):
         """Get the sememes that have relation with the sememe.
@@ -100,11 +103,13 @@ class Sememe(object):
             (`list`) the list of triples or the list of related sememes.
         """
 
-        res = []
+        res = set()
         if relation in self.related_sememes_forward.keys():
             if return_triples:
-                res.extend([(self, relation, i) for i in self.related_sememes_forward[relation]])
+                res|=set([(self, relation, i) for i in self.related_sememes_forward[relation]])
+                res|=set([(i, relation, self) for i in self.related_sememes_backward[relation]])
             else:
-                res.extend(self.related_sememes_forward[relation])
-        return res
+                res|=set(self.related_sememes_forward[relation])
+                res|=set(self.related_sememes_backward[relation])
+        return list(res)
 
