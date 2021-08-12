@@ -32,7 +32,7 @@ class Sense(object):
         """Define how to print the sense.
         """
         nzno = str(int(self.No))
-        return 'No.' + nzno + "|%s|%s|" % (self.en_word, self.ch_word)
+        return 'No.' + nzno + "|%s|%s" % (self.en_word, self.ch_word)
 
     def _expand_tree(self, tree, layer, isRoot=True):
         """Expand the sememe tree by iteration.

@@ -101,18 +101,18 @@ class HowNetDict(object):
         Returns:
             (`list[Sense]`) candidates HowNet senses, if the target word does not exist, return an empty list.
         """
-        res = list()
+        res = set()
         if item == "*":
-            for item in self.sense_dic.values():
-                res.append(item)
-            return res
-        if item in self.en_map and self.en_map[item] not in res:
-            res.append(self.en_map[item])
-        if item in self.zh_map and self.zh_map[item] not in res:
-            res.append(self.zh_map[item])
+            for v in self.sense_dic.values():
+                res.add(v)
+            return list(res)
+        if item in self.en_map:
+            res|=set(self.en_map[item])
+        if item in self.zh_map:
+            res|=set(self.zh_map[item])
         if item in self.sense_dic and self.sense_dic[item] not in res:
-            res.append(self.sense_dic[item])
-        return res
+            res.add(self.sense_dic[item])
+        return list(res)
 
     def __len__(self):
         """Get the num of the concepts in HowNet.
@@ -138,36 +138,36 @@ class HowNetDict(object):
         Returns:
             (`list[Sense]`) candidates HowNet senses, if the target word does not exist, return an empty list.
         """
-        res = list()
+        res = set()
         if strict:
             if language == "en":
                 if (word in self.en_map):
-                    res = self.en_map[word]
+                    res |= set(self.en_map[word])
             elif language == "zh":
                 if (word in self.zh_map):
-                    res = self.zh_map[word]
+                    res |= set(self.zh_map[word])
             else:
                 res = self[word]
         else:
             if language == "en":
                 for k in self.en_map.keys():
                     if k.find(word) != -1:
-                        res.append(self.en_map[k])
+                        res|=set(self.en_map[k])
             elif language == "zh":
                 for k in self.zh_map.keys():
                     if k.find(word) != -1:
-                        res.append(self.zh_map[k])
+                        res|=set(self.zh_map[k])
             else:
                 for k in self.en_map.keys():
                     if k.find(word) != -1:
-                        res.append(self.en_map[k])
+                        res|=set(self.en_map[k])
                 for k in self.zh_map.keys():
                     if k.find(word) != -1:
-                        res.append(self.zh_map[k])
+                        res|=set(self.zh_map[k])
                 for k in self.sense_dic.keys():
                     if k.find(word) != -1:
-                        res.append(self.sense_dic[k])
-        return res
+                        res.add(self.sense_dic[k])
+        return list(res)
 
     def get_sememe(self, word, language=None, strict=True):
         """The commen sememe search API. you can specify the language of the target word to boost the search performance.
