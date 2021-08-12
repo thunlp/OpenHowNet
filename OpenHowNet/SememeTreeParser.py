@@ -14,23 +14,23 @@ def trim_pattern(kdml):
 def GenSememeTree(kdml, word, returnNode=False):
     """Get the sememe tree by the Knowledge Database Mark-up Language.
 
-	Args:
-		kdml (`str`):
-			Knowledge Database Mark-up Language of the sense.
-		word (`str`):
-			The word annotated of the sense.
-		returnNode (`bool`):
-			Whether to return the root node of the sememe tree.
-	"""
+        Args:
+            kdml (`str`):
+                    Knowledge Database Mark-up Language of the sense.
+            word (`str`):
+                    The word annotated of the sense.
+            returnNode (`bool`):
+                    Whether to return the root node of the sememe tree.
+        """
 
     kdml = trim_pattern(kdml)
     kdml_list = kdml.split(";")
     root = Node(word, role='sense')
     for kdml in kdml_list:
 
-        entity_idx = []  
-        node = []  
-        pointer = []  
+        entity_idx = []
+        node = []
+        pointer = []
 
         for i in range(len(kdml)):
             if kdml[i] in ['~', '?', '$']:

@@ -80,16 +80,16 @@ class Sememe(object):
         res = set()
         if return_triples:
             for k, v in self.related_sememes_forward.items():
-                res|=set([(self, k, i) for i in v])
+                res |= set([(self, k, i) for i in v])
             for k, v in self.related_sememes_backward.items():
-                res|=set([(i, k, self) for i in v])
+                res |= set([(i, k, self) for i in v])
         else:
             for i in self.related_sememes_forward.values():
-                res|=set(i)
+                res |= set(i)
             for i in self.related_sememes_backward.values():
-                res|=set(i)
+                res |= set(i)
         return list(res)
-    
+
     def get_sememe_via_relation(self, relation, return_triples=False):
         """Get the sememes that have relation with the sememe.
 
@@ -98,7 +98,7 @@ class Sememe(object):
                 The relation between the sememes to search and the sememe.
             return_triples (`bool`):
                 You can choose to return the list of triples or return the list of related sememes.
-        
+
         Returns:
             (`list`) the list of triples or the list of related sememes.
         """
@@ -106,10 +106,11 @@ class Sememe(object):
         res = set()
         if relation in self.related_sememes_forward.keys():
             if return_triples:
-                res|=set([(self, relation, i) for i in self.related_sememes_forward[relation]])
-                res|=set([(i, relation, self) for i in self.related_sememes_backward[relation]])
+                res |= set([(self, relation, i)
+                           for i in self.related_sememes_forward[relation]])
+                res |= set([(i, relation, self)
+                           for i in self.related_sememes_backward[relation]])
             else:
-                res|=set(self.related_sememes_forward[relation])
-                res|=set(self.related_sememes_backward[relation])
+                res |= set(self.related_sememes_forward[relation])
+                res |= set(self.related_sememes_backward[relation])
         return list(res)
-
