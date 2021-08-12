@@ -2,10 +2,12 @@ import setuptools
 
 VERSION = "test"
 with open("OpenHowNet/version.py", "r") as fver:
-    VERSION = fver.read().replace("VERSION", "").replace("=", "").replace("\"", "").strip()
+    VERSION = fver.read().replace("VERSION", "").replace(
+        "=", "").replace("\"", "").strip()
 
 with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = '<h1 align="center">OpenHowNet</h1>\n'+fh.read().split('### [中文版本](README_ZH.md)\n\n')[1]
+    long_description = '<h1 align="center">OpenHowNet</h1>\n' + \
+        fh.read().split('### [中文版本](README_ZH.md)\n\n')[1]
 
 setuptools.setup(
     name="OpenHowNet",

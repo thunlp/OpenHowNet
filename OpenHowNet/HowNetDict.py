@@ -70,7 +70,7 @@ class HowNetDict(object):
             origin_dict.close()
             for k, v in hownet_dict.items():
                 self.sense_dic[k] = Sense(v)
-                self.sense_dic[k].sememes = self._gen_sememe_list(
+                self.sense_dic[k].sememes = self.gen_sememe_list(
                     self.sense_dic[k])
                 for s in self.sense_dic[k].sememes.values():
                     s.senses.append(self.sense_dic[k])
@@ -107,9 +107,9 @@ class HowNetDict(object):
                 res.add(v)
             return list(res)
         if item in self.en_map:
-            res|=set(self.en_map[item])
+            res |= set(self.en_map[item])
         if item in self.zh_map:
-            res|=set(self.zh_map[item])
+            res |= set(self.zh_map[item])
         if item in self.sense_dic and self.sense_dic[item] not in res:
             res.add(self.sense_dic[item])
         return list(res)
@@ -121,6 +121,9 @@ class HowNetDict(object):
             (`Int`): the num of the concepts in HowNet.
         """
         return len(self.sense_dic)
+
+    def __str__(self):
+        return str(type(self))
 
     def get_sense(self, word, language=None, strict=True):
         """Common sense search API, you can specify the language of the target word to boost the search performance.
@@ -152,18 +155,18 @@ class HowNetDict(object):
             if language == "en":
                 for k in self.en_map.keys():
                     if k.find(word) != -1:
-                        res|=set(self.en_map[k])
+                        res |= set(self.en_map[k])
             elif language == "zh":
                 for k in self.zh_map.keys():
                     if k.find(word) != -1:
-                        res|=set(self.zh_map[k])
+                        res |= set(self.zh_map[k])
             else:
                 for k in self.en_map.keys():
                     if k.find(word) != -1:
-                        res|=set(self.en_map[k])
+                        res |= set(self.en_map[k])
                 for k in self.zh_map.keys():
                     if k.find(word) != -1:
-                        res|=set(self.zh_map[k])
+                        res |= set(self.zh_map[k])
                 for k in self.sense_dic.keys():
                     if k.find(word) != -1:
                         res.add(self.sense_dic[k])
@@ -246,7 +249,7 @@ class HowNetDict(object):
                 res.append(k)
         return res
 
-    def _gen_sememe_list(self, sense):
+    def gen_sememe_list(self, sense):
         """Get sememe list for the sense by the Def.
 
         Args:
@@ -354,9 +357,6 @@ class HowNetDict(object):
             print("Wrong display mode: ", display)
         return result
 
-    def __str__(self):
-        return str(type(self))
-
     def has(self, item, language=None):
         """Check that whether certain word(English Word/Chinese Word/ID) exist in HowNet
         Only perform exact match because HowNet is case-sensitive
@@ -438,7 +438,7 @@ class HowNetDict(object):
         res = set()
         sememe_x = self.get_sememe(x, strict=strict)
         for s_x in sememe_x:
-            res|=set(s_x.get_sememe_via_relation(
+            res |= set(s_x.get_sememe_via_relation(
                 relation, return_triples=return_triples))
         return list(res)
 
@@ -458,9 +458,9 @@ class HowNetDict(object):
             (`list`) a list contains sememe triples.
         """
         res = set()
-        sememe_x = self.get_sememe(x, strict = strict)
+        sememe_x = self.get_sememe(x, strict=strict)
         for s_x in sememe_x:
-            res|=set(s_x.get_related_sememes(return_triples=return_triples))
+            res |= set(s_x.get_related_sememes(return_triples=return_triples))
         return list(res)
 
     def get_senses_by_sememe(self, x, strict=True):
@@ -475,17 +475,17 @@ class HowNetDict(object):
         res = set()
         sememe_x = self.get_sense(x, strict=strict)
         for s_x in sememe_x:
-            res|=set(self.sememe_dic[s_x].senses)
+            res |= set(self.sememe_dic[s_x].senses)
         return list(res)
 
     # Similarity calculation
     def initialize_similarity_calculation(self):
-        """Initialize the word similarity calculation via sememes.
+        """Initialize the similarity calculation via sememes.
         Implementation is contributed by Jun Yan, which is based on the paper :
         "Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP"
 
         Returns: 
-            (`bool`) whether the initialization succeed.
+            (`str`) whether the initialization succeed.
         """
         sememe_sim_table_pickle_path = 'resources/sememe_sim_table.pkl'
         sense_tree_path = 'resources/sense_tree'
@@ -503,8 +503,8 @@ class HowNetDict(object):
             print(
                 "Enabling Word Similarity Calculation requires specific data files, please check the completeness of your download package.")
             print(e)
-            return False
-        return True
+            return "Initialization failed..."
+        return "Initialization succeeded!"
 
     def sense_similarity(self, node1, node2, sememe_sim_table):
         """Calculate the similarity between two senses.
