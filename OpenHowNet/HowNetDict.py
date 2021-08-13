@@ -36,7 +36,7 @@ class HowNetDict(object):
 
     """
 
-    def __init__(self, init_sim = False):
+    def __init__(self, init_sim=False):
         '''Initialize HowNetDict
         '''
         try:
@@ -87,7 +87,7 @@ class HowNetDict(object):
                 if zh_word not in self.zh_map:
                     self.zh_map[zh_word] = list()
                 self.zh_map[zh_word].append(self.sense_dic[k])
-            
+
             # Initialize the similarity calculation
             if init_sim:
                 self.initialize_similarity_calculation()
@@ -475,7 +475,7 @@ class HowNetDict(object):
         Implementation is contributed by Jun Yan, which is based on the paper :
         "Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP"
         """
-        sememe_sim_table_pickle_path = 'resources/sememe_sim_table.pkl'
+        sememe_sim_table_pickle_path = 'resources/sememe_sim_table'
         sense_tree_path = 'resources/sense_tree'
         sense_syn_path = 'resources/synonym'
 
@@ -494,8 +494,7 @@ class HowNetDict(object):
             return
         print("Initialization succeeded!")
         return
-    
-    
+
     def sense_similarity(self, node1, node2, sememe_sim_table):
         """Calculate the similarity between two senses.
         """
@@ -530,57 +529,15 @@ class HowNetDict(object):
             sememe_sim = sememe_sim_table[(node2.name, node1.name)]
         return beta_relation * relation_sim + beta_sememe * sememe_sim
 
-    '''
-    def get_nearest_words_via_sememes(self, word, K=10):
-        """
-        Get the topK nearest words of the given word, the word similarity is calculated based on HowNet annotation.
-        If the given word does not exist in HowNet annotations, this function will return an empty list.
-        Args: 
-            word (`str`): 
-                target word
-            K (`int`): 
-                specify the number of the nearest words you want to retrieve.
-        Returns: 
-            (`list`) a list of the nearest K words.
-            If the given word does not exist in HowNet annotations, this function will return an empty list.
-            If the initialization method of word similarity calculation has not been called yet, it will also return an empty list and print corresponding error message.
-        """
-        res = list()
-        if not hasattr(self, "sense_tree_dic") or not hasattr(self, "sememe_sim_table"):
-            print("Please initialize the similarity calculation firstly!")
-            return res
-        if self.sense_tree_dic is None or self.sememe_sim_table is None:
-            print("Please initialize the similarity calculation firstly!")
-            return res
-        if not self.has(word):
-            print(word + ' is not annotated in HowNet.')
-            return res
-        sense_list = self[word]
-        banned_id = [i.No for i in sense_list]
-        for i in sense_list:
-            tree1 = self.sense_tree_dic[i.No]
-            score = {}
-            for j in self.sense_dic.keys():
-                if j not in banned_id and int(j) >= 3378:
-                    tree2 = self.sense_tree_dic[j]
-                    sim = self.sense_similarity(
-                        tree1, tree2, self.sememe_sim_table)
-                    score[self.sense_dic[j]] = sim
-            result = sorted(score.items(), key=lambda x: x[1], reverse=True)
-            topK = result[0:K]
-            queryRes = dict()
-            queryRes["sense"] = i
-            queryRes["synset"] = topK
-            res.append(queryRes)
-        return res
-
-    def calculate_word_similarity(self, word0, word1):
+    def calculate_word_similarity(self, word0, word1, strict=True):
         """Calculate the word similarity between two words via sememes
         Args:
             word0 (`str`): 
                 target word #0
             word1 (`str`): 
                 target word #1
+            strict (`bool`):
+                you can choose to search the sense strictly or not.
         Returns: 
             (`float`) the word similarity calculated via sememes.
             If word0 or word1 does not exist in HowNet annotation, it will return 0.0
@@ -593,14 +550,9 @@ class HowNetDict(object):
         if self.sense_tree_dic is None or self.sememe_sim_table is None:
             print("Please initialize the similarity calculation firstly!")
             return res
-        if not self.has(word0):
-            print(word0 + ' is not annotated in HowNet.')
-            return res
-        if not self.has(word1):
-            print(word1 + ' is not annotated in HowNet.')
-            return res
-        senses1 = self[word0]
-        senses2 = self[word1]
+
+        senses1 = self.get_sense(word0, strict=strict)
+        senses2 = self.get_sense(word1, strict=strict)
         max_sim = -1
         for id1 in senses1:
             for id2 in senses2:
@@ -616,15 +568,20 @@ class HowNetDict(object):
         Returns:
             (`list[Sense]`) the list of senses that have the same sememe annotation with the sense.
         """
+        if not hasattr(self, "sense_tree_dic") or not hasattr(self, "sememe_sim_table"):
+            print("Please initialize the similarity calculation firstly!")
+            return
+        if self.sense_tree_dic is None or self.sememe_sim_table is None:
+            print("Please initialize the similarity calculation firstly!")
+            return
         ss = sense.get_sememe_list()
         ll = list(ss)
-        ll = [i.en_ch for i in ll]
+        ll = [i.en_zh for i in ll]
         ll.sort()
         k = '_'.join(ll)
         return [self.sense_dic[i] for i in self.sense_syn_dic[k]]
-    '''
 
-    def get_nearest_words(self, word, language=None, merge=False, K=10, strict=True):
+    def get_nearest_words(self, word, language='zh', merge=False, K=10, strict=True):
         """
         Get the topK nearest words of the given word, the word similarity is calculated based on HowNet annotation.
         If the given word does not exist in HowNet annotations, this function will return an empty list.
@@ -633,7 +590,8 @@ class HowNetDict(object):
             word (`str`): 
                 target word
             language (`str`):
-                specify the language of the word and the search result.
+                specify the language of the word and the search result, you can choose from en/zh/sense.
+                If set to 'sense', return the list of Sense.
             merge (`bool`):
                 you can choose to merge the words of all the result senses into one list.
             K (`int`): 
@@ -672,19 +630,31 @@ class HowNetDict(object):
         if merge:
             res = set()
             for i in res_temp:
-                res |= set([j[0].en_word if language=='en' else j[0].zh_word for j in i['synonym']])
+                if language=='en':
+                    target_set = set([j[0].en_word for j in i['synonym']])
+                elif language == 'sense':
+                    target_set = set([j[0] for j in i['synonym']])
+                elif language == 'zh':
+                    target_set = set([j[0].zh_word for j in i['synonym']])
+                else:
+                    print("Wrong language...")
+                    return
+                res |= target_set
             return list(res)[:K]
         else:
             res = dict()
             for i in res_temp:
                 res[i['sense']] = set()
-                res[i['sense']] |= set([j[0].en_word if language=='en' else j[0].zh_word for j in i['synonym']])
+                taget_set = set()
+                if language=='en':
+                    target_set = set([j[0].en_word for j in i['synonym']])
+                elif language == 'sense':
+                    target_set = set([j[0] for j in i['synonym']])
+                elif language == 'zh':
+                    target_set = set([j[0].zh_word for j in i['synonym']])
+                else:
+                    print("Wrong language...")
+                    return
+                res[i['sense']] |= target_set
                 res[i['sense']] = list(res[i['sense']])
             return res
-
-
-        
-        
-
-
-        
