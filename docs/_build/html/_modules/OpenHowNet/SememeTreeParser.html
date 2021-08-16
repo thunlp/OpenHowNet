@@ -173,23 +173,23 @@
 <div class="viewcode-block" id="GenSememeTree"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.SememeTreeParser.GenSememeTree">[docs]</a><span class="k">def</span> <span class="nf">GenSememeTree</span><span class="p">(</span><span class="n">kdml</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">returnNode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the sememe tree by the Knowledge Database Mark-up Language.</span>
 
-<span class="sd">	Args:</span>
-<span class="sd">		kdml (`str`):</span>
-<span class="sd">			Knowledge Database Mark-up Language of the sense.</span>
-<span class="sd">		word (`str`):</span>
-<span class="sd">			The word annotated of the sense.</span>
-<span class="sd">		returnNode (`bool`):</span>
-<span class="sd">			Whether to return the root node of the sememe tree.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            kdml (`str`):</span>
+<span class="sd">                    Knowledge Database Mark-up Language of the sense.</span>
+<span class="sd">            word (`str`):</span>
+<span class="sd">                    The word annotated of the sense.</span>
+<span class="sd">            returnNode (`bool`):</span>
+<span class="sd">                    Whether to return the root node of the sememe tree.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
     <span class="n">kdml</span> <span class="o">=</span> <span class="n">trim_pattern</span><span class="p">(</span><span class="n">kdml</span><span class="p">)</span>
     <span class="n">kdml_list</span> <span class="o">=</span> <span class="n">kdml</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
     <span class="n">root</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;sense&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">kdml</span> <span class="ow">in</span> <span class="n">kdml_list</span><span class="p">:</span>
 
-        <span class="n">entity_idx</span> <span class="o">=</span> <span class="p">[]</span>  
-        <span class="n">node</span> <span class="o">=</span> <span class="p">[]</span>  
-        <span class="n">pointer</span> <span class="o">=</span> <span class="p">[]</span>  
+        <span class="n">entity_idx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pointer</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kdml</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">kdml</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;~&#39;</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="s1">&#39;$&#39;</span><span class="p">]:</span>

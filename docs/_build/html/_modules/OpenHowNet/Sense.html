@@ -182,15 +182,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">No</span> <span class="o">=</span> <span class="n">hownet_sense</span><span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">en_word</span> <span class="o">=</span> <span class="n">hownet_sense</span><span class="p">[</span><span class="s1">&#39;en_word&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">en_grammar</span> <span class="o">=</span> <span class="n">hownet_sense</span><span class="p">[</span><span class="s1">&#39;en_grammar&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ch_word</span> <span class="o">=</span> <span class="n">hownet_sense</span><span class="p">[</span><span class="s1">&#39;ch_word&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ch_grammar</span> <span class="o">=</span> <span class="n">hownet_sense</span><span class="p">[</span><span class="s1">&#39;ch_grammar&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zh_word</span> <span class="o">=</span> <span class="n">hownet_sense</span><span class="p">[</span><span class="s1">&#39;ch_word&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zh_grammar</span> <span class="o">=</span> <span class="n">hownet_sense</span><span class="p">[</span><span class="s1">&#39;ch_grammar&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Def</span> <span class="o">=</span> <span class="n">hownet_sense</span><span class="p">[</span><span class="s1">&#39;Def&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sememes</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Define how to print the sense.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;No.&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">No</span>
+        <span class="n">nzno</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">No</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s1">&#39;No.&#39;</span> <span class="o">+</span> <span class="n">nzno</span> <span class="o">+</span> <span class="s2">&quot;|</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">en_word</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zh_word</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_expand_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">isRoot</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Expand the sememe tree by iteration.</span>
@@ -234,10 +235,10 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            (`set[Sememe]`) the sememe set of the sememe tree.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_sememe_tree</span><span class="p">()</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sememe_tree</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Sense.gen_sememe_tree"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.Sense.Sense.gen_sememe_tree">[docs]</a>    <span class="k">def</span> <span class="nf">gen_sememe_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_node</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Sense.get_sememe_tree"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.Sense.Sense.get_sememe_tree">[docs]</a>    <span class="k">def</span> <span class="nf">get_sememe_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_node</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate sememe tree for the sense by the Def.</span>
 
 <span class="sd">        Args:</span>
@@ -326,11 +327,18 @@
 
 <div class="viewcode-block" id="Sense.visualize_sememe_tree"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.Sense.Sense.visualize_sememe_tree">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_sememe_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Visualize the sememe tree by sense Def.</span>
+<span class="sd">        Print and return the sememe tree str.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (`str`) the visualized sememe tree.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_sememe_tree</span><span class="p">(</span><span class="n">return_node</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sememe_tree</span><span class="p">(</span><span class="n">return_node</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">tree</span> <span class="o">=</span> <span class="n">RenderTree</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+        <span class="n">tree_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">for</span> <span class="n">pre</span><span class="p">,</span> <span class="n">fill</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">]</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div></div>
+            <span class="n">tree_str</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">]</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">tree_str</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tree_str</span></div></div>
 </pre></div>
 
            </div>
