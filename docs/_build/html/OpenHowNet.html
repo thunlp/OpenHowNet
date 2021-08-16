@@ -267,7 +267,7 @@ The HowNet resource file is openhownet_data.zip.</p>
 <h3>HowNetDict Class<a class="headerlink" href="#hownetdict-class" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">OpenHowNet.HowNetDict.</span></span><span class="sig-name descname"><span class="pre">HowNetDict</span></span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">OpenHowNet.HowNetDict.</span></span><span class="sig-name descname"><span class="pre">HowNetDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_sim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for running the OpenHowNet API.
 Provides a convenient way to search information in HowNet,
@@ -278,7 +278,7 @@ display sememe trees, calculate word similarity via sememes, etc.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hownet_dict</span> <span class="o">=</span> <span class="n">OpenHowNet</span><span class="o">.</span><span class="n">HowNetDict</span><span class="p">()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Search a word in HowNet and get a list of senses contain the word</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result_list</span> <span class="o">=</span> <span class="n">hownet_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;苹果&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_list</span> <span class="o">=</span> <span class="n">hownet_dict</span><span class="o">.</span><span class="n">get_sense</span><span class="p">(</span><span class="s2">&quot;苹果&quot;</span><span class="p">)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Visualize the sememe tree of the sense</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hownet_dict</span><span class="o">.</span><span class="n">get_sememes_by_word</span><span class="p">(</span><span class="s1">&#39;苹果&#39;</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="s1">&#39;visual&#39;</span><span class="p">)</span>
@@ -286,12 +286,14 @@ display sememe trees, calculate word similarity via sememes, etc.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.calculate_word_similarity">
-<span class="sig-name descname"><span class="pre">calculate_word_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.calculate_word_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.calculate_word_similarity" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_word_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.calculate_word_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.calculate_word_similarity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the word similarity between two words via sememes
 :param word0: target word #0
 :type word0: <cite>str</cite>
 :param word1: target word #1
-:type word1: <cite>str</cite></p>
+:type word1: <cite>str</cite>
+:param strict: you can choose to search the sense strictly or not.
+:type strict: <cite>bool</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>(<cite>float</cite>) the word similarity calculated via sememes.
@@ -302,18 +304,15 @@ If the initialization method of word similarity calculation has not been called 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Common word search API, you can specify the language of the target word to boost the search performance</p>
+<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.gen_sememe_list">
+<span class="sig-name descname"><span class="pre">gen_sememe_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sense</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.gen_sememe_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.gen_sememe_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get sememe list for the sense by the Def.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>word</strong> (<cite>str</cite>) – target word.</p></li>
-<li><p><strong>language</strong> (<cite>str</cite>) – target language, default: None. (The func will search both in English and Chinese, which will consume a lot of time.)</p></li>
-</ul>
+<dd class="field-odd"><p><strong>sense</strong> (<cite>Sense</cite>) – the sense to generate sememe tree.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(<cite>list[Sense]</cite>) candidates HowNet senses, if the target word does not exist, return an empty list.</p>
+<dd class="field-even"><p>(<cite>list[Sememe]</cite>) the sememe list of the sense.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -341,52 +340,104 @@ If the initialization method of word similarity calculation has not been called 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_nearest_words_via_sememes">
-<span class="sig-name descname"><span class="pre">get_nearest_words_via_sememes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_nearest_words_via_sememes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_nearest_words_via_sememes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_nearest_words">
+<span class="sig-name descname"><span class="pre">get_nearest_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'zh'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_nearest_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_nearest_words" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the topK nearest words of the given word, the word similarity is calculated based on HowNet annotation.
-If the given word does not exist in HowNet annotations, this function will return an empty list.
-:param word: target word
-:type word: <cite>str</cite>
-:param K: specify the number of the nearest words you want to retrieve.
-:type K: <cite>int</cite></p>
+If the given word does not exist in HowNet annotations, this function will return an empty list.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>(<cite>list</cite>) a list of the nearest K words.
-If the given word does not exist in HowNet annotations, this function will return an empty list.
-If the initialization method of word similarity calculation has not been called yet, it will also return an empty list and print corresponding error message.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<cite>str</cite>) – target word</p></li>
+<li><p><strong>language</strong> (<cite>str</cite>) – specify the language of the word and the search result, you can choose from en/zh/sense.
+If set to ‘sense’, return the list of Sense.</p></li>
+<li><p><strong>merge</strong> (<cite>bool</cite>) – you can choose to merge the words of all the result senses into one list.</p></li>
+<li><p><strong>K</strong> (<cite>int</cite>) – specify the number of the nearest words you want to retrieve.</p></li>
+<li><p><strong>strict</strong> (<cite>bool</cite>) – you can choose to search the word strictly or not.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(<cite>list</cite>) a list of the nearest K words.
+if merge==False, returns a list of senses retrieved by the word and their synonym seperately.
+If the given word does not exist in HowNet annotations, this function will return an empty list.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_related_sememes">
-<span class="sig-name descname"><span class="pre">get_related_sememes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_triples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_related_sememes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_related_sememes" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_related_sememes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_triples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_related_sememes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_related_sememes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show all sememes that x has any relation with.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>(<cite>list</cite>) a list contains sememe triples.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<cite>str</cite>) – the word to search the sememe.</p></li>
+<li><p><strong>return_triples</strong> (<cite>bool</cite>) – you can choose to get the list of triples or just the list of the sememes.</p></li>
+<li><p><strong>strict</strong> (<cite>bool</cite>) – you can choose to search the sememe relation strictly by the word.
+set to False if you are not sure about the x.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(<cite>list</cite>) a list contains sememe triples.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_sememe">
+<span class="sig-name descname"><span class="pre">get_sememe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_sememe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_sememe" title="Permalink to this definition">¶</a></dt>
+<dd><p>The commen sememe search API. you can specify the language of the target word to boost the search performance.
+Besides if you are not sure about the word, you can set <cite>strict</cite> to False to fuzzy match the sememe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<cite>str</cite>) – target word.</p></li>
+<li><p><strong>language</strong> (<cite>str</cite>) – target language, default: None. (The func will search both in English and Chinese, which will consume a lot of time.)
+you can set to <cite>en</cite> or <cite>zh</cite>, which means search in English or Chinese</p></li>
+<li><p><strong>strict</strong> (<cite>bool</cite>) – whether to search the sense strictly.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(<cite>list[Sememe]</cite>) candidates HowNet sememes, if the target word does not exist, return an empty list.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_sememe_relation">
-<span class="sig-name descname"><span class="pre">get_sememe_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_triples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_sememe_relation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_sememe_relation" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_sememe_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_triples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_sememe_relation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_sememe_relation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show relationship between two sememes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>(<cite>list</cite>) a list contains sememe triples. x is the head sememe and y is the tail sememe.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<cite>str</cite>) – the word #0 to search the sememe.</p></li>
+<li><p><strong>y</strong> (<cite>str</cite>) – the word #1 to search the sememe.</p></li>
+<li><p><strong>return_triples</strong> (<cite>bool</cite>) – you can choose to get the list of triples or just the list of the relations.</p></li>
+<li><p><strong>strict</strong> (<cite>bool</cite>) – you can choose to search the sememe relation strictly by the word.
+set to False if you are not sure about the x and y.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(<cite>list</cite>) a list contains sememe triples. x is the head sememe and y is the tail sememe.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_sememe_via_relation">
-<span class="sig-name descname"><span class="pre">get_sememe_via_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_triples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_sememe_via_relation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_sememe_via_relation" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_sememe_via_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_triples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_sememe_via_relation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_sememe_via_relation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show all sememes that x has relation with.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>(<cite>list[Sememe]</cite>) a string represents all related sememes.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<cite>str</cite>) – the word to search the sememe.</p></li>
+<li><p><strong>relation</strong> (<cite>str</cite>) – the relaiton to search the sememe.</p></li>
+<li><p><strong>return_triples</strong> (<cite>bool</cite>) – you can choose to get the list of triples or just the list of the sememes.</p></li>
+<li><p><strong>strict</strong> (<cite>bool</cite>) – you can choose to search the sememe relation strictly by the word.
+set to False if you are not sure about the x.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(<cite>list[Sememe]</cite>) a list contains all related sememes.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -432,6 +483,26 @@ Illegal number will be automatically ignored and the function will display all r
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_sense">
+<span class="sig-name descname"><span class="pre">get_sense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_sense"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_sense" title="Permalink to this definition">¶</a></dt>
+<dd><p>Common sense search API, you can specify the language of the target word to boost the search performance.
+Besides if you are not sure about the word, you can set <cite>strict</cite> to False to fuzzy match the sense.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<cite>str</cite>) – target word.</p></li>
+<li><p><strong>language</strong> (<cite>str</cite>) – target language, default: None. (The func will search both in English and Chinese, which will consume a lot of time.)
+you can set to <cite>en</cite> or <cite>zh</cite>, which means search in English or Chinese</p></li>
+<li><p><strong>strict</strong> (<cite>bool</cite>) – whether to search the sense strictly.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(<cite>list[Sense]</cite>) candidates HowNet senses, if the target word does not exist, return an empty list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_sense_synonyms">
 <span class="sig-name descname"><span class="pre">get_sense_synonyms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sense</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_sense_synonyms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_sense_synonyms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the senses that have the same sememe annotation with the sense</p>
@@ -444,7 +515,7 @@ Illegal number will be automatically ignored and the function will display all r
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_senses_by_sememe">
-<span class="sig-name descname"><span class="pre">get_senses_by_sememe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_senses_by_sememe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_senses_by_sememe" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_senses_by_sememe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_senses_by_sememe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_senses_by_sememe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the senses labeled by sememe x.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -452,20 +523,6 @@ Illegal number will be automatically ignored and the function will display all r
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>(<cite>list[Sense]</cite>) The list of senses which contains No, ch_word and en_word.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_senses_by_word">
-<span class="sig-name descname"><span class="pre">get_senses_by_word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_senses_by_word"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_senses_by_word" title="Permalink to this definition">¶</a></dt>
-<dd><p>Commen sense search API.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>word</strong> (<cite>str</cite>) – Specific word(en/zh/id) you want to search in HowNet.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(<cite>list[Sense]</cite>) the list of Sense.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -501,16 +558,11 @@ By default, it will search the target word in both the English vocabulary and th
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.initialize_sememe_similarity_calculation">
-<span class="sig-name descname"><span class="pre">initialize_sememe_similarity_calculation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.initialize_sememe_similarity_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.initialize_sememe_similarity_calculation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize the word similarity calculation via sememes.
+<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.initialize_similarity_calculation">
+<span class="sig-name descname"><span class="pre">initialize_similarity_calculation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.initialize_similarity_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.initialize_similarity_calculation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the similarity calculation via sememes.
 Implementation is contributed by Jun Yan, which is based on the paper :
 “Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP”</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>(<cite>bool</cite>) whether the initialization succeed.</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -559,8 +611,8 @@ The smallest semantic unit. Described in English and Chinese.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="OpenHowNet.Sememe.Sememe.ch">
-<span class="sig-name descname"><span class="pre">ch</span></span><a class="headerlink" href="#OpenHowNet.Sememe.Sememe.ch" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="OpenHowNet.Sememe.Sememe.zh">
+<span class="sig-name descname"><span class="pre">zh</span></span><a class="headerlink" href="#OpenHowNet.Sememe.Sememe.zh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Chinese word to describe the sememe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -658,7 +710,8 @@ The smallest semantic unit. Described in English and Chinese.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.Sememe.Sememe.get_senses">
 <span class="sig-name descname"><span class="pre">get_senses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/Sememe.html#Sememe.get_senses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.Sememe.Sememe.get_senses" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the senses annotated with the sememe.</p>
+<dd><p>Get the senses annotated with the sememe.
+Initialized by HowNetDict.__init__()</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>(<cite>list[Sense]</cite>) the list of the senses annotated with the sememe.</p>
@@ -709,21 +762,6 @@ Contains numbering, word, POS of word, sememe tree, etc.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="OpenHowNet.Sense.Sense.gen_sememe_tree">
-<span class="sig-name descname"><span class="pre">gen_sememe_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">return_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/Sense.html#Sense.gen_sememe_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.Sense.Sense.gen_sememe_tree" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate sememe tree for the sense by the Def.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>return_node</strong> (<cite>bool</cite>) – whether to return as anytree node.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(<cite>dict`or`anytree.Node</cite>) the sememe tree of the sense in the form of dict
-or the root node of the sememe tree.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.Sense.Sense.get_sememe_list">
 <span class="sig-name descname"><span class="pre">get_sememe_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/Sense.html#Sense.get_sememe_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.Sense.Sense.get_sememe_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Expand the sememe tree by iteration.
@@ -739,9 +777,30 @@ Return the sememe set of the tree.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="OpenHowNet.Sense.Sense.get_sememe_tree">
+<span class="sig-name descname"><span class="pre">get_sememe_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">return_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/Sense.html#Sense.get_sememe_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.Sense.Sense.get_sememe_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate sememe tree for the sense by the Def.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>return_node</strong> (<cite>bool</cite>) – whether to return as anytree node.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(<cite>dict`or`anytree.Node</cite>) the sememe tree of the sense in the form of dict
+or the root node of the sememe tree.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.Sense.Sense.visualize_sememe_tree">
 <span class="sig-name descname"><span class="pre">visualize_sememe_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/Sense.html#Sense.visualize_sememe_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.Sense.Sense.visualize_sememe_tree" title="Permalink to this definition">¶</a></dt>
-<dd><p>Visualize the sememe tree by sense Def.</p>
+<dd><p>Visualize the sememe tree by sense Def.
+Print and return the sememe tree str.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(<cite>str</cite>) the visualized sememe tree.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
