@@ -581,6 +581,11 @@ class HowNetDict(object):
         k = '_'.join(ll)
         return [self.sense_dic[i] for i in self.sense_syn_dic[k]]
 
+    def _list_dereplication(self, li):
+        new_li=list(set(li))
+        new_li.sort(key=li.index)
+        return new_li
+
     def get_nearest_words(self, word, language='zh', merge=False, K=10, strict=True):
         """
         Get the topK nearest words of the given word, the word similarity is calculated based on HowNet annotation.
@@ -590,8 +595,7 @@ class HowNetDict(object):
             word (`str`): 
                 target word
             language (`str`):
-                specify the language of the word and the search result, you can choose from en/zh/sense.
-                If set to 'sense', return the list of Sense.
+                specify the language of the word and the search result, you can choose from en/zh.
             merge (`bool`):
                 you can choose to merge the words of all the result senses into one list.
             K (`int`): 
@@ -603,7 +607,6 @@ class HowNetDict(object):
             if merge==False, returns a list of senses retrieved by the word and their synonym seperately.
             If the given word does not exist in HowNet annotations, this function will return an empty list.
         """
-        res = set()
         if not hasattr(self, "sense_tree_dic") or not hasattr(self, "sememe_sim_table"):
             print("Please initialize the similarity calculation firstly!")
             return
@@ -628,33 +631,26 @@ class HowNetDict(object):
             res_item['synonym'] = result[:K]
             res_temp.append(res_item)
         if merge:
-            res = set()
+            res = list()
             for i in res_temp:
-                if language=='en':
-                    target_set = set([j[0].en_word for j in i['synonym']])
-                elif language == 'sense':
-                    target_set = set([j[0] for j in i['synonym']])
-                elif language == 'zh':
-                    target_set = set([j[0].zh_word for j in i['synonym']])
-                else:
-                    print("Wrong language...")
-                    return
-                res |= target_set
-            return list(res)[:K]
+                res.extend(i['synonym'])
+            res = sorted(res, key=lambda x: x[1], reverse=True)
+            if language=='en':
+                res = self._list_dereplication([i[0].en_word for i in res])
+            elif language=='zh':
+                res = self._list_dereplication([i[0].zh_word for i in res])
+            else:
+                print("Wrong language...")
+                return
+            return res[:K]
         else:
             res = dict()
             for i in res_temp:
-                res[i['sense']] = set()
-                taget_set = set()
                 if language=='en':
-                    target_set = set([j[0].en_word for j in i['synonym']])
-                elif language == 'sense':
-                    target_set = set([j[0] for j in i['synonym']])
+                    res[i['sense']] = self._list_dereplication([j[0].en_word for j in i['synonym']])
                 elif language == 'zh':
-                    target_set = set([j[0].zh_word for j in i['synonym']])
+                    res[i['sense']] = self._list_dereplication([j[0].zh_word for j in i['synonym']])
                 else:
                     print("Wrong language...")
                     return
-                res[i['sense']] |= target_set
-                res[i['sense']] = list(res[i['sense']])
             return res
