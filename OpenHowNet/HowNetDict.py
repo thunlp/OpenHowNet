@@ -593,7 +593,11 @@ class HowNetDict(object):
             if grammar == None:
                 if word not in res:
                     if score:
-                        if (word, s[1]) not in res:
+                        flag = 0
+                        for i in res:
+                            if i[0] == word:
+                                flag = 1
+                        if flag == 0:
                             res.append((word, s[1]))
                     else:
                         res.append(word)
@@ -601,11 +605,15 @@ class HowNetDict(object):
                         return res
                     continue
             else:
-                s_grammar = s.en_grammar if language == 'en' else s.zh_grammar
+                s_grammar = s[0].en_grammar if language == 'en' else s[0].zh_grammar
                 if s_grammar == grammar:
                     if word not in res:
                         if score:
-                            if (word, s[1]) not in res:
+                            flag = 0
+                            for i in res:
+                                if i[0] == word:
+                                    flag = 1
+                            if flag == 0:
                                 res.append((word, s[1]))
                         else:
                             res.append(word)
@@ -614,7 +622,7 @@ class HowNetDict(object):
                         continue
         return res
 
-    def get_nearest_words(self, word, language, score=False, grammar=None, merge=False, K=10, strict=True):
+    def get_nearest_words(self, word, language=None, score=False, pos=None, merge=False, K=10, strict=True):
         """
         Get the topK nearest words of the given word, the word similarity is calculated based on HowNet annotation.
         If the given word does not exist in HowNet annotations, this function will return an empty list.
@@ -624,6 +632,10 @@ class HowNetDict(object):
                 target word
             language (`str`):
                 specify the language of the word and the search result, you can choose from en/zh.
+            score (`bool`):
+                you can choose to get the similarity score between the words.
+            pos (`str`):
+                you can set the part of speech of the word.
             merge (`bool`):
                 you can choose to merge the words of all the result senses into one list.
             K (`int`): 
@@ -668,11 +680,11 @@ class HowNetDict(object):
                 res.extend(i['synonym'])
             res = sorted(res, key=lambda x: x[1], reverse=True)
             res = self._get_words_list_by_rule(
-                res, language=language, score=score, grammar=grammar, K=K)
+                res, language=language, score=score, grammar=pos, K=K)
             return res
         else:
             res = dict()
             for i in res_temp:
                 res[i['sense']] = self._get_words_list_by_rule(
-                    i['synonym'], language=language, score=score, grammar=grammar, K=K)
+                    i['synonym'], language=language, score=score, grammar=pos, K=K)
             return res
