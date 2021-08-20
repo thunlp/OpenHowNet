@@ -129,7 +129,7 @@ class HowNetDict(object):
     def __str__(self):
         return str(type(self))
 
-    def get_sense(self, word, language=None, strict=True):
+    def get_sense(self, word, language=None, pos=None, strict=True):
         """Common sense search API, you can specify the language of the target word to boost the search performance.
         Besides if you are not sure about the word, you can set `strict` to False to fuzzy match the sense.
 
@@ -138,7 +138,9 @@ class HowNetDict(object):
                 target word.
             language (`str`): 
                 target language, default: None. (The func will search both in English and Chinese, which will consume a lot of time.)
-                you can set to `en` or `zh`, which means search in English or Chinese
+                you can set to `en` or `zh`, which means search in English or Chinese.
+            pos (`str`):
+                the part of speech of the result.
             strict (`bool`): 
                 whether to search the sense strictly.
 
@@ -174,6 +176,10 @@ class HowNetDict(object):
                 for k in self.sense_dic.keys():
                     if k.find(word) != -1:
                         res.add(self.sense_dic[k])
+        for i in res:
+            grammar = i.en_grammar if language=='en' else i.zh_grammar
+            if grammar != pos:
+                res.remove(i)
         return list(res)
 
     def get_sememe(self, word, language=None, strict=True):
@@ -658,7 +664,7 @@ class HowNetDict(object):
             print('Language can be set to en or zh.')
             return
         # Retireve the senses annotated with word.
-        senses = self.get_sense(word, strict=strict)
+        senses = self.get_sense(word,pos=pos, strict=strict)
         res_temp = list()
         for i in senses:
             tree1 = self.sense_tree_dic[i.No]
