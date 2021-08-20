@@ -87,6 +87,7 @@ class HowNetDict(object):
                 if zh_word not in self.zh_map:
                     self.zh_map[zh_word] = list()
                 self.zh_map[zh_word].append(self.sense_dic[k])
+            print('Initializing OpenHowNet succeeded!')
 
             # Initialize the similarity calculation
             if init_sim:
@@ -492,7 +493,7 @@ class HowNetDict(object):
                 "Enabling Word Similarity Calculation requires specific data files, please check the completeness of your download package.")
             print(e)
             return
-        print("Initialization succeeded!")
+        print("Initializing similarity calculation succeeded!")
         return
 
     def sense_similarity(self, node1, node2, sememe_sim_table):
@@ -581,12 +582,39 @@ class HowNetDict(object):
         k = '_'.join(ll)
         return [self.sense_dic[i] for i in self.sense_syn_dic[k]]
 
-    def _list_dereplication(self, li):
-        new_li=list(set(li))
-        new_li.sort(key=li.index)
-        return new_li
+    def _get_words_list_by_rule(self, senses, language='zh', score=False, grammar=None, K=10):
+        """Get sense list by language/grammar/K.
+        """
+        res = []
+        for s in senses:
+            word = s[0].en_word if language == 'en' else s[0].zh_word
+            if word == '':
+                continue
+            if grammar == None:
+                if word not in res:
+                    if score:
+                        if (word, s[1]) not in res:
+                            res.append((word, s[1]))
+                    else:
+                        res.append(word)
+                    if len(res) == K:
+                        return res
+                    continue
+            else:
+                s_grammar = s.en_grammar if language == 'en' else s.zh_grammar
+                if s_grammar == grammar:
+                    if word not in res:
+                        if score:
+                            if (word, s[1]) not in res:
+                                res.append((word, s[1]))
+                        else:
+                            res.append(word)
+                        if len(res) == K:
+                            return res
+                        continue
+        return res
 
-    def get_nearest_words(self, word, language='zh', merge=False, K=10, strict=True):
+    def get_nearest_words(self, word, language, score=False, grammar=None, merge=False, K=10, strict=True):
         """
         Get the topK nearest words of the given word, the word similarity is calculated based on HowNet annotation.
         If the given word does not exist in HowNet annotations, this function will return an empty list.
@@ -613,44 +641,38 @@ class HowNetDict(object):
         if self.sense_tree_dic is None or self.sememe_sim_table is None:
             print("Please initialize the similarity calculation firstly!")
             return
+        if language == None:
+            print('Please set the language of the similar words.')
+            print('Language can be set to en or zh.')
+            return
         # Retireve the senses annotated with word.
         senses = self.get_sense(word, strict=strict)
         res_temp = list()
         for i in senses:
             tree1 = self.sense_tree_dic[i.No]
-            score = {}
+            scores = {}
             for j in self.sense_dic.keys():
                 if j != i.No and int(j) >= 3378:
                     tree2 = self.sense_tree_dic[j]
                     sim = self.sense_similarity(
                         tree1, tree2, self.sememe_sim_table)
-                    score[self.sense_dic[j]] = sim
-            result = sorted(score.items(), key=lambda x: x[1], reverse=True)
+                    scores[self.sense_dic[j]] = sim
+            result = sorted(scores.items(), key=lambda x: x[1], reverse=True)
             res_item = dict()
             res_item['sense'] = i
-            res_item['synonym'] = result[:K]
+            res_item['synonym'] = result
             res_temp.append(res_item)
         if merge:
             res = list()
             for i in res_temp:
                 res.extend(i['synonym'])
             res = sorted(res, key=lambda x: x[1], reverse=True)
-            if language=='en':
-                res = self._list_dereplication([i[0].en_word for i in res])
-            elif language=='zh':
-                res = self._list_dereplication([i[0].zh_word for i in res])
-            else:
-                print("Wrong language...")
-                return
-            return res[:K]
+            res = self._get_words_list_by_rule(
+                res, language=language, score=score, grammar=grammar, K=K)
+            return res
         else:
             res = dict()
             for i in res_temp:
-                if language=='en':
-                    res[i['sense']] = self._list_dereplication([j[0].en_word for j in i['synonym']])
-                elif language == 'zh':
-                    res[i['sense']] = self._list_dereplication([j[0].zh_word for j in i['synonym']])
-                else:
-                    print("Wrong language...")
-                    return
+                res[i['sense']] = self._get_words_list_by_rule(
+                    i['synonym'], language=language, score=score, grammar=grammar, K=K)
             return res
