@@ -121,7 +121,6 @@ class Sense(object):
                 left_brace = 0
                 right_brace = 0
                 quotation = 0
-                # 找到当前义原所属的主义原位置
                 while not (kdml[cursor] == ':' and ((quotation % 2 == 0 and left_brace == right_brace + 1) or
                                                     (quotation % 2 == 1 and left_brace == right_brace))):
                     if cursor == 0:
