@@ -177,7 +177,7 @@ class HowNetDict(object):
                     if k.find(word) != -1:
                         res.add(self.sense_dic[k])
         for i in res:
-            grammar = i.en_grammar if language=='en' else i.zh_grammar
+            grammar = i.en_grammar if language == 'en' else i.zh_grammar
             if grammar != pos:
                 res.remove(i)
         return list(res)
@@ -664,7 +664,7 @@ class HowNetDict(object):
             print('Language can be set to en or zh.')
             return
         # Retireve the senses annotated with word.
-        senses = self.get_sense(word,pos=pos, strict=strict)
+        senses = self.get_sense(word, pos=pos, strict=strict)
         res_temp = list()
         for i in senses:
             tree1 = self.sense_tree_dic[i.No]
