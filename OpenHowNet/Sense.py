@@ -178,4 +178,3 @@ class Sense(object):
         for pre, fill, node in tree:
             tree_str += "%s[%s]%s\n" % (pre, node.role, node.name)
         print(tree_str)
-        return tree_str
