@@ -176,10 +176,12 @@ class HowNetDict(object):
                 for k in self.sense_dic.keys():
                     if k.find(word) != -1:
                         res.add(self.sense_dic[k])
-        for i in res:
-            grammar = i.en_grammar if language == 'en' else i.zh_grammar
-            if grammar != pos:
-                res.remove(i)
+        if pos:
+            temp = res.copy()
+            for i in temp:
+                grammar = i.en_grammar if language == 'en' else i.zh_grammar
+                if grammar != pos:
+                    res.remove(i)
         return list(res)
 
     def get_sememe(self, word, language=None, strict=True):
@@ -351,6 +353,7 @@ class HowNetDict(object):
             for index, item in enumerate(queryResult):
                 print("Display #{0} sememe tree".format(index))
                 item.visualize_sememe_tree()
+            return
         else:
             print("Wrong display mode: ", display)
         return result
