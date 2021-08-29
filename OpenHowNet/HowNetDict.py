@@ -285,7 +285,7 @@ class HowNetDict(object):
                     ] = self.sememe_dic[kdml[start_idx + 1:end_idx].replace(' ', '_')]
         return res
 
-    def get_sememes_by_word(self, word, display='dict', merge=False, expanded_layer=-1, K=None):
+    def get_sememes_by_word(self, word, display='list', merge=False, expanded_layer=-1, K=None):
         """Commen sememe search API.
         Given specific word, you can get corresponding HowNet annotations.
 
