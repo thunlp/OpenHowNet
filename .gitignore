@@ -8,5 +8,5 @@ __pycache__
 *.swp
 *.egg-info
 .DS_Store
-/OpenHowNet/HowNet_dict_complete
+/OpenHowNet/resources/*
 /*.sh
