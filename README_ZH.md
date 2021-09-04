@@ -1,38 +1,63 @@
+### 中|[En](README.md)
 <p align="center">
   <a href="https://openhownet.thunlp.org/">
     <img src="openhownet-logo.png" width = "300"  alt="OpenHowNet Logo" align=center />
   </a>
 </p>
 
-### [English Version](README.md)
+<p align="center">
+  <a href="https://openhownet.readthedocs.io/" target="_blank">
+    <img src="https://readthedocs.org/projects/openhownet/badge/?version=latest" alt="ReadTheDoc Status">
+  </a>
+  <a  href="https://pypi.org/project/OpenHowNet/"  target="_blank">
+    <img src="https://img.shields.io/pypi/v/OpenHowNet?label=pypi" alt="PyPI version">
+  </a>
+  <a  href="https://github.com/thunlp/OpenHowNet/releases"  target="_blank">
+    <img src="https://img.shields.io/github/v/release/thunlp/OpenHowNet" alt="GitHub release (latest by date)">  
+  </a>
+  <a target="_blank">
+    <img alt="GitHub" src="https://img.shields.io/github/license/thunlp/OpenHowNet">
+  </a>
+   <a target="_blank">
+    <img src="https://img.shields.io/badge/PRs-Welcome-red" alt="PRs are Welcome">
+  </a>
+</p>
 
-本项目存放HowNet核心数据和清华大学自然语言处理实验室（THUNLP）开发的OpenHowNet API，提供方便的义原信息查询、义原树展示、基于义原的词相似度计算等功能。您还可以访问我们的[网站](https://openhownet.thunlp.org)体验义原在线查询和展示功能。
+本项目存放HowNet核心数据和清华大学自然语言处理实验室（[THUNLP](http://thunlp.org/)）开发的OpenHowNet API，提供方便的义原信息查询、义原树展示、基于义原的词相似度计算等功能。您还可以访问我们的[网站](https://openhownet.thunlp.org)体验词语义原在线查询和展示功能。
 
 如果您在研究中使用了OpenHowNet提供的数据或API，请引用以下论文：
 
-@article{
-    qi2019openhownet,
-​    title={OpenHowNet: An Open Sememe-based Lexical Knowledge Base},
-​    author={Qi, Fanchao and Yang, Chenghao and Liu, Zhiyuan and Dong, Qiang and Sun, Maosong and Dong, Zhendong},
-​    journal={arXiv preprint arXiv:1901.09957},
-​    year={2019},
-​}
+
+```
+@article{qi2019openhownet,
+    title={OpenHowNet: An Open Sememe-based Lexical Knowledge Base},
+    author={Qi, Fanchao and Yang, Chenghao and Liu, Zhiyuan and Dong, Qiang and Sun, Maosong and Dong, Zhendong},
+    journal={arXiv preprint arXiv:1901.09957},
+    year={2019},
+}
+```
+
+## HowNet简介
+
+HowNet是最典型的义原知识库。义原在语言学中被定义为最小的语义单位，有语言学家认为世界所有语言的所有词语的语义都可以用一个有限的义原集合来表示。董振东和董强先生父子将此思想付诸实践，耗时近30年构建了HowNet（知网），通过预定义的2000多个义原为20多万个由中英文词语所表示的概念进行了标注。
+
+HowNet自问世以来，已被广泛应用于各项自然语言处理任务，此[阅读清单](https://github.com/thunlp/SCPapers)囊括了HowNet相关研究的代表性文献。
 
 ## HowNet核心数据
 
-HowNet核心数据文件（`HowNet.txt`）由237,973个中英文词和词组所代表的概念构成。HowNet为每个概念标注了基于义原的定义以及词性、情感倾向、例句等信息。下面是HowNet中一个概念的示例：
+HowNet核心数据（即HowNet词典）（`HowNet.txt`）包括237,973个概念。每个概念由中英文词语及其词性、情感倾向、例句、义原标注等信息组成。下面是HowNet中一个概念的示例：
 
 ```
 NO.=000000026417 # 概念编号
-W_C=不惜    # 中文词
-G_C=verb [2 5000  ] [bu4 xi1]   # 中文词词性
-S_C=PlusFeeling|正面情感    # 中文词情感倾向
-E_C=~牺牲业余时间，~付出全部精力，~出卖自己的灵魂   # 中文词例句
-W_E=do not hesitate to  # 英文词
-G_E=verb [51do verb -0 vt,sobj       ]  # 英文词词性
-S_E=PlusFeeling|正面情感    # 英文词情感倾向
-E_E=    # 英文词例句
-DEF={willing|愿意}  # 基于义原的定义
+W_C=不惜    # 中文词语
+G_C=verb [2 5000  ] [bu4 xi1]   # 中文词语词性
+S_C=PlusFeeling|正面情感    # 中文词语情感倾向
+E_C=~牺牲业余时间，~付出全部精力，~出卖自己的灵魂   # 中文词语例句
+W_E=do not hesitate to  # 英文词语
+G_E=verb [51do verb -0 vt,sobj       ]  # 英文词语词性
+S_E=PlusFeeling|正面情感    # 英文词语情感倾向
+E_E=    # 英文词语例句
+DEF={willing|愿意}  # 义原标注
 RMK=
 ```
 
@@ -47,7 +72,7 @@ RMK=
 
 ### 安装
 
-你可以选择使用 `pip` 或者克隆本仓库来安装OpenHowNet工具包
+你可以选择使用 `pip` 或者克隆本仓库来安装OpenHowNet API：
 
 1. **通过 pip 安装（推荐）**
 
@@ -65,12 +90,15 @@ python setup.py install
 
 ### 核心数据类型
 
-* **HowNetDict**：HowNet词典类，封装对于HowNet核心数据的检索、展示、相似度计算等核心功能。
-* **Sense**：封装HowNet中的概念的信息，包含基于义原的中英文词语、词性、义原描述的定义等信息。
-* **Sememe**：封装HowNet中的义原的信息，包含描述义原的中英文词语、义原出现频率以及义原间关系信息。
+* **HowNetDict**：HowNet词典类，封装HowNet核心数据的检索、展示、相似度计算等核心功能。
+* **Sense**：HowNet中的概念类，封装用于描述概念的中英文词语及其词性、义原标注等信息。
+* **Sememe**：HowNet中的义原类，封装用于描述义原的中英文词语、义原的频率以及义原间关系等信息。
 
-### 使用示例
+### 基本功能使用示例
 
+下面演示了OpenHowNet最主要的几个功能。如果想查看动态演示，请下载此[Jupyter Notebook](OpenHowNet_demo.ipynb)。
+
+更多功能和工具包介绍请参考我们的[文档]()。
 
 #### 初始化
 
@@ -83,22 +111,23 @@ hownet_dict = OpenHowNet.HowNetDict()
 这里如果没有下载义原数据会报错，需要执行 `OpenHowNet.download()` 。
 
 
-#### 基本功能：获取HowNet中的词语对应的概念
+#### 获取HowNet中词语对应的概念
 
 
-默认情况下，api将搜索HowNet中输入词的中文和英文标注，并返回标注有目标词语的Sense实例列表。为了提高效率，可以设置输入词的语言。注意，如果目标词在HowNet中无标注，将返回空list。
+默认情况下，api将从HowNet中搜索输入词语（中文或英文）所属的概念，并返回一个Sense实例列表。为了提高效率，可以设置输入词语的语言。如果目标词不属于HowNet中的任何概念，将返回一个空list。
 
 
 ```python
->>> # Get the senses list annotated with "苹果".
+# 查找"苹果"所属的所有概念
 >>> result_list = hownet_dict.get_sense("苹果")
 >>> print("The number of retrievals: ", len(result_list))
 The number of retrievals:  8
+
 >>> print("An example of retrievals: ", result_list)
 An example of retrievals:  [No.244401|apple|苹果, No.244402|malus pumila|苹果, No.244403|orchard apple tree|苹果, No.244396|apple|苹果, No.244397|apple|苹果, No.244398|IPHONE|苹果, No.244399|apple|苹果, No.244400|iphone|苹果]
 ```
 
-通过每个Sense实例，可以得到每个概念的详细信息。
+通过每个Sense实例，可以得到每个概念的详细信息（包括概念编号，中英文词语、义原标注等）：
 
 ```python
 >>> sense_example = result_list[0]
@@ -116,7 +145,7 @@ HowNet Def of the sense:  {tree|树:{reproduce|生殖:PatientProduct={fruit|水�
 Sememe list of the sense:  {fruit|水果, tree|树, reproduce|生殖}
 ```
 
-你可以通过如下方式可视化每个义原的标注信息（义原树）。
+你可以通过如下方式展示一个概念的义原标注的可视化形式（即义原树）：
 
 
 ```python
@@ -129,26 +158,32 @@ Sememe list of the sense:  {fruit|水果, tree|树, reproduce|生殖}
 
 #### 获取HowNet中的所有词语和义原
 
-工具包提供了方便的获取HowNet中的所有的词语、义原等信息的api。
+工具包提供了获取HowNet中所有概念、词语、义原等信息的api。
 
 
 ```python
+# 获取所有概念
 >>> all_senses = hownet_dict.get_sense('*')
 >>> print("The number of all senses: {}".format(len(all_senses)))
 The number of all senses: 237974
+
+# 获取所有中文词语
 >>> zh_word_list = hownet_dict.get_zh_words()
->>> en_word_list = hownet_dict.get_en_words()
 >>> print("Chinese words in HowNet: ",zh_word_list[:30])
 Chinese words in HowNet:  ['', '"', '#', '#号标签', '$', '$.J.', '$A.', '$NZ.', '%', "'", '(', ')', '*', '+', ',', '-', '--', '.', '...', '...为止', '...也同样使然', '...以上', '...以内', '...以来', '...何如', '...内', '...出什么问题', '...发生了什么', '...发生故障', '...家里有几口人']
+
+# 获取所有英文词语
+>>> en_word_list = hownet_dict.get_en_words()
 >>> print("English words in HowNet: ",en_word_list[:30])
 English words in HowNet:  ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a', 'aardwolves', 'abaci', 'abandoned', 'abbreviated', 'abode', 'aboideaux', 'aboiteaux', 'abscissae', 'absorbed', 'acanthi', 'acari', 'accepted', 'acciaccature', 'acclaimed', 'accommodating', 'accompanied', 'accounting', 'accused', 'acetabula', 'acetified', 'aching', 'acicula', 'acini', 'acquired']
 ```
 
 
-#### 获取输入词获取义原标注
+#### 获取词语的义原标注
 
+工具包提供了直接根据输入的目标词语检索其所属概念的义原标注的功能。
 
-工具包提供了根据输入的目标词语检索相关义原标注信息的功能。默认情况下，工具包将查找该词语标注的Sense列表，并返回每个Sense对应的Sememe列表。
+默认情况下，工具包将查找该词语所属的Sense列表，并返回每个Sense对应的Sememe列表。
 
 
 ```python
@@ -171,24 +206,26 @@ English words in HowNet:  ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a
   'sememes': {fruit|水果, reproduce|生殖, tree|树}}]
 ```
 
-通过设置 `display` ，可以将义原以列表形式、词典形式、树节点形式、可视化形式等不同形式进行展示。
+通过设置 `display` ，可以将义原以列表形式（`list`）、词典形式（）、树节点形式（）、可视化形式（）等不同形式进行展示。
 
-当 `display=='list'` 时，可以选择将所有Sense的义原列表合并到同一个列表，以及设置义原树展开的层数等。
+* 当 `display='list'` 时，可以通过设置`merge`将所有Sense的义原列表合并到同一个列表，以及通过`expanded_layer`设置每个概念的义原树展开的层数等（`expanded_layer`默认为`-1`表示展开所有层）。
+
+下面的例子展示了将苹果所属的所有概念的义原列表进行合并后输出的结果：
 
 ```python
 >>> hownet_dict.get_sememes_by_word(word = '苹果', display='list', merge=True, expanded_layer=-1, K=None)
-{PatternValue|样式值, SpeBrand|特定牌子, able|能, bring|携带, communicate|交流, computer|电脑, fruit|水果,
- reproduce|生殖, tool|用具, tree|树}
+{PatternValue|样式值, SpeBrand|特定牌子, able|能, bring|携带, communicate|交流, computer|电脑, fruit|水果, reproduce|生殖, tool|用具, tree|树}
 ```
 
 
 #### 查询义原之间的关系
 
 
-你可以输入任何语言来查找义原并查找义原之间的关系。同时可以选择将整个三元组输出。
+你可以输入中文或英文词语来查找与之相关的义原并查找义原之间的关系，同时可以选择将整个三元组输出：
 
 
 ```python
+# 查找 FormValue|形状值 和 round|圆 这两个义原之间的关系
 >>> relations = hownet_dict.get_sememe_relation('FormValue','圆', return_triples=False)
 >>> print(relations)
 'hyponym'
@@ -201,29 +238,31 @@ English words in HowNet:  ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a
 #### 检索与输入义原存在某种关系的所有义原
 
 
-你输入的义原可以使用任意语言，但是关系必须为英文小写。同样的，可以选择将整个三元组输出。
+输入的义原可以使用任意语言，但是关系必须为英文小写。同样的，可以选择将整个三元组输出。
 
 
 ```python
->>> triples = hownet_dict.get_sememe_via_relation('FormValue', 'hyponym',return_triples=True)
+# 查找与义原 FormValue|形状值 存在 hyponym 关系的所有义原
+>>> triples = hownet_dict.get_sememe_via_relation('FormValue', 'hyponym', return_triples=True)
 >>> print(triples)
 [(FormValue|形状值, 'hyponym', round|圆), (FormValue|形状值, 'hyponym', unformed|不成形), (AppearanceValue|外观值, 'hyponym', FormValue|形状值), (FormValue|形状值, 'hyponym', angular|角), (FormValue|形状值, 'hyponym', square|方), (FormValue|形状值, 'hyponym', netlike|网), (FormValue|形状值, 'hyponym', formed|成形)]
 ```
 
 
-### 高级功能：通过义原计算词语相似度
+### 高级功能：基于义原的词语相似度和同/近义词
 
 
 实现方法基于以下论文：
 
 
-> Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP
+> Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. IJCNLP 2013. [[pdf](https://www.aclweb.org/anthology/I13-1120.pdf)]
 
 
 #### 额外初始化
 
+由于计算相似度需要额外的文件，初始化的开销将比之前的大。
 
-由于计算相似度需要额外的文件，初始化的开销将比之前的大。你可以按照如下方式初始化：
+你可以按照如下方式对`HowNetDict`初始化：
 
 
 ```python
@@ -233,7 +272,7 @@ Initializing similarity calculation succeeded!
 ```
 
 
-你也可以在需要使用时再进行额外的初始化。
+你也可以在需要使用时再对已经初始化的`HowNetDict`进行额外的初始化：
 
 
 ```python
@@ -242,13 +281,15 @@ Initializing similarity calculation succeeded!
 ```
 
 
-#### 获取K个最接近输入词的词
+#### 获取输入词语的近义词
 
+工具包将首先确定输入词语所属的Sense，继而为每个Sense分别查找K个义原标注最接近的Sense，最后输出对应的词语。注意需要设置输入词的语言。
 
-工具包将查找输入词标注的Sense，并分别查找K个最接近的Sense，并输出对应的词语。注意：应设置输入词的语言。同时可以选择设置所需词语的词性、输出词语相似度以及无视Sense将所有词语合并到同一个列表等，具体请查询文档说明。如果输入词不在HowNet中，函数将返回一个空list。
+同时可以选择设置所需词语的词性、输出词语相似度以及无视Sense将所有词语合并到同一个列表等，具体请查询文档。如果输入词语不在HowNet中，函数将返回一个空list。
 
 
 ```python
+# 为“苹果”所属的每个Sense找出5个最相近的近义词
 >>> hownet_dict_anvanced.get_nearest_words('苹果', language='zh',K=5)
 {No.244396|apple|苹果: ['IBM', '东芝', '华为', '戴尔', '索尼'],
  No.244397|apple|苹果: ['丑橘', '乌梅', '五敛子', '凤梨', '刺梨'],
@@ -258,18 +299,21 @@ Initializing similarity calculation succeeded!
  No.244401|apple|苹果: ['山梨', '山楂', '山楂树', '山里红', '开心果树'],
  No.244402|malus pumila|苹果: ['山梨', '山楂', '山楂树', '山里红', '开心果树'],
  No.244403|orchard apple tree|苹果: ['山梨', '山楂', '山楂树', '山里红', '开心果树']}
+# 合并各个Sense的近义词查找的结果
 >>> hownet_dict_anvanced.get_nearest_words('苹果', language='zh',K=5, merge=True)
 ['IBM', '东芝', '华为', '戴尔', '索尼']
 ```
 
 
-#### 计算两个指定词的相似度
+#### 计算两个词语的相似度
 
 
 如果其中的任何一个词不在HowNet中，函数将返回-1。
 
 ```python
->>> print('The similarity of 苹果 and 梨 is {}.'.format(hownet_dict_anvanced.calculate_word_similarity('苹果','梨')))
+# 计算“苹果”和“梨”基于义原的相似度
+>>> word_sim=hownet_dict_anvanced.calculate_word_similarity('苹果','梨')
+>>> print('The similarity of 苹果 and 梨 is {}.'.format(word_sim))
 The similarity of 苹果 and 梨 is 1.0.
 ```
 
