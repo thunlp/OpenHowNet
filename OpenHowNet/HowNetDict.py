@@ -13,6 +13,7 @@ from anytree.exporter import DictExporter, JsonExporter
 
 from .Sense import Sense
 from .Sememe import Sememe
+from .BabelSynset import BabelSynset
 from .SememeTreeParser import GenSememeTree
 from .Download import get_resource
 
@@ -697,3 +698,74 @@ class HowNetDict(object):
                 res[i['sense']] = self._get_words_list_by_rule(
                     i['synonym'], language=language, score=score, grammar=pos, K=K)
             return res
+
+    # Babel synset dict
+    def initialize_babelnet_dict(self):
+        """Initialize the Babel Synset dict.
+        """
+        babel_data_path = 'resources/babel_data'
+        package_directory = os.path.dirname(os.path.abspath(__file__))
+        try:
+            babel_synset_list = pickle.load(
+                get_resource(os.path.join(package_directory, babel_data_path), "rb"))
+
+            self.synset_dic = {}
+            self.en_synset_dic = {}
+            self.zh_synset_dic = {}
+            for synset in babel_synset_list:
+                self.synset_dic[synset['id']] = BabelSynset(synset)
+                self.synset_dic[synset['id']].sememes = [self.sememe_dic[i] for i in synset['sememes']]
+            for synset in babel_synset_list:
+                for i in synset['en_synonyms']:
+                    if i not in self.en_synset_dic.keys():
+                        self.en_synset_dic[i] = list()
+                    self.en_synset_dic[i].append(self.synset_dic[synset['id']])
+                for i in synset['zh_synonyms']:
+                    if i not in self.zh_synset_dic.keys():
+                        self.zh_synset_dic[i] = list()
+                    self.zh_synset_dic[i].append(self.synset_dic[synset['id']])
+        except FileNotFoundError as e:
+            print(
+                "Enabling Babel Synset Dict requires specific data files, please check the completeness of your download package.")
+            print(e)
+            return
+        print("Initializing Babel Synset Dict succeeded!")
+        return
+
+    def get_synset(self, word, language=None, strict=True):
+        res = set()
+        if strict:
+            if language == 'en':
+                if (word in self.en_synset_dic.keys()):
+                    res |= set(self.en_synset_dic[word])
+            elif language == 'zh':
+                if (word in self.zh_synset_dic.keys()):
+                    res |= set(self.zh_synset_dic[word])
+            else:
+                if (word in self.synset_dic.keys()):
+                    res |= set([self.synset_dic[word]])
+                if (word in self.en_synset_dic.keys()):
+                    res |= set(self.en_synset_dic[word])
+                if (word in self.zh_synset_dic.keys()):
+                    res |= set(self.zh_synset_dic[word])
+            return list(res)
+        else:
+            if language == 'en':
+                for k in self.en_synset_dic.keys():
+                    if k.find(word) != -1:
+                        res |= set(self.en_synset_dic[word])
+            elif language == 'zh':
+                for k in self.zh_synset_dic.keys():
+                    if k.find(word) != -1:
+                        res |= set(self.zh_synset_dic[word])
+            else:
+                for k in self.synset_dic.keys():
+                    if k.find(word) != -1:
+                        res |= set(self.synset_dic[word])
+                for k in self.en_synset_dic.keys():
+                    if k.find(word) != -1:
+                        res |= set(self.en_synset_dic[word])
+                for k in self.zh_synset_dic.keys():
+                    if k.find(word) != -1:
+                        res |= set(self.zh_synset_dic[word])
+            return list(res)
