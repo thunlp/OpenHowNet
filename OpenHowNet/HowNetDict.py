@@ -73,7 +73,7 @@ class HowNetDict(object):
                 self.sense_dic[k] = Sense(v)
                 self.sense_dic[k].sememes = self.gen_sememe_list(
                     self.sense_dic[k])
-                for s in self.sense_dic[k].sememes.values():
+                for s in self.sense_dic[k].sememes:
                     s.senses.append(self.sense_dic[k])
 
             # Initialize the sense dic to retrieve by word.
@@ -273,7 +273,7 @@ class HowNetDict(object):
             (`list[Sememe]`) the sememe list of the sense.
         """
         kdml = sense.Def
-        res = dict()
+        res = list()
         for i in range(len(kdml)):
             if kdml[i] == '|':
                 start_idx = i
@@ -282,8 +282,7 @@ class HowNetDict(object):
                     start_idx = start_idx - 1
                 while kdml[end_idx] not in ['}', ':', '"']:
                     end_idx = end_idx + 1
-                res[kdml[start_idx + 1:end_idx].replace(' ', '_')
-                    ] = self.sememe_dic[kdml[start_idx + 1:end_idx].replace(' ', '_')]
+                res.append(self.sememe_dic[kdml[start_idx + 1:end_idx].replace(' ', '_')])
         return res
 
     def get_sememes_by_word(self, word, display='list', merge=False, expanded_layer=-1, K=None):

@@ -26,7 +26,7 @@ class Sense(object):
         self.zh_word = hownet_sense['ch_word']
         self.zh_grammar = hownet_sense['ch_grammar']
         self.Def = hownet_sense['Def']
-        self.sememes = {}
+        self.sememes = []
 
     def __repr__(self):
         """Define how to print the sense.
@@ -114,8 +114,10 @@ class Sense(object):
                     while kdml[end_idx] not in ['}', ':', '"']:
                         end_idx = end_idx + 1
                     entity_idx.append([start_idx + 1, end_idx])
-                    node.append(Node(
-                        self.sememes[kdml[start_idx + 1: end_idx].replace(' ', '_')], role='None'))
+                    for j in self.sememes:
+                        if j.en_zh == kdml[start_idx + 1: end_idx].replace(' ', '_'):
+                            node.append(Node(j, role='None'))
+
             for i in range(len(entity_idx)):
                 cursor = entity_idx[i][0]
                 left_brace = 0
