@@ -37,7 +37,7 @@ class HowNetDict(object):
 
     """
 
-    def __init__(self, init_sim=False):
+    def __init__(self, init_sim=False, init_babel=False):
         '''Initialize HowNetDict
         '''
         try:
@@ -93,6 +93,10 @@ class HowNetDict(object):
             # Initialize the similarity calculation
             if init_sim:
                 self.initialize_similarity_calculation()
+            
+            # Initialize the Babel Synset dict
+            if init_babel:
+                self.initialize_babelnet_dict()
         except FileNotFoundError as e:
             print(e)
 
@@ -712,17 +716,17 @@ class HowNetDict(object):
             self.en_synset_dic = {}
             self.zh_synset_dic = {}
             for synset in babel_synset_list:
-                self.synset_dic[synset['id']] = BabelSynset(synset)
-                self.synset_dic[synset['id']].sememes = [self.sememe_dic[i] for i in synset['sememes']]
+                self.synset_dic[synset['bn']] = BabelSynset(synset)
+                self.synset_dic[synset['bn']].sememes = [self.sememe_dic[i] for i in synset['sememes']]
             for synset in babel_synset_list:
                 for i in synset['en_synonyms']:
                     if i not in self.en_synset_dic.keys():
                         self.en_synset_dic[i] = list()
-                    self.en_synset_dic[i].append(self.synset_dic[synset['id']])
+                    self.en_synset_dic[i].append(self.synset_dic[synset['bn']])
                 for i in synset['zh_synonyms']:
                     if i not in self.zh_synset_dic.keys():
                         self.zh_synset_dic[i] = list()
-                    self.zh_synset_dic[i].append(self.synset_dic[synset['id']])
+                    self.zh_synset_dic[i].append(self.synset_dic[synset['bn']])
         except FileNotFoundError as e:
             print(
                 "Enabling Babel Synset Dict requires specific data files, please check the completeness of your download package.")
@@ -760,11 +764,11 @@ class HowNetDict(object):
             else:
                 for k in self.synset_dic.keys():
                     if k.find(word) != -1:
-                        res |= set(self.synset_dic[word])
+                        res |= set([self.synset_dic[k]])
                 for k in self.en_synset_dic.keys():
                     if k.find(word) != -1:
-                        res |= set(self.en_synset_dic[word])
+                        res |= set(self.en_synset_dic[k])
                 for k in self.zh_synset_dic.keys():
                     if k.find(word) != -1:
-                        res |= set(self.zh_synset_dic[word])
+                        res |= set(self.zh_synset_dic[k])
             return list(res)
