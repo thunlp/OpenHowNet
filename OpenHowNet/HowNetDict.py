@@ -383,12 +383,31 @@ class HowNetDict(object):
         return item in self.en_map or item in self.zh_map or item in self.sense_dic
 
     def get_all_sememes(self):
-        """Get the complete sememe dict in HowNet
+        """Get the complete sememes in HowNet
 
         Returns:
-            (`dict`) a dict of all sememes
+            (`list`) a list of all sememes
         """
-        return self.sememe_dic
+        return self.sememe_dic.values()
+
+    def get_all_senses(self):
+        """Get the complete senses in HowNet
+
+        Returns:
+            (`list`) a list of all sememes
+        """
+        return self.sense_dic.values()
+
+    def get_all_babel_synsets(self):
+        """Get the complete babel synset.
+
+        Returns:
+            (`list`) a list of all babel synsets.
+        """
+        if not hasattr(self, "synset_dic"):
+            print('Please initialize the Babel Synset dict.')
+            return
+        return self.synset_dic.values()
 
     # Sememe relation
     def get_sememe_relation(self, x, y, return_triples=False, strict=True):
