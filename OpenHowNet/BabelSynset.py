@@ -25,12 +25,14 @@ class BabelSynset(object):
     def __init__(self, babel_synset):
         """Initialize an BabelSynset instance.
         """
-        self.id = babel_synset['id']
+        self.id = babel_synset['bn']
+        self.pos = babel_synset['pos']
         self.en_synonyms = babel_synset['en_synonyms']
         self.zh_synonyms = babel_synset['zh_synonyms']
         self.en_glosses = babel_synset['en_glosses']
         self.zh_glosses = babel_synset['zh_glosses']
         self.sememes = []
+        self.image_urls = babel_synset['image_urls']
 
     def __repr__(self):
         """Define how to print the babel synset.
@@ -42,3 +44,6 @@ class BabelSynset(object):
 
     def get_sememe_list(self):
         return self.sememes
+    
+    def get_image_url_list(self):
+        return self.image_urls
