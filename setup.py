@@ -22,5 +22,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    install_requires=['anytree==2.4.3','requests==2.22.0','tqdm==4.31.1'],
     python_requires=">=3.6"
 )
