@@ -33,6 +33,7 @@ class BabelSynset(object):
         self.zh_glosses = babel_synset['zh_glosses']
         self.sememes = []
         self.image_urls = babel_synset['image_urls']
+        self.related_synsets = {}
 
     def __repr__(self):
         """Define how to print the babel synset.
@@ -44,6 +45,23 @@ class BabelSynset(object):
 
     def get_sememe_list(self):
         return self.sememes
-    
+
     def get_image_url_list(self):
         return self.image_urls
+
+    def get_related_synsets(self, return_triples=False):
+        res = set()
+        if return_triples:
+            for k in self.related_synsets.keys():
+                res |= set([(self, k, v) for v in self.related_synsets[k]])
+        else:
+            for k in self.related_synsets.keys():
+                res |= set(self.related_synsets[k])
+        return list(res)
+
+    def get_synset_via_relation(self, relation, return_triples=False):
+        res = list()
+        if relation not in self.related_synsets.keys():
+            return res
+        res = self.related_synsets[relation]
+        return res
