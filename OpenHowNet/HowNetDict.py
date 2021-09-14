@@ -93,7 +93,7 @@ class HowNetDict(object):
             # Initialize the similarity calculation
             if init_sim:
                 self.initialize_similarity_calculation()
-            
+
             # Initialize the Babel Synset dict
             if init_babel:
                 self.initialize_babelnet_dict()
@@ -286,7 +286,8 @@ class HowNetDict(object):
                     start_idx = start_idx - 1
                 while kdml[end_idx] not in ['}', ':', '"']:
                     end_idx = end_idx + 1
-                res.append(self.sememe_dic[kdml[start_idx + 1:end_idx].replace(' ', '_')])
+                res.append(
+                    self.sememe_dic[kdml[start_idx + 1:end_idx].replace(' ', '_')])
         return res
 
     def get_sememes_by_word(self, word, display='list', merge=False, expanded_layer=-1, K=None):
@@ -736,7 +737,12 @@ class HowNetDict(object):
             self.zh_synset_dic = {}
             for synset in babel_synset_list:
                 self.synset_dic[synset['bn']] = BabelSynset(synset)
-                self.synset_dic[synset['bn']].sememes = [self.sememe_dic[i] for i in synset['sememes']]
+                self.synset_dic[synset['bn']].sememes = [
+                    self.sememe_dic[i] for i in synset['sememes']]
+            for synset in babel_synset_list:
+                for k in synset['rel'].keys():
+                    self.synset_dic[synset['bn']].related_synsets[k] = [
+                        self.synset_dic[i] for i in synset['rel'][k]]
             for synset in babel_synset_list:
                 for i in synset['en_synonyms']:
                     if i not in self.en_synset_dic.keys():
@@ -746,6 +752,7 @@ class HowNetDict(object):
                     if i not in self.zh_synset_dic.keys():
                         self.zh_synset_dic[i] = list()
                     self.zh_synset_dic[i].append(self.synset_dic[synset['bn']])
+
         except FileNotFoundError as e:
             print(
                 "Enabling Babel Synset Dict requires specific data files, please check the completeness of your download package.")
