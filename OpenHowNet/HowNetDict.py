@@ -395,7 +395,7 @@ class HowNetDict(object):
         """Get the complete senses in HowNet
 
         Returns:
-            (`list`) a list of all sememes
+            (`list`) a list of all senses
         """
         return self.sense_dic.values()
 
@@ -410,7 +410,13 @@ class HowNetDict(object):
             return
         return self.synset_dic.values()
 
+    def get_all_sense_pos(self):
+        return ['det', 'root', 'prep', 'aux', 'wh', 'adv', 'conj', 'infs', 'prefix', 'num', 'suffix', 'pun', 'noun', 'verb', 'stru', 'expr', 'adj', 'classifier', 'pp', 'letter', 'pron', 'echo', 'char', 'coor']
+
     # Sememe relation
+    def get_all_sememe_relations(self):
+        return ['hypernym', 'hyponym', 'antonym', 'converse']
+
     def get_sememe_relation(self, x, y, return_triples=False, strict=True):
         """Show relationship between two sememes.
 
@@ -762,6 +768,9 @@ class HowNetDict(object):
         return
 
     def get_synset(self, word, language=None, strict=True):
+        if not hasattr(self, "synset_dic"):
+            print("Please initialize BabelNet synest dict firstly!")
+            return
         res = set()
         if strict:
             if language == 'en':
@@ -798,3 +807,15 @@ class HowNetDict(object):
                     if k.find(word) != -1:
                         res |= set(self.zh_synset_dic[k])
             return list(res)
+    
+    def get_synset_relation(self, x, y, strict=True):
+        pass
+
+    def get_synset_via_relation(self, x, relation, strict=True):
+        pass
+    
+    def get_related_synsets(self, x, relation, strict=True):
+        pass
+
+    def get_sememe_by_word_pro(self, x, merge=False):
+        pass
