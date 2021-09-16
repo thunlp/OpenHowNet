@@ -63,5 +63,8 @@ class BabelSynset(object):
         res = list()
         if relation not in self.related_synsets.keys():
             return res
-        res = self.related_synsets[relation]
+        if return_triples:
+            res.extend([(self, relation, s) for s in self.related_synsets[relation]])
+        else:
+            res = self.related_synsets[relation]
         return res
