@@ -84,7 +84,7 @@ class Sense(object):
 
         Args:
             return_node(`bool`):
-                whether to return as anytree node.
+                whether to return as anytree root node.
 
         Returns:
             (`dict`or`anytree.Node`) the sememe tree of the sense in the form of dict 
@@ -169,7 +169,6 @@ class Sense(object):
 
     def visualize_sememe_tree(self):
         """Visualize the sememe tree by sense Def.
-        Print and return the sememe tree str.
 
         Returns:
             (`str`) the visualized sememe tree.

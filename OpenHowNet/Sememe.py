@@ -50,9 +50,10 @@ class Sememe(object):
         """Get the sememes related with the sememe.
 
         Args:
+            relation (`str`) : set the limitation on the relation between target sememe and the retrieved sememes.
             return_triples (`bool`):
-                You can choose to return the list of triples or return the list of related sememes.
-
+                you can choose to return the list of triples or return the list of related sememes.
+            
         Returns:
             (`list`) the list of triples or return the list of related sememes.
         """

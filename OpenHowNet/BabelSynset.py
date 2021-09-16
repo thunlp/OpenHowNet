@@ -7,7 +7,8 @@ from .Download import get_resource
 
 
 class BabelSynset(object):
-    """BabelSynset class.
+    """BabelNet synset class.
+    Contains the abundant information in the BabelNet.
 
     Attributes:
         id (str): The unique identity of the BabelSynset in BabelNet.
@@ -44,27 +45,37 @@ class BabelSynset(object):
         return res
 
     def get_sememe_list(self):
+        """Get the sememe list labeled to the synset.
+        """
         return self.sememes
 
     def get_image_url_list(self):
+        """Get the image url list of the synset.
+        """
         return self.image_urls
 
-    def get_related_synsets(self, return_triples=False):
-        res = set()
-        if return_triples:
-            for k in self.related_synsets.keys():
-                res |= set([(self, k, v) for v in self.related_synsets[k]])
-        else:
-            for k in self.related_synsets.keys():
-                res |= set(self.related_synsets[k])
-        return list(res)
+    def get_related_synsets(self, relation=None, return_triples=False):
+        """Get the synsets related with the synset.
+        You can set the relation to get the synsets that have the exact relation with the synset.
 
-    def get_synset_via_relation(self, relation, return_triples=False):
-        res = list()
-        if relation not in self.related_synsets.keys():
-            return res
-        if return_triples:
-            res.extend([(self, relation, s) for s in self.related_synsets[relation]])
+        Args:
+            relation(`str`) : set the relation between target synset and retrieved synsets.
+            return_triples(`bool`) : whether to return the triples or the synsets.
+        """
+        res = set()
+        if relation:
+            res = list()
+            if relation not in self.related_synsets.keys():
+                return res
+            if return_triples:
+                res.extend([(self, relation, s) for s in self.related_synsets[relation]])
+            else:
+                res = self.related_synsets[relation]
         else:
-            res = self.related_synsets[relation]
-        return res
+            if return_triples:
+                for k in self.related_synsets.keys():
+                    res |= set([(self, k, v) for v in self.related_synsets[k]])
+            else:
+                for k in self.related_synsets.keys():
+                    res |= set(self.related_synsets[k])
+        return list(res)

@@ -185,7 +185,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">zh_word</span> <span class="o">=</span> <span class="n">hownet_sense</span><span class="p">[</span><span class="s1">&#39;ch_word&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zh_grammar</span> <span class="o">=</span> <span class="n">hownet_sense</span><span class="p">[</span><span class="s1">&#39;ch_grammar&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Def</span> <span class="o">=</span> <span class="n">hownet_sense</span><span class="p">[</span><span class="s1">&#39;Def&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sememes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sememes</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Define how to print the sense.</span>
@@ -193,7 +193,7 @@
         <span class="n">nzno</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">No</span><span class="p">))</span>
         <span class="k">return</span> <span class="s1">&#39;No.&#39;</span> <span class="o">+</span> <span class="n">nzno</span> <span class="o">+</span> <span class="s2">&quot;|</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">en_word</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zh_word</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_expand_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">isRoot</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__expand_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">isRoot</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Expand the sememe tree by iteration.</span>
 
 <span class="sd">        Args:</span>
@@ -216,7 +216,7 @@
                     <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;$&#39;</span> <span class="ow">and</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;?&#39;</span><span class="p">:</span>
                         <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="s2">&quot;children&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
-                    <span class="n">res</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_tree</span><span class="p">(</span>
+                    <span class="n">res</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__expand_tree</span><span class="p">(</span>
                         <span class="n">item</span><span class="p">[</span><span class="s2">&quot;children&quot;</span><span class="p">],</span> <span class="n">layer</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">isRoot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
@@ -233,17 +233,17 @@
 <span class="sd">                the layer num to expand the tree.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            (`set[Sememe]`) the sememe set of the sememe tree.</span>
+<span class="sd">            (`list[Sememe]`) the sememe set of the sememe tree.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sememe_tree</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__expand_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">layer</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Sense.get_sememe_tree"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.Sense.Sense.get_sememe_tree">[docs]</a>    <span class="k">def</span> <span class="nf">get_sememe_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_node</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate sememe tree for the sense by the Def.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            return_node(`bool`):</span>
-<span class="sd">                whether to return as anytree node.</span>
+<span class="sd">                whether to return as anytree root node.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (`dict`or`anytree.Node`) the sememe tree of the sense in the form of dict </span>
@@ -273,14 +273,15 @@
                     <span class="k">while</span> <span class="n">kdml</span><span class="p">[</span><span class="n">end_idx</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">]:</span>
                         <span class="n">end_idx</span> <span class="o">=</span> <span class="n">end_idx</span> <span class="o">+</span> <span class="mi">1</span>
                     <span class="n">entity_idx</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">])</span>
-                    <span class="n">node</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">sememes</span><span class="p">[</span><span class="n">kdml</span><span class="p">[</span><span class="n">start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">end_idx</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)],</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sememes</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">j</span><span class="o">.</span><span class="n">en_zh</span> <span class="o">==</span> <span class="n">kdml</span><span class="p">[</span><span class="n">start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">end_idx</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">):</span>
+                            <span class="n">node</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">))</span>
+
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">entity_idx</span><span class="p">)):</span>
                 <span class="n">cursor</span> <span class="o">=</span> <span class="n">entity_idx</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">left_brace</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="n">right_brace</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="n">quotation</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="c1"># 找到当前义原所属的主义原位置</span>
                 <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">kdml</span><span class="p">[</span><span class="n">cursor</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;:&#39;</span> <span class="ow">and</span> <span class="p">((</span><span class="n">quotation</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">left_brace</span> <span class="o">==</span> <span class="n">right_brace</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span>
                                                     <span class="p">(</span><span class="n">quotation</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">left_brace</span> <span class="o">==</span> <span class="n">right_brace</span><span class="p">))):</span>
                     <span class="k">if</span> <span class="n">cursor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -327,7 +328,6 @@
 
 <div class="viewcode-block" id="Sense.visualize_sememe_tree"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.Sense.Sense.visualize_sememe_tree">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_sememe_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Visualize the sememe tree by sense Def.</span>
-<span class="sd">        Print and return the sememe tree str.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (`str`) the visualized sememe tree.</span>
@@ -337,8 +337,7 @@
         <span class="n">tree_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">for</span> <span class="n">pre</span><span class="p">,</span> <span class="n">fill</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">:</span>
             <span class="n">tree_str</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">]</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">tree_str</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tree_str</span></div></div>
+        <span class="nb">print</span><span class="p">(</span><span class="n">tree_str</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
