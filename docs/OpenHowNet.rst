@@ -28,14 +28,6 @@ OpenHowNet.Sememe module
    :undoc-members:
    :show-inheritance:
 
-OpenHowNet.SememeTreeParser module
-----------------------------------
-
-.. automodule:: OpenHowNet.SememeTreeParser
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 OpenHowNet.Sense module
 -----------------------
 

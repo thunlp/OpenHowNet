@@ -172,50 +172,29 @@
 <span class="sd">        zh (str): Chinese word to describe the sememe.</span>
 <span class="sd">        freq (int): </span>
 <span class="sd">            the sememe occurence frequency in HowNet.</span>
-<span class="sd">        related_sememes_forward (dict): </span>
-<span class="sd">            the sememes related with the sememe in HowNet and the sememe is head sememe in triples.</span>
-<span class="sd">        related_sememes_backward (dict): </span>
-<span class="sd">            the sememes related with the sememe in HowNet and the sememe is tail sememe in triples.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        hownet_sememe (str):</span>
-<span class="sd">            An sememe in HowNet in the form of (English annotation|Chinese annotation).</span>
-<span class="sd">        freq (int):</span>
-<span class="sd">            the sememe occurence frequency in HowNet.</span>
+<span class="sd">        related_sememes (dict): </span>
+<span class="sd">            the sememes related with the sememe in HowNet.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hownet_sememe</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize a sememe by sememe annotations.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            hownet_sememe (str): </span>
+<span class="sd">                An sememe in HowNet in the form of (English annotation|Chinese annotation).</span>
+<span class="sd">            freq (int): </span>
+<span class="sd">                the sememe occurence frequency in HowNet.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">en</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zh</span> <span class="o">=</span> <span class="n">hownet_sememe</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">en_zh</span> <span class="o">=</span> <span class="n">hownet_sememe</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_forward</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_backward</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">senses</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Define how to print the sememe.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">en_zh</span>
-
-<div class="viewcode-block" id="Sememe.add_related_sememes_forward"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.Sememe.Sememe.add_related_sememes_forward">[docs]</a>    <span class="k">def</span> <span class="nf">add_related_sememes_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">tail</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add a sememe triple to the sememe.</span>
-
-<span class="sd">        Sememe triple contains (head sememe, relation, tail sememe).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">relation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_forward</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_forward</span><span class="p">[</span><span class="n">relation</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_forward</span><span class="p">[</span><span class="n">relation</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tail</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Sememe.add_related_sememes_backward"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.Sememe.Sememe.add_related_sememes_backward">[docs]</a>    <span class="k">def</span> <span class="nf">add_related_sememes_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">tail</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add a sememe triple to the sememe.</span>
-
-<span class="sd">        Sememe triple contains (head sememe, relation, tail sememe).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">relation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_backward</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_backward</span><span class="p">[</span><span class="n">relation</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_backward</span><span class="p">[</span><span class="n">relation</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">head</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Sememe.get_senses"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.Sememe.Sememe.get_senses">[docs]</a>    <span class="k">def</span> <span class="nf">get_senses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the senses annotated with the sememe.</span>
@@ -226,52 +205,32 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">senses</span></div>
 
-<div class="viewcode-block" id="Sememe.get_related_sememes"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.Sememe.Sememe.get_related_sememes">[docs]</a>    <span class="k">def</span> <span class="nf">get_related_sememes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_triples</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Sememe.get_related_sememes"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.Sememe.Sememe.get_related_sememes">[docs]</a>    <span class="k">def</span> <span class="nf">get_related_sememes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_triples</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the sememes related with the sememe.</span>
 
 <span class="sd">        Args:</span>
+<span class="sd">            relation (`str`) : set the limitation on the relation between target sememe and the retrieved sememes.</span>
 <span class="sd">            return_triples (`bool`):</span>
-<span class="sd">                You can choose to return the list of triples or return the list of related sememes.</span>
-
+<span class="sd">                you can choose to return the list of triples or return the list of related sememes.</span>
+<span class="sd">            </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            (`list`) the list of triples or return the list of related sememes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">return_triples</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_forward</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">([(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_backward</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">relation</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">relation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">return_triples</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">([(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes</span><span class="p">[</span><span class="n">relation</span><span class="p">]])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">related_sememes</span><span class="p">[</span><span class="n">relation</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_forward</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_backward</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Sememe.get_sememe_via_relation"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.Sememe.Sememe.get_sememe_via_relation">[docs]</a>    <span class="k">def</span> <span class="nf">get_sememe_via_relation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">return_triples</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the sememes that have relation with the sememe.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            relation (`str`):</span>
-<span class="sd">                The relation between the sememes to search and the sememe.</span>
-<span class="sd">            return_triples (`bool`):</span>
-<span class="sd">                You can choose to return the list of triples or return the list of related sememes.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            (`list`) the list of triples or the list of related sememes.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">res</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">relation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_forward</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">return_triples</span><span class="p">:</span>
-                <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">([(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_forward</span><span class="p">[</span><span class="n">relation</span><span class="p">]])</span>
-                <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_backward</span><span class="p">[</span><span class="n">relation</span><span class="p">]])</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">([(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_forward</span><span class="p">[</span><span class="n">relation</span><span class="p">])</span>
-                <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">related_sememes_backward</span><span class="p">[</span><span class="n">relation</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_sememes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div></div>
 </pre></div>
 
