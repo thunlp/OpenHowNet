@@ -34,7 +34,7 @@ class Sense(object):
         nzno = str(int(self.No))
         return 'No.' + nzno + "|%s|%s" % (self.en_word, self.zh_word)
 
-    def _expand_tree(self, tree, layer, isRoot=True):
+    def __expand_tree(self, tree, layer, isRoot=True):
         """Expand the sememe tree by iteration.
 
         Args:
@@ -57,7 +57,7 @@ class Sense(object):
                     if item['name'] != '$' and item['name'] != '?':
                         res.add(item["name"])
                 if "children" in item:
-                    res |= self._expand_tree(
+                    res |= self.__expand_tree(
                         item["children"], layer - 1, isRoot=False)
             except Exception as e:
                 if isinstance(e, IndexError):
@@ -74,10 +74,10 @@ class Sense(object):
                 the layer num to expand the tree.
 
         Returns:
-            (`set[Sememe]`) the sememe set of the sememe tree.
+            (`list[Sememe]`) the sememe set of the sememe tree.
         """
         tree = self.get_sememe_tree()
-        return self._expand_tree(tree, layer)
+        return list(self.__expand_tree(tree, layer))
 
     def get_sememe_tree(self, return_node=False):
         """Generate sememe tree for the sense by the Def.

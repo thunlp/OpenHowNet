@@ -47,31 +47,30 @@ class HowNetDict(object):
 
             # Initialize sememe list from sememe_all.
             self.sememe_dic = dict()
-            self.sememe_relation_dic = dict()
             with get_resource(sememe_dir, 'rb') as sememe_dict:
                 sememe_all = pickle.load(sememe_dict)
             sememe_dict.close()
             for k, v in sememe_all.items():
                 self.sememe_dic[k] = Sememe(k, v)
+
+            # Initialize the relations between sememes
             sememe_triples = get_resource(sememe_triples_dir, "r")
             for line in sememe_triples.readlines():
                 line = line.strip().split(" ")
-                self.sememe_dic[line[0]].add_related_sememes_forward(
-                    self.sememe_dic[line[0]], line[1], self.sememe_dic[line[2]])
-                self.sememe_dic[line[2]].add_related_sememes_backward(
-                    self.sememe_dic[line[0]], line[1], self.sememe_dic[line[2]])
-                self.sememe_relation_dic[(
-                    line[0], line[2])] = line[1]
+                if line[1] not in self.sememe_dic[line[0]].related_sememes.keys():
+                    self.sememe_dic[line[0]].related_sememes[line[1]] = []
+                self.sememe_dic[line[0]].related_sememes[line[1]].append(
+                    self.sememe_dic[line[2]])
             sememe_triples.close()
 
-            # Initialize sense list from HowNet_dict_complete
+            # Initialize sense list from HowNet_dict
             self.sense_dic = dict()
             with get_resource(data_dir, 'rb') as origin_dict:
                 hownet_dict = pickle.load(origin_dict)
             origin_dict.close()
             for k, v in hownet_dict.items():
                 self.sense_dic[k] = Sense(v)
-                self.sense_dic[k].sememes = self.gen_sememe_list(
+                self.sense_dic[k].sememes = self.__gen_sememe_list(
                     self.sense_dic[k])
                 for s in self.sense_dic[k].sememes:
                     s.senses.append(self.sense_dic[k])
@@ -97,6 +96,7 @@ class HowNetDict(object):
             # Initialize the Babel Synset dict
             if init_babel:
                 self.initialize_babelnet_dict()
+
         except FileNotFoundError as e:
             print(e)
 
@@ -240,7 +240,7 @@ class HowNetDict(object):
         Returns:
             (`list`) All annotated Chinese words in HowNet.
         """
-        return list(self.zh_map.keys())
+        return list(set(self.zh_map.keys()))
 
     def get_en_words(self):
         """Get all English words annotated in HowNet
@@ -248,25 +248,9 @@ class HowNetDict(object):
         Returns:
             (`list`) All annotated English words in HowNet.
         """
-        return list(self.en_map.keys())
+        return list(set(self.en_map.keys()))
 
-    def sememe_fuzzy_match(self, s):
-        """To fuzzy match the sememe by english/language word.
-
-        Args:
-            s (`str`):
-                the string to match the sememe.
-
-        Returns:
-            (`list[Sememe]`) the sememe list which is annotated with s.
-        """
-        res = []
-        for k in self.sememe_dic.keys():
-            if k.find(s) != -1:
-                res.append(k)
-        return res
-
-    def gen_sememe_list(self, sense):
+    def __gen_sememe_list(self, sense):
         """Get sememe list for the sense by the Def.
 
         Args:
@@ -361,7 +345,7 @@ class HowNetDict(object):
             return
         else:
             print("Wrong display mode: ", display)
-        return result
+        return list(result)
 
     def has(self, item, language=None):
         """Check that whether certain word(English Word/Chinese Word/ID) exist in HowNet
@@ -389,7 +373,7 @@ class HowNetDict(object):
         Returns:
             (`list`) a list of all sememes
         """
-        return self.sememe_dic.values()
+        return list(self.sememe_dic.values())
 
     def get_all_senses(self):
         """Get the complete senses in HowNet
@@ -397,18 +381,7 @@ class HowNetDict(object):
         Returns:
             (`list`) a list of all senses
         """
-        return self.sense_dic.values()
-
-    def get_all_babel_synsets(self):
-        """Get the complete babel synset.
-
-        Returns:
-            (`list`) a list of all babel synsets.
-        """
-        if not hasattr(self, "synset_dic"):
-            print('Please initialize the Babel Synset dict.')
-            return
-        return self.synset_dic.values()
+        return list(self.sense_dic.values())
 
     def get_all_sense_pos(self):
         return ['det', 'root', 'prep', 'aux', 'wh', 'adv', 'conj', 'infs', 'prefix', 'num', 'suffix', 'pun', 'noun', 'verb', 'stru', 'expr', 'adj', 'classifier', 'pp', 'letter', 'pron', 'echo', 'char', 'coor']
@@ -439,14 +412,14 @@ class HowNetDict(object):
         sememe_x = self.get_sememe(x, strict=strict)
         sememe_y = self.get_sememe(y, strict=strict)
         for s_x in sememe_x:
-            for s_y in sememe_y:
-                if (s_x.en_zh, s_y.en_zh) in self.sememe_relation_dic.keys():
-                    if return_triples:
-                        res.append(
-                            (s_x, self.sememe_relation_dic[(s_x.en_zh, s_y.en_zh)], s_y))
-                    else:
-                        res.append(self.sememe_relation_dic[(
-                            s_x.en_zh, s_y.en_zh)])
+            for k in s_x.related_sememes.keys():
+                for s_y in sememe_y:
+                    if s_y in s_x.related_sememes[k]:
+                        if return_triples:
+                            res.append(
+                                (s_x, k, s_y))
+                        else:
+                            res.append(k)
         return res
 
     def get_related_sememes(self, x, relation=None, return_triples=False, strict=True):
@@ -468,8 +441,8 @@ class HowNetDict(object):
         sememe_x = self.get_sememe(x, strict=strict)
         if relation:
             for s_x in sememe_x:
-                res |= set(s_x.get_sememe_via_relation(
-                    relation, return_triples=return_triples))
+                res |= set(s_x.get_related_sememes(
+                    relation=relation, return_triples=return_triples))
         else:
             for s_x in sememe_x:
                 res |= set(s_x.get_related_sememes(
@@ -486,9 +459,9 @@ class HowNetDict(object):
             (`list[Sense]`) The list of senses which contains No, ch_word and en_word.
         """
         res = set()
-        sememe_x = self.get_sense(x, strict=strict)
+        sememe_x = self.get_sememe(x, strict=strict)
         for s_x in sememe_x:
-            res |= set(self.sememe_dic[s_x].senses)
+            res |= s_x.get_senses()
         return list(res)
 
     # Similarity calculation
@@ -517,7 +490,7 @@ class HowNetDict(object):
         print("Initializing similarity calculation succeeded!")
         return
 
-    def sense_similarity(self, node1, node2, sememe_sim_table):
+    def __sense_similarity(self, node1, node2, sememe_sim_table):
         """Calculate the similarity between two senses.
         """
         delta = 0.1
@@ -540,7 +513,7 @@ class HowNetDict(object):
                         flag2[j] = 0
                         role_match = role_match + 1
                         relation_sim = relation_sim + \
-                            self.sense_similarity(
+                            self.__sense_similarity(
                                 node1.children[i], node2.children[j], sememe_sim_table)
             relation_sim = relation_sim + (sum(flag1) + sum(flag2)) * delta
             relation_sim = relation_sim / (N - role_match)
@@ -578,7 +551,7 @@ class HowNetDict(object):
         max_sim = -1
         for id1 in senses1:
             for id2 in senses2:
-                sim = self.sense_similarity(
+                sim = self.__sense_similarity(
                     self.sense_tree_dic[id1.No], self.sense_tree_dic[id2.No],  self.sememe_sim_table)
                 if sim > max_sim:
                     max_sim = sim
@@ -603,7 +576,7 @@ class HowNetDict(object):
         k = '_'.join(ll)
         return [self.sense_dic[i] for i in self.sense_syn_dic[k]]
 
-    def _get_words_list_by_rule(self, senses, language='zh', score=False, grammar=None, K=10):
+    def __get_words_list_by_rule(self, senses, language='zh', score=False, grammar=None, K=10):
         """Get sense list by language/grammar/K.
         """
         res = []
@@ -687,7 +660,7 @@ class HowNetDict(object):
             for j in self.sense_dic.keys():
                 if j != i.No and int(j) >= 3378:
                     tree2 = self.sense_tree_dic[j]
-                    sim = self.sense_similarity(
+                    sim = self.__sense_similarity(
                         tree1, tree2, self.sememe_sim_table)
                     scores[self.sense_dic[j]] = sim
             result = sorted(scores.items(), key=lambda x: x[1], reverse=True)
@@ -700,13 +673,13 @@ class HowNetDict(object):
             for i in res_temp:
                 res.extend(i['synonym'])
             res = sorted(res, key=lambda x: x[1], reverse=True)
-            res = self._get_words_list_by_rule(
+            res = self.__get_words_list_by_rule(
                 res, language=language, score=score, grammar=pos, K=K)
             return res
         else:
             res = dict()
             for i in res_temp:
-                res[i['sense']] = self._get_words_list_by_rule(
+                res[i['sense']] = self.__get_words_list_by_rule(
                     i['synonym'], language=language, score=score, grammar=pos, K=K)
             return res
 
@@ -789,6 +762,18 @@ class HowNetDict(object):
                     if k.find(word) != -1:
                         res |= set(self.zh_synset_dic[k])
             return list(res)
+
+    def get_all_babel_synsets(self):
+        """Get the complete babel synset.
+
+        Returns:
+            (`list`) a list of all babel synsets.
+        """
+        if not hasattr(self, "synset_dic"):
+            print('Please initialize the Babel Synset dict.')
+            return
+        return self.synset_dic.values()
+
 
     def get_synset_relation(self, x, y, return_triples=False, strict=True):
         if not hasattr(self, "synset_dic"):
