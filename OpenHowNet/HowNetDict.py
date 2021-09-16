@@ -449,31 +449,7 @@ class HowNetDict(object):
                             s_x.en_zh, s_y.en_zh)])
         return res
 
-    def get_sememe_via_relation(self, x, relation, return_triples=False, strict=True):
-        """Show all sememes that x has relation with.
-
-        Args:
-            x (`str`): 
-                the word to search the sememe.
-            relation (`str`):
-                the relaiton to search the sememe.
-            return_triples (`bool`):
-                you can choose to get the list of triples or just the list of the sememes.
-            strict (`bool`):
-                you can choose to search the sememe relation strictly by the word.
-                set to False if you are not sure about the x.
-
-        Returns:
-            (`list[Sememe]`) a list contains all related sememes.
-        """
-        res = set()
-        sememe_x = self.get_sememe(x, strict=strict)
-        for s_x in sememe_x:
-            res |= set(s_x.get_sememe_via_relation(
-                relation, return_triples=return_triples))
-        return list(res)
-
-    def get_related_sememes(self, x, return_triples=False, strict=True):
+    def get_related_sememes(self, x, relation=None, return_triples=False, strict=True):
         """Show all sememes that x has any relation with.
 
         Args:
@@ -490,8 +466,14 @@ class HowNetDict(object):
         """
         res = set()
         sememe_x = self.get_sememe(x, strict=strict)
-        for s_x in sememe_x:
-            res |= set(s_x.get_related_sememes(return_triples=return_triples))
+        if relation:
+            for s_x in sememe_x:
+                res |= set(s_x.get_sememe_via_relation(
+                    relation, return_triples=return_triples))
+        else:
+            for s_x in sememe_x:
+                res |= set(s_x.get_related_sememes(
+                    return_triples=return_triples))
         return list(res)
 
     def get_senses_by_sememe(self, x, strict=True):
@@ -791,11 +773,11 @@ class HowNetDict(object):
             if language == 'en':
                 for k in self.en_synset_dic.keys():
                     if k.find(word) != -1:
-                        res |= set(self.en_synset_dic[word])
+                        res |= set(self.en_synset_dic[k])
             elif language == 'zh':
                 for k in self.zh_synset_dic.keys():
                     if k.find(word) != -1:
-                        res |= set(self.zh_synset_dic[word])
+                        res |= set(self.zh_synset_dic[k])
             else:
                 for k in self.synset_dic.keys():
                     if k.find(word) != -1:
@@ -807,15 +789,53 @@ class HowNetDict(object):
                     if k.find(word) != -1:
                         res |= set(self.zh_synset_dic[k])
             return list(res)
-    
-    def get_synset_relation(self, x, y, strict=True):
-        pass
 
-    def get_synset_via_relation(self, x, relation, strict=True):
-        pass
-    
-    def get_related_synsets(self, x, relation, strict=True):
-        pass
+    def get_synset_relation(self, x, y, return_triples=False, strict=True):
+        if not hasattr(self, "synset_dic"):
+            print("Please initialize BabelNet synest dict firstly!")
+            return
+        res = list()
+        synsets1 = self.get_synset(x, strict=strict)
+        synsets2 = self.get_synset(y, strict=strict)
+
+        for s1 in synsets1:
+            for r in s1.related_synsets.keys():
+                for s2 in synsets2:
+                    if s2 in s1.related_synsets[r]:
+                        if return_triples:
+                            res.append((s1, r, s2))
+                        else:
+                            res.append(r)
+        return res
+
+    def get_related_synsets(self, x, relation=None, return_triples=False, strict=True):
+        if not hasattr(self, "synset_dic"):
+            print("Please initialize BabelNet synest dict firstly!")
+            return
+        res = list()
+        synsets = self.get_synset(x, strict=strict)
+        if relation:
+            for s in synsets:
+                res.extend(s.get_synset_via_relation(
+                    relation, return_triples=return_triples))
+        else:
+            for s in synsets:
+                res.extend(s.get_related_synsets(
+                    return_triples=return_triples))
+        return res
 
     def get_sememe_by_word_pro(self, x, merge=False):
-        pass
+        if not hasattr(self, "synset_dic"):
+            print("Please initialize BabelNet synest dict firstly!")
+            return
+        res = set()
+        synsets = self.get_synset(x)
+        if merge:
+            for s in synsets:
+                res |= set(s.get_sememe_list())
+            return list(res)
+        else:
+            res = list()
+            for s in synsets:
+                res.append({'synset': s, 'sememes': s.get_sememe_list()})
+            return res
