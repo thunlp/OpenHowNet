@@ -13,50 +13,29 @@ class Sememe(object):
         zh (str): Chinese word to describe the sememe.
         freq (int): 
             the sememe occurence frequency in HowNet.
-        related_sememes_forward (dict): 
-            the sememes related with the sememe in HowNet and the sememe is head sememe in triples.
-        related_sememes_backward (dict): 
-            the sememes related with the sememe in HowNet and the sememe is tail sememe in triples.
-
-    Args:
-        hownet_sememe (str):
-            An sememe in HowNet in the form of (English annotation|Chinese annotation).
-        freq (int):
-            the sememe occurence frequency in HowNet.
+        related_sememes (dict): 
+            the sememes related with the sememe in HowNet.
     """
 
     def __init__(self, hownet_sememe, freq):
         """Initialize a sememe by sememe annotations.
+
+        Args:
+            hownet_sememe (str): 
+                An sememe in HowNet in the form of (English annotation|Chinese annotation).
+            freq (int): 
+                the sememe occurence frequency in HowNet.
         """
         self.en, self.zh = hownet_sememe.split('|')
         self.en_zh = hownet_sememe
         self.freq = freq
-        self.related_sememes_forward = {}
-        self.related_sememes_backward = {}
+        self.related_sememes = {}
         self.senses = []
 
     def __repr__(self):
         """Define how to print the sememe.
         """
         return self.en_zh
-
-    def add_related_sememes_forward(self, head, relation, tail):
-        """Add a sememe triple to the sememe.
-
-        Sememe triple contains (head sememe, relation, tail sememe).
-        """
-        if relation not in self.related_sememes_forward.keys():
-            self.related_sememes_forward[relation] = []
-        self.related_sememes_forward[relation].append(tail)
-
-    def add_related_sememes_backward(self, head, relation, tail):
-        """Add a sememe triple to the sememe.
-
-        Sememe triple contains (head sememe, relation, tail sememe).
-        """
-        if relation not in self.related_sememes_backward.keys():
-            self.related_sememes_backward[relation] = []
-        self.related_sememes_backward[relation].append(head)
 
     def get_senses(self):
         """Get the senses annotated with the sememe.
@@ -67,7 +46,7 @@ class Sememe(object):
         """
         return self.senses
 
-    def get_related_sememes(self, return_triples=False):
+    def get_related_sememes(self, relation=None, return_triples=False):
         """Get the sememes related with the sememe.
 
         Args:
@@ -78,39 +57,18 @@ class Sememe(object):
             (`list`) the list of triples or return the list of related sememes.
         """
         res = set()
-        if return_triples:
-            for k, v in self.related_sememes_forward.items():
-                res |= set([(self, k, i) for i in v])
-            for k, v in self.related_sememes_backward.items():
-                res |= set([(i, k, self) for i in v])
+        if relation:
+            if relation in self.related_sememes.keys():
+                if return_triples:
+                    res |= set([(self, relation, i)
+                                for i in self.related_sememes[relation]])
+                else:
+                    res |= set(self.related_sememes[relation])
         else:
-            for i in self.related_sememes_forward.values():
-                res |= set(i)
-            for i in self.related_sememes_backward.values():
-                res |= set(i)
-        return list(res)
-
-    def get_sememe_via_relation(self, relation, return_triples=False):
-        """Get the sememes that have relation with the sememe.
-
-        Args:
-            relation (`str`):
-                The relation between the sememes to search and the sememe.
-            return_triples (`bool`):
-                You can choose to return the list of triples or return the list of related sememes.
-
-        Returns:
-            (`list`) the list of triples or the list of related sememes.
-        """
-
-        res = set()
-        if relation in self.related_sememes_forward.keys():
             if return_triples:
-                res |= set([(self, relation, i)
-                           for i in self.related_sememes_forward[relation]])
-                res |= set([(i, relation, self)
-                           for i in self.related_sememes_backward[relation]])
+                for k, v in self.related_sememes.items():
+                    res |= set([(self, k, i) for i in v])
             else:
-                res |= set(self.related_sememes_forward[relation])
-                res |= set(self.related_sememes_backward[relation])
+                for i in self.related_sememes.values():
+                    res |= set(i)
         return list(res)
