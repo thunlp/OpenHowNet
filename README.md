@@ -139,7 +139,7 @@ The package provides api to get all the words or sememes in HowNet easily.
 
 
 ```python
->>> all_senses = hownet_dict.get_sense('*')
+>>> all_senses = hownet_dict.get_all_senses()
 >>> print("The number of all senses: {}".format(len(all_senses)))
 The number of all senses: 237974
 >>> zh_word_list = hownet_dict.get_zh_words()
@@ -210,13 +210,13 @@ The sememe you input can be in any language, but the relation must be in lowerca
 
 
 ```python
->>> triples = hownet_dict.get_sememe_via_relation('FormValue', 'hyponym',return_triples=True)
+>>> triples = hownet_dict.get_related_sememes('FormValue', relation = 'hyponym',return_triples=True)
 >>> print(triples)
 [(FormValue|形状值, 'hyponym', round|圆), (FormValue|形状值, 'hyponym', unformed|不成形), (AppearanceValue|外观值, 'hyponym', FormValue|形状值), (FormValue|形状值, 'hyponym', angular|角), (FormValue|形状值, 'hyponym', square|方), (FormValue|形状值, 'hyponym', netlike|网), (FormValue|形状值, 'hyponym', formed|成形)]
 ```
 
 
-### Advanced Feature: Word Similarity Calculation via Sememes
+### Advanced Feature #1: Word Similarity Calculation via Sememes
 
 
 Our implementation is based on the paper:
@@ -278,3 +278,69 @@ If any of the given words does not exist in HowNet annotations, this function wi
 >>> print('The similarity of 苹果 and 梨 is {}.'.format(hownet_dict_anvanced.calculate_word_similarity('苹果','梨')))
 The similarity of 苹果 and 梨 is 1.0.
 ```
+
+### Advanced Feature #2: BabelNet Synset Dict
+
+This package integrates query function for information of synsets in BabelNet(called BabelNet synset).
+
+#### Extra Initialization
+To begin with, you can initialize the BabelNet synset dict as the following code:
+
+```python
+>>> hownet_dict.initialize_babelnet_dict()
+Initializing BabelNet synset Dict succeeded!
+# Or you can initialize when create the HowNetDict instance
+>>> hownet_dict_advance = HowNetDict(init_babel=True)
+Initializing OpenHowNet succeeded!
+Initializing BabelNet synset Dict succeeded!
+```
+
+#### BabelNet synset information query
+The following API allows you to query the rich multi-source information (Chinese or English synonyms, definitions, picture links, etc.) in BabelNet synset.
+
+```python
+>>> syn_list = hownet_dict_anvanced.get_synset('黄色')
+>>> print("{} results are retrieved and take the first one as an example".format(len(syn_list)))
+3 results are retrieved and take the first one as an example
+
+>>> syn_example = syn_list[0]
+>>> print("Synset: {}".format(syn_example))
+Synset: bn:00113968a|yellow|黄
+
+>>> print("English synonyms: {}".format(syn_example.en_synonyms))
+English synonyms: ['yellow', 'yellowish', 'xanthous']
+
+>>> print("Chinese synonyms: {}".format(syn_example.zh_synonyms))
+Chinese synonyms: ['黄', '黄色', '淡黄色+的', '黄色+的', '微黄色', '微黄色+的', '黄+的', '淡黄色']
+
+>>> print("English glosses: {}".format(syn_example.en_glosses))
+English glosses: ['Of the color intermediate between green and orange in the color spectrum; of something resembling the color of an egg yolk', 'Having the colour of a yolk, a lemon or gold.']
+
+>>> print("Chinese glosses: {}".format(syn_example.zh_glosses))
+Chinese glosses: ['像丝瓜花或向日葵花的颜色。']
+```
+
+#### BabelNet synset relations query
+Similarly, the BabelNet synset dict supports relation querying similar to OpenHowNet, which you can easily query to a collection of synonyms related to an exact synonym.
+
+```python
+>>> related_synsets = syn_example.get_related_synsets()
+>>>print("There are {} synsets that have relation with the {}, they are: ".format(len(related_synsets), syn_example))
+There are 6 synsets that have relation with the bn:00113968a|yellow|黄, they are: 
+
+>>>print(related_synsets)
+[bn:00099663a|chromatic|彩色, bn:00029925n|egg_yolk|蛋黄, bn:00092876v|resemble|相似, bn:00020726n|color|颜色, bn:00020748n|visible_spectrum|可见光, bn:00081866n|yellow|黄色]
+```
+
+#### The sememe annotation of BabelNet synsets
+The package also provides the ability to query the sememe annotation of Chinese and English words using the sememe annotations of BabelNet synsets:
+
+```python
+>>> print(hownet_dict_anvanced.get_sememe_by_word_in_BabelNet('黄色'))
+[{'synset': bn:00113968a|yellow|黄, 'sememes': [yellow|黄]}, {'synset': bn:00101430a|dirty|淫秽的, 'sememes': [lascivious|淫, dirty|龊, despicable|卑劣, BadSocial|坏风气]}, {'synset': bn:00081866n|yellow|黄色, 'sememes': [yellow|黄]}]
+
+>>> print(hownet_dict_anvanced.get_sememe_by_word_in_BabelNet('黄色',merge=True))
+[lascivious|淫, despicable|卑劣, BadSocial|坏风气, dirty|龊, yellow|黄]
+```
+
+For more detailed instructions on the package, refer to the documentation.
