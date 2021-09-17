@@ -163,7 +163,7 @@ Sememe list of the sense:  {fruit|水果, tree|树, reproduce|生殖}
 
 ```python
 # 获取所有概念
->>> all_senses = hownet_dict.get_sense('*')
+>>> all_senses = hownet_dict.get_all_sense()
 >>> print("The number of all senses: {}".format(len(all_senses)))
 The number of all senses: 237974
 
@@ -243,13 +243,13 @@ English words in HowNet:  ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a
 
 ```python
 # 查找与义原 FormValue|形状值 存在 hyponym 关系的所有义原
->>> triples = hownet_dict.get_sememe_via_relation('FormValue', 'hyponym', return_triples=True)
+>>> triples = hownet_dict.get_related_sememes('FormValue', relation = 'hyponym', return_triples=True)
 >>> print(triples)
 [(FormValue|形状值, 'hyponym', round|圆), (FormValue|形状值, 'hyponym', unformed|不成形), (AppearanceValue|外观值, 'hyponym', FormValue|形状值), (FormValue|形状值, 'hyponym', angular|角), (FormValue|形状值, 'hyponym', square|方), (FormValue|形状值, 'hyponym', netlike|网), (FormValue|形状值, 'hyponym', formed|成形)]
 ```
 
 
-### 高级功能：基于义原的词语相似度和同/近义词
+### 高级功能 1：基于义原的词语相似度和同/近义词
 
 
 实现方法基于以下论文：
@@ -317,3 +317,68 @@ Initializing similarity calculation succeeded!
 The similarity of 苹果 and 梨 is 1.0.
 ```
 
+### 高级功能 2：BabelNet同义词集合词典
+
+本工具包集成了对于BabelNet中部分同义词集合（称为BabelNet synset）信息的查询功能。
+
+#### 额外初始化
+本功能同样需要额外的初始化操作：
+
+```python
+>>> hownet_dict.initialize_babelnet_dict()
+Initializing BabelNet synset Dict succeeded!
+# Or you can initialize when create the HowNetDict instance
+>>> hownet_dict_advance = HowNetDict(init_babel=True)
+Initializing OpenHowNet succeeded!
+Initializing BabelNet synset Dict succeeded!
+```
+
+#### BabelNet synset信息查询
+通过以下API可以对BabelNet synset中丰富的多源信息（中英同义词、定义、图片链接等）进行查询。
+
+```python
+>>> syn_list = hownet_dict_anvanced.get_synset('黄色')
+>>> print("{} results are retrieved and take the first one as an example".format(len(syn_list)))
+3 results are retrieved and take the first one as an example
+
+>>> syn_example = syn_list[0]
+>>> print("Synset: {}".format(syn_example))
+Synset: bn:00113968a|yellow|黄
+
+>>> print("English synonyms: {}".format(syn_example.en_synonyms))
+English synonyms: ['yellow', 'yellowish', 'xanthous']
+
+>>> print("Chinese synonyms: {}".format(syn_example.zh_synonyms))
+Chinese synonyms: ['黄', '黄色', '淡黄色+的', '黄色+的', '微黄色', '微黄色+的', '黄+的', '淡黄色']
+
+>>> print("English glosses: {}".format(syn_example.en_glosses))
+English glosses: ['Of the color intermediate between green and orange in the color spectrum; of something resembling the color of an egg yolk', 'Having the colour of a yolk, a lemon or gold.']
+
+>>> print("Chinese glosses: {}".format(syn_example.zh_glosses))
+Chinese glosses: ['像丝瓜花或向日葵花的颜色。']
+```
+
+#### BabelNet synset关系查询
+同样的，BabelNet词典支持与OpenHowNet查询类似的关系查询功能，你可以方便的查询到与某个同义词集合有关的同义词集合。
+
+```python
+>>> related_synsets = syn_example.get_related_synsets()
+>>>print("There are {} synsets that have relation with the {}, they are: ".format(len(related_synsets), syn_example))
+There are 6 synsets that have relation with the bn:00113968a|yellow|黄, they are: 
+
+>>>print(related_synsets)
+[bn:00099663a|chromatic|彩色, bn:00029925n|egg_yolk|蛋黄, bn:00092876v|resemble|相似, bn:00020726n|color|颜色, bn:00020748n|visible_spectrum|可见光, bn:00081866n|yellow|黄色]
+```
+
+#### BabelNet synset义原标注查询
+工具包同样提供了利用BabelNet synset义原标注来查询中英文词语义原标注的功能：
+
+```python
+>>> print(hownet_dict_anvanced.get_sememe_by_word_in_BabelNet('黄色'))
+[{'synset': bn:00113968a|yellow|黄, 'sememes': [yellow|黄]}, {'synset': bn:00101430a|dirty|淫秽的, 'sememes': [lascivious|淫, dirty|龊, despicable|卑劣, BadSocial|坏风气]}, {'synset': bn:00081866n|yellow|黄色, 'sememes': [yellow|黄]}]
+
+>>> print(hownet_dict_anvanced.get_sememe_by_word_in_BabelNet('黄色',merge=True))
+[lascivious|淫, despicable|卑劣, BadSocial|坏风气, dirty|龊, yellow|黄]
+```
+
+关于工具包的更详细的说明请参考工具包文档。
