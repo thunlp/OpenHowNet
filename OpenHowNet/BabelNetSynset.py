@@ -1,12 +1,12 @@
 """
-BabelSynset Class
-==================
+BabelNetSynset Class
+=======================
 """
 
 from .Download import get_resource
 
 
-class BabelSynset(object):
+class BabelNetSynset(object):
     """BabelNet synset class.
     Contains the abundant information in the BabelNet.
 
@@ -23,21 +23,21 @@ class BabelSynset(object):
             The sememes labeled to the BabelSynset.
     """
 
-    def __init__(self, babel_synset):
-        """Initialize an BabelSynset instance.
+    def __init__(self, babelnet_synset):
+        """Initialize an BabelNetSynset instance.
         """
-        self.id = babel_synset['bn']
-        self.pos = babel_synset['pos']
-        self.en_synonyms = babel_synset['en_synonyms']
-        self.zh_synonyms = babel_synset['zh_synonyms']
-        self.en_glosses = babel_synset['en_glosses']
-        self.zh_glosses = babel_synset['zh_glosses']
+        self.id = babelnet_synset['bn']
+        self.pos = babelnet_synset['pos']
+        self.en_synonyms = babelnet_synset['en_synonyms']
+        self.zh_synonyms = babelnet_synset['zh_synonyms']
+        self.en_glosses = babelnet_synset['en_glosses']
+        self.zh_glosses = babelnet_synset['zh_glosses']
         self.sememes = []
-        self.image_urls = babel_synset['image_urls']
+        self.image_urls = babelnet_synset['image_urls']
         self.related_synsets = {}
 
     def __repr__(self):
-        """Define how to print the babel synset.
+        """Define how to print the BabelNet synset.
         """
         res = self.id + '|' + \
             self.en_synonyms[0] if len(self.en_synonyms) > 0 else id + '|'

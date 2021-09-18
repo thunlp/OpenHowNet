@@ -304,10 +304,10 @@ If the initialization method of word similarity calculation has not been called 
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_all_babel_synsets">
 <span class="sig-name descname"><span class="pre">get_all_babel_synsets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_all_babel_synsets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_all_babel_synsets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the complete babel synset.</p>
+<dd><p>Get the complete BabelNet synsets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>(<cite>list[BabelSynset]</cite>) a list of all BabelNet synsets.</p>
+<dd class="field-odd"><p>(<cite>list[BabelNetSynset]</cite>) a list of all BabelNet synsets.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -354,6 +354,12 @@ If the initialization method of word similarity calculation has not been called 
 <dd class="field-odd"><p>(<cite>list[Sense]</cite>) a list of all senses</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.get_all_synset_relations">
+<span class="sig-name descname"><span class="pre">get_all_synset_relations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.get_all_synset_relations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.get_all_synset_relations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the relations between synsets in BabelNet.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -596,7 +602,7 @@ You can choose to set the limit of the language of the word.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(<cite>list[BabelSynset]</cite>) the list of retrieved synsets.</p>
+<dd class="field-even"><p>(<cite>list[BabelNetSynset]</cite>) the list of retrieved synsets.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -654,7 +660,7 @@ By default, it will search the target word in both the English vocabulary and th
 <dl class="py method">
 <dt class="sig sig-object py" id="OpenHowNet.HowNetDict.HowNetDict.initialize_babelnet_dict">
 <span class="sig-name descname"><span class="pre">initialize_babelnet_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/OpenHowNet/HowNetDict.html#HowNetDict.initialize_babelnet_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpenHowNet.HowNetDict.HowNetDict.initialize_babelnet_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize the Babel Synset dict.</p>
+<dd><p>Initialize the BabelNet Synset dict.</p>
 </dd></dl>
 
 <dl class="py method">

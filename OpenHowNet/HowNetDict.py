@@ -13,7 +13,7 @@ from anytree.exporter import DictExporter, JsonExporter
 
 from .Sense import Sense
 from .Sememe import Sememe
-from .BabelSynset import BabelSynset
+from .BabelNetSynset import BabelNetSynset
 from .Download import get_resource
 
 
@@ -96,7 +96,7 @@ class HowNetDict(object):
             if init_sim:
                 self.initialize_similarity_calculation()
 
-            # Initialize the Babel Synset dict
+            # Initialize the BabelNet Synset dict
             if init_babel:
                 self.initialize_babelnet_dict()
 
@@ -687,9 +687,9 @@ class HowNetDict(object):
                     i['synonym'], language=language, score=score, grammar=pos, K=K)
             return res
 
-    # Babel synset dict
+    # BabelNet synset dict
     def initialize_babelnet_dict(self):
-        """Initialize the Babel Synset dict.
+        """Initialize the BabelNet Synset dict.
         """
         babel_data_path = 'resources/babel_data'
         package_directory = os.path.dirname(os.path.abspath(__file__))
@@ -701,7 +701,7 @@ class HowNetDict(object):
             self.en_synset_dic = {}
             self.zh_synset_dic = {}
             for synset in babel_synset_list:
-                self.synset_dic[synset['bn']] = BabelSynset(synset)
+                self.synset_dic[synset['bn']] = BabelNetSynset(synset)
                 self.synset_dic[synset['bn']].sememes = [
                     self.sememe_dic[i] for i in synset['sememes']]
             for synset in babel_synset_list:
@@ -720,10 +720,10 @@ class HowNetDict(object):
 
         except FileNotFoundError as e:
             print(
-                "Enabling Babel Synset Dict requires specific data files, please check the completeness of your download package.")
+                "Enabling BabelNet Synset Dict requires specific data files, please check the completeness of your download package.")
             print(e)
             return
-        print("Initializing Babel Synset Dict succeeded!")
+        print("Initializing BabelNet Synset Dict succeeded!")
         return
 
     def get_synset(self, word, language=None, strict=True):
@@ -736,7 +736,7 @@ class HowNetDict(object):
             strict(`bool`): whether to search for the synset by word strictly.
 
         Returns:
-            (`list[BabelSynset]`) the list of retrieved synsets.
+            (`list[BabelNetSynset]`) the list of retrieved synsets.
         """
         if not hasattr(self, "synset_dic"):
             print("Please initialize BabelNet synest dict firstly!")
@@ -779,10 +779,10 @@ class HowNetDict(object):
             return list(res)
 
     def get_all_babel_synsets(self):
-        """Get the complete babel synset.
+        """Get the complete BabelNet synsets.
 
         Returns:
-            (`list[BabelSynset]`) a list of all BabelNet synsets.
+            (`list[BabelNetSynset]`) a list of all BabelNet synsets.
         """
         if not hasattr(self, "synset_dic"):
             print('Please initialize the BabelNet synset dict.')
