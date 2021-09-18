@@ -336,10 +336,10 @@ There are 6 synsets that have relation with the bn:00113968a|yellow|黄, they ar
 The package also provides the ability to query the sememe annotation of Chinese and English words using the sememe annotations of BabelNet synsets:
 
 ```python
->>> print(hownet_dict_anvanced.get_sememe_by_word_in_BabelNet('黄色'))
+>>> print(hownet_dict_anvanced.get_sememes_by_word_in_BabelNet('黄色'))
 [{'synset': bn:00113968a|yellow|黄, 'sememes': [yellow|黄]}, {'synset': bn:00101430a|dirty|淫秽的, 'sememes': [lascivious|淫, dirty|龊, despicable|卑劣, BadSocial|坏风气]}, {'synset': bn:00081866n|yellow|黄色, 'sememes': [yellow|黄]}]
 
->>> print(hownet_dict_anvanced.get_sememe_by_word_in_BabelNet('黄色',merge=True))
+>>> print(hownet_dict_anvanced.get_sememes_by_word_in_BabelNet('黄色',merge=True))
 [lascivious|淫, despicable|卑劣, BadSocial|坏风气, dirty|龊, yellow|黄]
 ```
 
