@@ -148,6 +148,10 @@ class HowNetDict(object):
             (`list[Sense]`) candidates HowNet senses, if the target word does not exist, return an empty list.
         """
         res = set()
+        if language:
+            if language != 'en' and language != 'zh':
+                print("Language error, please set the correct language.")
+                return
         if strict:
             if language == "en":
                 if (word in self.en_map):
@@ -177,6 +181,9 @@ class HowNetDict(object):
                     if k.find(word) != -1:
                         res.add(self.sense_dic[k])
         if pos:
+            if pos not in self.get_all_sense_pos():
+                print("POS error, please set the correct POS.")
+                return
             temp = res.copy()
             for i in temp:
                 grammar = i.en_grammar if language == 'en' else i.zh_grammar
@@ -201,6 +208,10 @@ class HowNetDict(object):
             (`list[Sememe]`) candidates HowNet sememes, if the target word does not exist, return an empty list.
         """
         res = []
+        if language:
+            if language != 'en' and language != 'zh':
+                print("Language error, please set the correct language.")
+                return
         if strict:
             if language == 'en':
                 for v in self.sememe_dic.values():
@@ -305,6 +316,9 @@ class HowNetDict(object):
             >>> hownet_dict.get_sememes_by_word('苹果', display='visual')
 
         """
+        if display not in ['tree', 'dict', 'list', 'visual']:
+            print("Display error, please set the correct display.")
+            return
         queryResult = self[word]
         queryResult.sort(key=lambda x: x.No)
         result = set() if merge else list()
@@ -355,6 +369,10 @@ class HowNetDict(object):
         Returns:
             (`bool`) whether the word exists in HowNet annotation
         """
+        if language:
+            if language != 'en' and language != 'zh':
+                print("Language error, please set the correct language.")
+                return
         if language == "en":
             return item in self.en_map
         elif language == "zh":
@@ -443,6 +461,10 @@ class HowNetDict(object):
         Returns:
             (`list`) a list contains sememe triples or contains sememes.
         """
+        if relation:
+            if relation not in self.get_all_sememe_relations():
+                print("Relation not exist.")
+                return
         res = set()
         sememe_x = self.get_sememe(x, strict=strict)
         if relation:
@@ -655,6 +677,10 @@ class HowNetDict(object):
             print('Please set the language of the similar words.')
             print('Language can be set to en or zh.')
             return
+        if language:
+            if language != 'en' and language != 'zh':
+                print("Language error, please set the correct language.")
+                return
         # Retireve the senses annotated with word.
         senses = self.get_sense(word, pos=pos, strict=strict)
         res_temp = list()
@@ -726,7 +752,7 @@ class HowNetDict(object):
         print("Initializing BabelNet Synset Dict succeeded!")
         return
 
-    def get_synset(self, word, language=None, strict=True):
+    def get_synset(self, word, language=None, pos=None, strict=True):
         """Get the synset by the word.
         You can choose to set the limit of the language of the word.
 
@@ -734,6 +760,7 @@ class HowNetDict(object):
             word(`str`): target word to search for the synset.
             language(`str`): the language of the retrieved word.
             strict(`bool`): whether to search for the synset by word strictly.
+            pos(`str`): limitation on the result. Can be set to a/v/n/r.
 
         Returns:
             (`list[BabelNetSynset]`) the list of retrieved synsets.
@@ -741,6 +768,14 @@ class HowNetDict(object):
         if not hasattr(self, "synset_dic"):
             print("Please initialize BabelNet synest dict firstly!")
             return
+        if language:
+            if language != 'en' and language != 'zh':
+                print("Language error, please set the correct language.")
+                return
+        if pos:
+            if pos not in self.get_all_synset_pos():
+                print("POS error, please set the correct POS.")
+                return
         res = set()
         if strict:
             if language == 'en':
@@ -756,7 +791,6 @@ class HowNetDict(object):
                     res |= set(self.en_synset_dic[word])
                 if (word in self.zh_synset_dic.keys()):
                     res |= set(self.zh_synset_dic[word])
-            return list(res)
         else:
             if language == 'en':
                 for k in self.en_synset_dic.keys():
@@ -776,7 +810,12 @@ class HowNetDict(object):
                 for k in self.zh_synset_dic.keys():
                     if k.find(word) != -1:
                         res |= set(self.zh_synset_dic[k])
-            return list(res)
+        if pos:
+            temp = res.copy()
+            for i in temp:
+                if i.pos != pos:
+                    res.remove(i)
+        return list(res)
 
     def get_all_babel_synsets(self):
         """Get the complete BabelNet synsets.
@@ -788,6 +827,9 @@ class HowNetDict(object):
             print('Please initialize the BabelNet synset dict.')
             return
         return self.synset_dic.values()
+
+    def get_all_synset_pos(self):
+        return ['a', 'v', 'n', 'r']
 
     def get_all_synset_relations(self):
         """Return all the relations between synsets in BabelNet.
@@ -844,6 +886,10 @@ class HowNetDict(object):
         if not hasattr(self, "synset_dic"):
             print("Please initialize BabelNet synest dict firstly!")
             return
+        if relation:
+            if relation not in self.get_all_synset_relations():
+                print("Relation not exist.")
+                return
         res = list()
         synsets = self.get_synset(x, strict=strict)
         if relation:
@@ -856,7 +902,7 @@ class HowNetDict(object):
                     return_triples=return_triples))
         return res
 
-    def get_sememe_by_word_in_BabelNet(self, x, merge=False):
+    def get_sememes_by_word_in_BabelNet(self, x, merge=False):
         """The sememe search API based on BabelNet synsets.
         Given specific word, you can get corresponding sememe annotations.
 

@@ -307,6 +307,10 @@
 <span class="sd">            (`list[Sense]`) candidates HowNet senses, if the target word does not exist, return an empty list.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">language</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">language</span> <span class="o">!=</span> <span class="s1">&#39;en&#39;</span> <span class="ow">and</span> <span class="n">language</span> <span class="o">!=</span> <span class="s1">&#39;zh&#39;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Language error, please set the correct language.&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
         <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;en&quot;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">en_map</span><span class="p">):</span>
@@ -336,6 +340,9 @@
                     <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                         <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sense_dic</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pos</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_sense_pos</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;POS error, please set the correct POS.&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
             <span class="n">temp</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">temp</span><span class="p">:</span>
                 <span class="n">grammar</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">en_grammar</span> <span class="k">if</span> <span class="n">language</span> <span class="o">==</span> <span class="s1">&#39;en&#39;</span> <span class="k">else</span> <span class="n">i</span><span class="o">.</span><span class="n">zh_grammar</span>
@@ -360,6 +367,10 @@
 <span class="sd">            (`list[Sememe]`) candidates HowNet sememes, if the target word does not exist, return an empty list.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">language</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">language</span> <span class="o">!=</span> <span class="s1">&#39;en&#39;</span> <span class="ow">and</span> <span class="n">language</span> <span class="o">!=</span> <span class="s1">&#39;zh&#39;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Language error, please set the correct language.&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
         <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">language</span> <span class="o">==</span> <span class="s1">&#39;en&#39;</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sememe_dic</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -464,6 +475,9 @@
 <span class="sd">            &gt;&gt;&gt; hownet_dict.get_sememes_by_word(&#39;苹果&#39;, display=&#39;visual&#39;)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">display</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;tree&#39;</span><span class="p">,</span> <span class="s1">&#39;dict&#39;</span><span class="p">,</span> <span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;visual&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Display error, please set the correct display.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
         <span class="n">queryResult</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
         <span class="n">queryResult</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> <span class="k">if</span> <span class="n">merge</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
@@ -514,6 +528,10 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            (`bool`) whether the word exists in HowNet annotation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">language</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">language</span> <span class="o">!=</span> <span class="s1">&#39;en&#39;</span> <span class="ow">and</span> <span class="n">language</span> <span class="o">!=</span> <span class="s1">&#39;zh&#39;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Language error, please set the correct language.&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
         <span class="k">if</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;en&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">en_map</span>
         <span class="k">elif</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;zh&quot;</span><span class="p">:</span>
@@ -602,6 +620,10 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            (`list`) a list contains sememe triples or contains sememes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">relation</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">relation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_sememe_relations</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Relation not exist.&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
         <span class="n">res</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="n">sememe_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sememe</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">relation</span><span class="p">:</span>
@@ -814,6 +836,10 @@
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please set the language of the similar words.&#39;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Language can be set to en or zh.&#39;</span><span class="p">)</span>
             <span class="k">return</span>
+        <span class="k">if</span> <span class="n">language</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">language</span> <span class="o">!=</span> <span class="s1">&#39;en&#39;</span> <span class="ow">and</span> <span class="n">language</span> <span class="o">!=</span> <span class="s1">&#39;zh&#39;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Language error, please set the correct language.&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
         <span class="c1"># Retireve the senses annotated with word.</span>
         <span class="n">senses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sense</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span>
         <span class="n">res_temp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -885,7 +911,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initializing BabelNet Synset Dict succeeded!&quot;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="HowNetDict.get_synset"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.HowNetDict.HowNetDict.get_synset">[docs]</a>    <span class="k">def</span> <span class="nf">get_synset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="HowNetDict.get_synset"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.HowNetDict.HowNetDict.get_synset">[docs]</a>    <span class="k">def</span> <span class="nf">get_synset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the synset by the word.</span>
 <span class="sd">        You can choose to set the limit of the language of the word.</span>
 
@@ -893,6 +919,7 @@
 <span class="sd">            word(`str`): target word to search for the synset.</span>
 <span class="sd">            language(`str`): the language of the retrieved word.</span>
 <span class="sd">            strict(`bool`): whether to search for the synset by word strictly.</span>
+<span class="sd">            pos(`str`): limitation on the result. Can be set to a/v/n/r.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (`list[BabelNetSynset]`) the list of retrieved synsets.</span>
@@ -900,6 +927,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;synset_dic&quot;</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please initialize BabelNet synest dict firstly!&quot;</span><span class="p">)</span>
             <span class="k">return</span>
+        <span class="k">if</span> <span class="n">language</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">language</span> <span class="o">!=</span> <span class="s1">&#39;en&#39;</span> <span class="ow">and</span> <span class="n">language</span> <span class="o">!=</span> <span class="s1">&#39;zh&#39;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Language error, please set the correct language.&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+        <span class="k">if</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pos</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_synset_pos</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;POS error, please set the correct POS.&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
         <span class="n">res</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">language</span> <span class="o">==</span> <span class="s1">&#39;en&#39;</span><span class="p">:</span>
@@ -915,7 +950,6 @@
                     <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">en_synset_dic</span><span class="p">[</span><span class="n">word</span><span class="p">])</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">zh_synset_dic</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
                     <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zh_synset_dic</span><span class="p">[</span><span class="n">word</span><span class="p">])</span>
-            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">language</span> <span class="o">==</span> <span class="s1">&#39;en&#39;</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">en_synset_dic</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -935,7 +969,12 @@
                 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">zh_synset_dic</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                     <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                         <span class="n">res</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zh_synset_dic</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">temp</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">pos</span> <span class="o">!=</span> <span class="n">pos</span><span class="p">:</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="HowNetDict.get_all_babel_synsets"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.HowNetDict.HowNetDict.get_all_babel_synsets">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_babel_synsets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the complete BabelNet synsets.</span>
@@ -947,6 +986,9 @@
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please initialize the BabelNet synset dict.&#39;</span><span class="p">)</span>
             <span class="k">return</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">synset_dic</span><span class="o">.</span><span class="n">values</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="HowNetDict.get_all_synset_pos"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.HowNetDict.HowNetDict.get_all_synset_pos">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_synset_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="HowNetDict.get_all_synset_relations"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.HowNetDict.HowNetDict.get_all_synset_relations">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_synset_relations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return all the relations between synsets in BabelNet.</span>
@@ -1003,6 +1045,10 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;synset_dic&quot;</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please initialize BabelNet synest dict firstly!&quot;</span><span class="p">)</span>
             <span class="k">return</span>
+        <span class="k">if</span> <span class="n">relation</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">relation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_synset_relations</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Relation not exist.&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
         <span class="n">res</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">synsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_synset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">relation</span><span class="p">:</span>
@@ -1015,7 +1061,7 @@
                     <span class="n">return_triples</span><span class="o">=</span><span class="n">return_triples</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
-<div class="viewcode-block" id="HowNetDict.get_sememe_by_word_in_BabelNet"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.HowNetDict.HowNetDict.get_sememe_by_word_in_BabelNet">[docs]</a>    <span class="k">def</span> <span class="nf">get_sememe_by_word_in_BabelNet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="HowNetDict.get_sememes_by_word_in_BabelNet"><a class="viewcode-back" href="../../OpenHowNet.html#OpenHowNet.HowNetDict.HowNetDict.get_sememes_by_word_in_BabelNet">[docs]</a>    <span class="k">def</span> <span class="nf">get_sememes_by_word_in_BabelNet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The sememe search API based on BabelNet synsets.</span>
 <span class="sd">        Given specific word, you can get corresponding sememe annotations.</span>
 
