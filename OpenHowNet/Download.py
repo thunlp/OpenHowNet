@@ -4,7 +4,7 @@ from tqdm import tqdm
 import pickle
 import zipfile
 
-OPENHOWNET_DATA_URL = "https://thunlp.oss-cn-qingdao.aliyuncs.com/OpenHowNet/openhownet_data.zip"
+OPENHOWNET_DATA_URL = "https://thunlp.oss-cn-qingdao.aliyuncs.com/OpenHowNet/resources.zip"
 
 
 def get_resource(path, mode='r', encoding='utf-8'):
@@ -56,7 +56,7 @@ def download():
     '''
     package_directory = os.path.dirname(os.path.abspath(__file__))
     data_zip_path = download_file(
-        OPENHOWNET_DATA_URL, dest_file="openhownet_data.zip")
+        OPENHOWNET_DATA_URL, dest_file="resources/resources.zip")
     with zipfile.ZipFile(data_zip_path, 'r') as zip_ref:
         zip_ref.extractall(package_directory)
     os.remove(data_zip_path)
