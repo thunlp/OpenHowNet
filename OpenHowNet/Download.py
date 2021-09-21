@@ -60,5 +60,5 @@ def download():
     data_zip_path = download_file(
         OPENHOWNET_DATA_URL, dest_file="resources/resources.zip")
     with zipfile.ZipFile(data_zip_path, 'r') as zip_ref:
-        zip_ref.extractall(os.path.join(package_directory,'/resources'))
+        zip_ref.extractall(os.path.join(package_directory,'resources'))
     os.remove(data_zip_path)
