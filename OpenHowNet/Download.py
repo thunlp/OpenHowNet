@@ -55,6 +55,8 @@ def download():
     The HowNet resource file is openhownet_data.zip.
     '''
     package_directory = os.path.dirname(os.path.abspath(__file__))
+    if not os.path.exists('resources/'):
+        os.makedir('resources')
     data_zip_path = download_file(
         OPENHOWNET_DATA_URL, dest_file="resources/resources.zip")
     with zipfile.ZipFile(data_zip_path, 'r') as zip_ref:
