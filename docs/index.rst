@@ -7,17 +7,11 @@ Welcome to OpenHowNet's documentation!
 ======================================
 
 .. toctree::
-   Home <self>
-
-.. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Contents:
 
-   Sememe <apis/Sememe>
-   Sense <apis/Sense>
-   HowNetDict <apis/HowNetDict>
-   BabelNetSynset <apis/BabelNetSynset>
-   
+   modules.rst
+   OpenHowNet.rst
 
 
 
