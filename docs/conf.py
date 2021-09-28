@@ -10,10 +10,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import sphinx_rtd_theme
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../'))
+sys.path.insert(0, os.path.abspath('../OpenHowNet'))
 
 
 # -- Project information -----------------------------------------------------
@@ -22,31 +21,14 @@ project = 'OpenHowNet'
 copyright = '2021, THUNLP'
 author = 'THUNLP'
 
-# The full version, including alpha/beta/rc tags
-# release = "2.0.0"
-
 
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-    "sphinx.ext.viewcode",
-    "sphinx.ext.autodoc",
-    "sphinx.ext.inheritance_diagram",
-    "sphinx.ext.autosummary",
-    "sphinx.ext.napoleon",
-    "sphinx_rtd_theme",
-    # Enable .ipynb doc files
-    "nbsphinx",
-    # Enable .md doc files
-    "recommonmark",
-    "sphinx_markdown_tables",
-    "IPython.sphinxext.ipython_console_highlighting",
+extensions = [ 'sphinx.ext.autodoc'
 ]
-
-autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -62,8 +44,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+html_theme = 'alabaster'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

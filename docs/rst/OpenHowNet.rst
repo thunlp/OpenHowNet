@@ -4,6 +4,14 @@ OpenHowNet package
 Submodules
 ----------
 
+OpenHowNet.BabelNetSynset module
+--------------------------------
+
+.. automodule:: OpenHowNet.BabelNetSynset
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 OpenHowNet.Download module
 --------------------------
 
