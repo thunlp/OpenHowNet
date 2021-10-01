@@ -117,7 +117,7 @@ class Sense(object):
                     for j in self.sememes:
                         if j.en_zh == kdml[start_idx + 1: end_idx].replace(' ', '_'):
                             node.append(Node(j, role='None'))
-
+                            break
             for i in range(len(entity_idx)):
                 cursor = entity_idx[i][0]
                 left_brace = 0
