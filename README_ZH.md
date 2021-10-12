@@ -23,7 +23,7 @@
   </a>
 </p>
 
-本项目存放HowNet核心数据和清华大学自然语言处理实验室（[THUNLP](http://thunlp.org/)）开发的OpenHowNet API，提供方便的义原信息查询、义原树展示、基于义原的词相似度计算等功能。您还可以访问我们的[网站](https://openhownet.thunlp.org)体验词语义原在线查询和展示功能。
+OpenHowNet API由清华大学自然语言处理实验室（[THUNLP](http://thunlp.org/)）开发，提供方便的义原信息查询、义原树展示、基于义原的词相似度计算等功能。您还可以访问我们的[网站](https://openhownet.thunlp.org)体验词语义原在线查询和展示功能。
 
 如果您在研究中使用了OpenHowNet提供的数据或API，请引用以下论文：
 
@@ -39,13 +39,13 @@
 
 ## HowNet简介
 
-HowNet是最典型的义原知识库。义原在语言学中被定义为最小的语义单位，有语言学家认为世界所有语言的所有词语的语义都可以用一个有限的义原集合来表示。董振东和董强先生父子将此思想付诸实践，耗时近30年构建了HowNet（知网），通过预定义的2000多个义原为20多万个由中英文词语所表示的概念进行了标注。
+HowNet是最典型的<u>义原</u>知识库。义原在语言学中被定义为最小的语义单位，有语言学家认为世界所有语言的所有词语的语义都可以用一个有限的义原集合来表示。董振东和董强先生父子将此思想付诸实践，耗时近30年构建了HowNet（知网），通过预定义的2000多个义原为20多万个由中英文词语所表示的概念进行了标注。
 
 HowNet自问世以来，已被广泛应用于各项自然语言处理任务，此[阅读清单](https://github.com/thunlp/SCPapers)囊括了HowNet相关研究的代表性文献。
 
-## HowNet核心数据
+## HowNet词典
 
-HowNet核心数据（即HowNet词典）（`HowNet.txt`）包括237,973个概念。每个概念由中英文词语及其词性、情感倾向、例句、义原标注等信息组成。下面是HowNet中一个概念的示例：
+HowNet核心数据（即HowNet词典，可从[OpenHowNet网站](https://openhownet.thunlp.org/download)下载）包括237,973个概念。每个概念由中英文词语及其词性、情感倾向、例句、义原标注等信息组成。下面是HowNet中一个概念的示例：
 
 ```
 NO.=000000026417 # 概念编号
@@ -62,13 +62,6 @@ RMK=
 ```
 
 ## OpenHowNet API
-
-### 运行要求
-
-* Python>=3.6
-* anytree>=2.4.3
-* tqdm>=4.31.1
-* requests>=2.22.0
 
 ### 安装
 
@@ -88,17 +81,24 @@ cd OpenHowNet
 python setup.py install
 ```
 
+##### 运行要求
+
+* Python>=3.6
+* anytree>=2.4.3
+* tqdm>=4.31.1
+* requests>=2.22.0
+
 ### 核心数据类型
 
 * **HowNetDict**：HowNet词典类，封装HowNet核心数据的检索、展示、相似度计算等核心功能。
 * **Sense**：HowNet中的概念类，封装用于描述概念的中英文词语及其词性、义原标注等信息。
 * **Sememe**：HowNet中的义原类，封装用于描述义原的中英文词语、义原的频率以及义原间关系等信息。
 
-### 基本功能使用示例
+### 基本功能
 
 下面演示了OpenHowNet最主要的几个功能。如果想查看动态演示，请下载此[Jupyter Notebook](OpenHowNet_demo.ipynb)。
 
-更多功能和工具包介绍请参考我们的[文档]()。
+更多功能和工具包介绍请参考我们的[文档](https://openhownet.readthedocs.io/)。
 
 #### 初始化
 
@@ -248,8 +248,9 @@ English words in HowNet:  ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a
 [(FormValue|形状值, 'hyponym', round|圆), (FormValue|形状值, 'hyponym', unformed|不成形), (AppearanceValue|外观值, 'hyponym', FormValue|形状值), (FormValue|形状值, 'hyponym', angular|角), (FormValue|形状值, 'hyponym', square|方), (FormValue|形状值, 'hyponym', netlike|网), (FormValue|形状值, 'hyponym', formed|成形)]
 ```
 
+### 高级功能 
 
-### 高级功能 1：基于义原的词语相似度和同/近义词
+#### 高级功能1：基于义原的词语相似度和同/近义词
 
 
 实现方法基于以下论文：
@@ -258,7 +259,7 @@ English words in HowNet:  ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a
 > Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. IJCNLP 2013. [[pdf](https://www.aclweb.org/anthology/I13-1120.pdf)]
 
 
-#### 额外初始化
+##### 额外初始化
 
 由于计算相似度需要额外的文件，初始化的开销将比之前的大。
 
@@ -281,11 +282,11 @@ Initializing similarity calculation succeeded!
 ```
 
 
-#### 获取输入词语的近义词
+##### 获取输入词语的近义词
 
 工具包将首先确定输入词语所属的Sense，继而为每个Sense分别查找K个义原标注最接近的Sense，最后输出对应的词语。注意需要设置输入词的语言。
 
-同时可以选择设置所需词语的词性、输出词语相似度以及无视Sense将所有词语合并到同一个列表等，具体请查询文档。如果输入词语不在HowNet中，函数将返回一个空list。
+同时可以选择设置所需词语的词性、输出词语相似度以及无视Sense将所有词语合并到同一个列表等，具体请查询[文档](https://openhownet.readthedocs.io/)。如果输入词语不在HowNet中，函数将返回一个空list。
 
 
 ```python
@@ -305,7 +306,7 @@ Initializing similarity calculation succeeded!
 ```
 
 
-#### 计算两个词语的相似度
+##### 计算两个词语的相似度
 
 
 如果其中的任何一个词不在HowNet中，函数将返回-1。
@@ -317,23 +318,23 @@ Initializing similarity calculation succeeded!
 The similarity of 苹果 and 梨 is 1.0.
 ```
 
-### 高级功能 2：BabelNet同义词集合词典
+#### 高级功能 2：BabelNet同义词集词典
 
-本工具包集成了对于BabelNet中部分同义词集合（称为BabelNet synset）信息的查询功能。
+本工具包集成了对于BabelNet中部分同义词集（称为BabelNet synset）信息的查询功能。
 
-#### 额外初始化
+##### 额外初始化
 本功能同样需要额外的初始化操作：
 
 ```python
 >>> hownet_dict.initialize_babelnet_dict()
 Initializing BabelNet synset Dict succeeded!
-# Or you can initialize when create the HowNetDict instance
+# 你也可以在创建HowNetDict实例时初始化
 >>> hownet_dict_advance = HowNetDict(init_babel=True)
 Initializing OpenHowNet succeeded!
 Initializing BabelNet synset Dict succeeded!
 ```
 
-#### BabelNet synset信息查询
+##### BabelNet synset信息查询
 通过以下API可以对BabelNet synset中丰富的多源信息（中英同义词、定义、图片链接等）进行查询。
 
 ```python
@@ -358,8 +359,8 @@ English glosses: ['Of the color intermediate between green and orange in the col
 Chinese glosses: ['像丝瓜花或向日葵花的颜色。']
 ```
 
-#### BabelNet synset关系查询
-同样的，BabelNet词典支持与OpenHowNet查询类似的关系查询功能，你可以方便的查询到与某个同义词集合有关的同义词集合。
+##### BabelNet synset关系查询
+同样的，BabelNet词典支持与OpenHowNet查询类似的关系查询功能，你可以方便的查询到与某个同义词集有关的同义词集。
 
 ```python
 >>> related_synsets = syn_example.get_related_synsets()
@@ -370,7 +371,7 @@ There are 6 synsets that have relation with the bn:00113968a|yellow|黄, they ar
 [bn:00099663a|chromatic|彩色, bn:00029925n|egg_yolk|蛋黄, bn:00092876v|resemble|相似, bn:00020726n|color|颜色, bn:00020748n|visible_spectrum|可见光, bn:00081866n|yellow|黄色]
 ```
 
-#### BabelNet synset义原标注查询
+##### BabelNet synset义原标注查询
 工具包同样提供了利用BabelNet synset义原标注来查询中英文词语义原标注的功能：
 
 ```python
@@ -381,4 +382,5 @@ There are 6 synsets that have relation with the bn:00113968a|yellow|黄, they ar
 [lascivious|淫, despicable|卑劣, BadSocial|坏风气, dirty|龊, yellow|黄]
 ```
 
-关于工具包的更详细的说明请参考工具包文档。
+关于工具包的更详细的说明请参考工具包[文档](https://openhownet.readthedocs.io/)。
+
