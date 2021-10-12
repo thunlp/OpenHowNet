@@ -168,6 +168,9 @@ The number of all senses: 237974
 Chinese words in HowNet:  ['', '"', '#', '#号标签', '$', '$.J.', '$A.', '$NZ.', '%', "'", '(', ')', '*', '+', ',', '-', '--', '.', '...', '...为止', '...也同样使然', '...以上', '...以内', '...以来', '...何如', '...内', '...出什么问题', '...发生了什么', '...发生故障', '...家里有几口人']
 >>> print("English words in HowNet: ",en_word_list[:30])
 English words in HowNet:  ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a', 'aardwolves', 'abaci', 'abandoned', 'abbreviated', 'abode', 'aboideaux', 'aboiteaux', 'abscissae', 'absorbed', 'acanthi', 'acari', 'accepted', 'acciaccature', 'acclaimed', 'accommodating', 'accompanied', 'accounting', 'accused', 'acetabula', 'acetified', 'aching', 'acicula', 'acini', 'acquired']
+>>> all_sememes = hownet_dict.get_all_sememes()
+>>> print('There are {} sememes in HowNet'.format(len(all_sememes)))
+There are 2540 sememes in HowNet
 ```
 
 #### Get Sememes  for a Word
@@ -195,7 +198,32 @@ The package provides the ability to retrieve sememes based on the target words. 
   'sememes': {fruit|水果, reproduce|生殖, tree|树}}]
 ```
 
-By changing the `display` , the sememes can be displayed in list form, dictionary form, tree node form and visualization form.
+By changing the `display` , the sememes of each retrieved sense can be displayed not only in list form(`list`), but also in dictionary form(`dict`), tree node form(`tree`) and visualization form(`visual`) as follows.
+```python
+# Get the sememes in the form of dictionary
+>>> hownet_dict.get_sememes_by_word(word='苹果',display='dict')[0]
+{'sense': No.244396|apple|苹果, 'sememes': {'role': 'sense', 'name': No.244396|apple|苹果, 'children': [{'role': 'None', 'name': computer|电脑, 'children': [{'role': 'modifier', 'name': PatternValue|样式值, 'children': [{'role': 'CoEvent', 'name': able|能, 'children': [{'role': 'scope', 'name': bring|携带, 'children': [{'role': 'patient', 'name': '$'}]}]}]}, {'role': 'patient', 'name': SpeBrand|特定牌子}]}]}}
+
+# Get the sememes in the form of tree node (get the root node of the sememe tree)
+>>> d.get_sememes_by_word(word='苹果',display='tree')[0]
+{'sense': No.244396|apple|苹果, 'sememes': Node('/No.244396|apple|苹果', role='sense')}
+
+# Visualize the sememes (Set K to control the num of visualized tree to print)
+>>> d.get_sememes_by_word(word='苹果',display='visual',K=2)
+Find 8 result(s)
+Display #0 sememe tree
+[sense]No.244396|apple|苹果
+└── [None]computer|电脑
+    ├── [modifier]PatternValue|样式值
+    │   └── [CoEvent]able|能
+    │       └── [scope]bring|携带
+    │           └── [patient]$
+    └── [patient]SpeBrand|特定牌子
+
+Display #1 sememe tree
+[sense]No.244397|apple|苹果
+└── [None]fruit|水果
+```
 
 Besides, when `display=='list'` , you can choose to merge all the sememe lists into one or limit the expand layer of the sememe tree by changing the parameters.
 
@@ -235,7 +263,6 @@ The sememe you input can be in any language, but the relation must be in lowerca
 [(FormValue|形状值, 'hyponym', round|圆), (FormValue|形状值, 'hyponym', unformed|不成形), (AppearanceValue|外观值, 'hyponym', FormValue|形状值), (FormValue|形状值, 'hyponym', angular|角), (FormValue|形状值, 'hyponym', square|方), (FormValue|形状值, 'hyponym', netlike|网), (FormValue|形状值, 'hyponym', formed|成形)]
 ```
 
-
 ### Advanced Feature 
 
 #### 1: Word Similarity Calculation via Sememes
@@ -254,7 +281,7 @@ Because there are some files required to be loaded for similarity calculation, t
 
 
 ```python
->>> hownet_dict_anvanced = OpenHowNet.HowNetDict(init_sim=True)
+>>> hownet_dict_advanced = OpenHowNet.HowNetDict(init_sim=True)
 Initializing OpenHowNet succeeded!
 Initializing similarity calculation succeeded!
 ```
@@ -268,6 +295,15 @@ You can also postpone the initialization work of similarity calculation until us
 Initializing similarity calculation succeeded!
 ```
 
+##### Get the Senses that have the Same Sememe Tree
+
+You can get the senses that have the same sememe tree with the exact sense.
+
+```python
+>>> s = hownet_dict_advanced.get_sense('苹果')[0]
+>>> hownet_dict_advanced.get_sense_synonyns(s)[:10]
+[No.110999|pear|山梨, No.111007|hawthorn|山楂, No.111009|haw|山楂树, No.111010|hawthorn|山楂树, No.111268|Chinese hawthorn|山里红, No.122955|Pistacia vera|开心果树, No.122956|pistachio|开心果树, No.122957|pistachio tree|开心果树, No.135467|almond tree|扁桃, No.154699|fig|无花果]
+```
 
 ##### Get Top-K Nearest Words for the Input Word
 
@@ -276,7 +312,7 @@ The package looks for senses that are annotated with the word,  finds the neares
 
 
 ```python
->>> hownet_dict_anvanced.get_nearest_words('苹果', language='zh',K=5)
+>>> hownet_dict_advanced.get_nearest_words('苹果', language='zh',K=5)
 {No.244396|apple|苹果: ['IBM', '东芝', '华为', '戴尔', '索尼'],
  No.244397|apple|苹果: ['丑橘', '乌梅', '五敛子', '凤梨', '刺梨'],
  No.244398|IPHONE|苹果: ['OPPO', '华为', '苹果', '智能手机', '彩笔'],
@@ -285,7 +321,7 @@ The package looks for senses that are annotated with the word,  finds the neares
  No.244401|apple|苹果: ['山梨', '山楂', '山楂树', '山里红', '开心果树'],
  No.244402|malus pumila|苹果: ['山梨', '山楂', '山楂树', '山里红', '开心果树'],
  No.244403|orchard apple tree|苹果: ['山梨', '山楂', '山楂树', '山里红', '开心果树']}
->>> hownet_dict_anvanced.get_nearest_words('苹果', language='zh',K=5, merge=True)
+>>> hownet_dict_advanced.get_nearest_words('苹果', language='zh',K=5, merge=True)
 ['IBM', '东芝', '华为', '戴尔', '索尼']
 ```
 
@@ -297,7 +333,7 @@ If any of the given words does not exist in HowNet annotations, this function wi
 
 
 ```python
->>> print('The similarity of 苹果 and 梨 is {}.'.format(hownet_dict_anvanced.calculate_word_similarity('苹果','梨')))
+>>> print('The similarity of 苹果 and 梨 is {}.'.format(hownet_dict_advanced.calculate_word_similarity('苹果','梨')))
 The similarity of 苹果 and 梨 is 1.0.
 ```
 
@@ -312,7 +348,7 @@ To begin with, you can initialize the BabelNet synset dict as the following code
 >>> hownet_dict.initialize_babelnet_dict()
 Initializing BabelNet synset Dict succeeded!
 # Or you can initialize when create the HowNetDict instance
->>> hownet_dict_advance = HowNetDict(init_babel=True)
+>>> hownet_dict_advanced = HowNetDict(init_babel=True)
 Initializing OpenHowNet succeeded!
 Initializing BabelNet synset Dict succeeded!
 ```
@@ -321,7 +357,7 @@ Initializing BabelNet synset Dict succeeded!
 The following API allows you to query the rich multi-source information (Chinese or English synonyms, definitions, picture links, etc.) in BabelNet synset.
 
 ```python
->>> syn_list = hownet_dict_anvanced.get_synset('黄色')
+>>> syn_list = hownet_dict_advanced.get_synset('黄色')
 >>> print("{} results are retrieved and take the first one as an example".format(len(syn_list)))
 3 results are retrieved and take the first one as an example
 
@@ -358,10 +394,10 @@ There are 6 synsets that have relation with the bn:00113968a|yellow|黄, they ar
 The package also provides the ability to query the sememe annotation of Chinese and English words using the sememe annotations of BabelNet synsets:
 
 ```python
->>> print(hownet_dict_anvanced.get_sememes_by_word_in_BabelNet('黄色'))
+>>> print(hownet_dict_advanced.get_sememes_by_word_in_BabelNet('黄色'))
 [{'synset': bn:00113968a|yellow|黄, 'sememes': [yellow|黄]}, {'synset': bn:00101430a|dirty|淫秽的, 'sememes': [lascivious|淫, dirty|龊, despicable|卑劣, BadSocial|坏风气]}, {'synset': bn:00081866n|yellow|黄色, 'sememes': [yellow|黄]}]
 
->>> print(hownet_dict_anvanced.get_sememes_by_word_in_BabelNet('黄色',merge=True))
+>>> print(hownet_dict_advanced.get_sememes_by_word_in_BabelNet('黄色',merge=True))
 [lascivious|淫, despicable|卑劣, BadSocial|坏风气, dirty|龊, yellow|黄]
 ```
 

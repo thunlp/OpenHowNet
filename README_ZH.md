@@ -176,6 +176,9 @@ Chinese words in HowNet:  ['', '"', '#', '#号标签', '$', '$.J.', '$A.', '$NZ.
 >>> en_word_list = hownet_dict.get_en_words()
 >>> print("English words in HowNet: ",en_word_list[:30])
 English words in HowNet:  ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a', 'aardwolves', 'abaci', 'abandoned', 'abbreviated', 'abode', 'aboideaux', 'aboiteaux', 'abscissae', 'absorbed', 'acanthi', 'acari', 'accepted', 'acciaccature', 'acclaimed', 'accommodating', 'accompanied', 'accounting', 'accused', 'acetabula', 'acetified', 'aching', 'acicula', 'acini', 'acquired']
+>>> all_sememes = hownet_dict.get_all_sememes()
+>>> print('There are {} sememes in HowNet'.format(len(all_sememes)))
+There are 2540 sememes in HowNet
 ```
 
 
@@ -206,7 +209,33 @@ English words in HowNet:  ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a
   'sememes': {fruit|水果, reproduce|生殖, tree|树}}]
 ```
 
-通过设置 `display` ，可以将义原以列表形式（`list`）、词典形式（）、树节点形式（）、可视化形式（）等不同形式进行展示。
+通过设置 `display` ，除了可以将义原以列表形式（`list`）展示外，还可以以词典形式（`dict`）、树节点形式（`tree`）、可视化形式（`visual`）等不同形式进行展示。
+
+```python
+# 获取以词典形式展示的义原集合
+>>> hownet_dict.get_sememes_by_word(word='苹果',display='dict')[0]
+{'sense': No.244396|apple|苹果, 'sememes': {'role': 'sense', 'name': No.244396|apple|苹果, 'children': [{'role': 'None', 'name': computer|电脑, 'children': [{'role': 'modifier', 'name': PatternValue|样式值, 'children': [{'role': 'CoEvent', 'name': able|能, 'children': [{'role': 'scope', 'name': bring|携带, 'children': [{'role': 'patient', 'name': '$'}]}]}]}, {'role': 'patient', 'name': SpeBrand|特定牌子}]}]}}
+
+# 获取以树的形式组织的义原（得到义原树的根节点）
+>>> d.get_sememes_by_word(word='苹果',display='tree')[0]
+{'sense': No.244396|apple|苹果, 'sememes': Node('/No.244396|apple|苹果', role='sense')}
+
+# 可视化展示义原树 (通过设置参数K来控制需要打印的义原树的数量)
+>>> d.get_sememes_by_word(word='苹果',display='visual',K=2)
+Find 8 result(s)
+Display #0 sememe tree
+[sense]No.244396|apple|苹果
+└── [None]computer|电脑
+    ├── [modifier]PatternValue|样式值
+    │   └── [CoEvent]able|能
+    │       └── [scope]bring|携带
+    │           └── [patient]$
+    └── [patient]SpeBrand|特定牌子
+
+Display #1 sememe tree
+[sense]No.244397|apple|苹果
+└── [None]fruit|水果
+```
 
 * 当 `display='list'` 时，可以通过设置`merge`将所有Sense的义原列表合并到同一个列表，以及通过`expanded_layer`设置每个概念的义原树展开的层数等（`expanded_layer`默认为`-1`表示展开所有层）。
 
@@ -267,7 +296,7 @@ English words in HowNet:  ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a
 
 
 ```python
->>> hownet_dict_anvanced = OpenHowNet.HowNetDict(init_sim=True)
+>>> hownet_dict_advanced = OpenHowNet.HowNetDict(init_sim=True)
 Initializing OpenHowNet succeeded!
 Initializing similarity calculation succeeded!
 ```
@@ -281,6 +310,16 @@ Initializing similarity calculation succeeded!
 Initializing similarity calculation succeeded!
 ```
 
+##### 获得义原标注完全相同的Sense
+
+你可以获得与指定Sense拥有完全相同义原标注的Sense
+
+```python
+>>> s = hownet_dict_advanced.get_sense('苹果')[0]
+>>> hownet_dict_advanced.get_sense_synonyns(s)[:10]
+[No.110999|pear|山梨, No.111007|hawthorn|山楂, No.111009|haw|山楂树, No.111010|hawthorn|山楂树, No.111268|Chinese hawthorn|山里红, No.122955|Pistacia vera|开心果树, No.122956|pistachio|开心果树, No.122957|pistachio tree|开心果树, No.135467|almond tree|扁桃, No.154699|fig|无花果]
+```
+
 
 ##### 获取输入词语的近义词
 
@@ -291,7 +330,7 @@ Initializing similarity calculation succeeded!
 
 ```python
 # 为“苹果”所属的每个Sense找出5个最相近的近义词
->>> hownet_dict_anvanced.get_nearest_words('苹果', language='zh',K=5)
+>>> hownet_dict_advanced.get_nearest_words('苹果', language='zh',K=5)
 {No.244396|apple|苹果: ['IBM', '东芝', '华为', '戴尔', '索尼'],
  No.244397|apple|苹果: ['丑橘', '乌梅', '五敛子', '凤梨', '刺梨'],
  No.244398|IPHONE|苹果: ['OPPO', '华为', '苹果', '智能手机', '彩笔'],
@@ -301,7 +340,7 @@ Initializing similarity calculation succeeded!
  No.244402|malus pumila|苹果: ['山梨', '山楂', '山楂树', '山里红', '开心果树'],
  No.244403|orchard apple tree|苹果: ['山梨', '山楂', '山楂树', '山里红', '开心果树']}
 # 合并各个Sense的近义词查找的结果
->>> hownet_dict_anvanced.get_nearest_words('苹果', language='zh',K=5, merge=True)
+>>> hownet_dict_advanced.get_nearest_words('苹果', language='zh',K=5, merge=True)
 ['IBM', '东芝', '华为', '戴尔', '索尼']
 ```
 
@@ -313,7 +352,7 @@ Initializing similarity calculation succeeded!
 
 ```python
 # 计算“苹果”和“梨”基于义原的相似度
->>> word_sim=hownet_dict_anvanced.calculate_word_similarity('苹果','梨')
+>>> word_sim=hownet_dict_advanced.calculate_word_similarity('苹果','梨')
 >>> print('The similarity of 苹果 and 梨 is {}.'.format(word_sim))
 The similarity of 苹果 and 梨 is 1.0.
 ```
@@ -329,7 +368,7 @@ The similarity of 苹果 and 梨 is 1.0.
 >>> hownet_dict.initialize_babelnet_dict()
 Initializing BabelNet synset Dict succeeded!
 # 你也可以在创建HowNetDict实例时初始化
->>> hownet_dict_advance = HowNetDict(init_babel=True)
+>>> hownet_dict_advanced = HowNetDict(init_babel=True)
 Initializing OpenHowNet succeeded!
 Initializing BabelNet synset Dict succeeded!
 ```
@@ -338,7 +377,7 @@ Initializing BabelNet synset Dict succeeded!
 通过以下API可以对BabelNet synset中丰富的多源信息（中英同义词、定义、图片链接等）进行查询。
 
 ```python
->>> syn_list = hownet_dict_anvanced.get_synset('黄色')
+>>> syn_list = hownet_dict_advanced.get_synset('黄色')
 >>> print("{} results are retrieved and take the first one as an example".format(len(syn_list)))
 3 results are retrieved and take the first one as an example
 
@@ -375,10 +414,10 @@ There are 6 synsets that have relation with the bn:00113968a|yellow|黄, they ar
 工具包同样提供了利用BabelNet synset义原标注来查询中英文词语义原标注的功能：
 
 ```python
->>> print(hownet_dict_anvanced.get_sememes_by_word_in_BabelNet('黄色'))
+>>> print(hownet_dict_advanced.get_sememes_by_word_in_BabelNet('黄色'))
 [{'synset': bn:00113968a|yellow|黄, 'sememes': [yellow|黄]}, {'synset': bn:00101430a|dirty|淫秽的, 'sememes': [lascivious|淫, dirty|龊, despicable|卑劣, BadSocial|坏风气]}, {'synset': bn:00081866n|yellow|黄色, 'sememes': [yellow|黄]}]
 
->>> print(hownet_dict_anvanced.get_sememes_by_word_in_BabelNet('黄色',merge=True))
+>>> print(hownet_dict_advanced.get_sememes_by_word_in_BabelNet('黄色',merge=True))
 [lascivious|淫, despicable|卑劣, BadSocial|坏风气, dirty|龊, yellow|黄]
 ```
 
