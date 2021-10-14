@@ -29,6 +29,7 @@ setuptools.setup(
         'setuptools',
         'tqdm',
         'requests',
+        'sphinx-press-theme',
     ],
     python_requires=">=3.6"
 )
