@@ -48,16 +48,16 @@ HowNet自问世以来，已被广泛应用于各项自然语言处理任务，�
 HowNet核心数据（即HowNet词典，可从[OpenHowNet网站](https://openhownet.thunlp.org/download)下载）包括237,973个概念。每个概念由中英文词语及其词性、情感倾向、例句、义原标注等信息组成。下面是HowNet中一个概念的示例：
 
 ```
-NO.=000000026417 # 概念编号
-W_C=不惜    # 中文词语
-G_C=verb [2 5000  ] [bu4 xi1]   # 中文词语词性
-S_C=PlusFeeling|正面情感    # 中文词语情感倾向
+NO.=000000026417 														 # 概念编号
+W_C=不惜       															  # 中文词语
+G_C=verb 																	   # 中文词语词性
+S_C=PlusFeeling|正面情感   									  # 中文词语情感倾向
 E_C=~牺牲业余时间，~付出全部精力，~出卖自己的灵魂   # 中文词语例句
-W_E=do not hesitate to  # 英文词语
-G_E=verb [51do verb -0 vt,sobj       ]  # 英文词语词性
-S_E=PlusFeeling|正面情感    # 英文词语情感倾向
-E_E=    # 英文词语例句
-DEF={willing|愿意}  # 义原标注
+W_E=do not hesitate to  										 # 英文词语
+G_E=verb  																	 # 英文词语词性
+S_E=PlusFeeling|正面情感    									# 英文词语情感倾向
+E_E=    																		 # 英文词语例句
+DEF={willing|愿意}  													# 义原标注
 RMK=
 ```
 
@@ -92,7 +92,7 @@ python setup.py install
 
 * **HowNetDict**：HowNet词典类，封装HowNet核心数据的检索、展示、相似度计算等核心功能。
 * **Sense**：HowNet中的概念类，封装用于描述概念的中英文词语及其词性、义原标注等信息。
-* **Sememe**：HowNet中的义原类，封装用于描述义原的中英文词语、义原的频率以及义原间关系等信息。
+* **Sememe**：HowNet中的义原类，封装用于描述义原的中英文词语、义原的出现频率以及义原间关系等信息。
 
 ### 基本功能
 
@@ -176,6 +176,8 @@ Chinese words in HowNet:  ['', '"', '#', '#号标签', '$', '$.J.', '$A.', '$NZ.
 >>> en_word_list = hownet_dict.get_en_words()
 >>> print("English words in HowNet: ",en_word_list[:30])
 English words in HowNet:  ['A', 'An', 'Frenchmen', 'Frenchwomen', 'Ottomans', 'a', 'aardwolves', 'abaci', 'abandoned', 'abbreviated', 'abode', 'aboideaux', 'aboiteaux', 'abscissae', 'absorbed', 'acanthi', 'acari', 'accepted', 'acciaccature', 'acclaimed', 'accommodating', 'accompanied', 'accounting', 'accused', 'acetabula', 'acetified', 'aching', 'acicula', 'acini', 'acquired']
+
+# 获取所有义原
 >>> all_sememes = hownet_dict.get_all_sememes()
 >>> print('There are {} sememes in HowNet'.format(len(all_sememes)))
 There are 2540 sememes in HowNet
@@ -237,7 +239,7 @@ Display #1 sememe tree
 └── [None]fruit|水果
 ```
 
-* 当 `display='list'` 时，可以通过设置`merge`将所有Sense的义原列表合并到同一个列表，以及通过`expanded_layer`设置每个概念的义原树展开的层数等（`expanded_layer`默认为`-1`表示展开所有层）。
+当 `display='list'` 时，可以通过设置`merge`将所有Sense的义原列表合并到同一个列表，以及通过`expanded_layer`设置每个概念的义原树展开的层数等（`expanded_layer`默认为`-1`表示展开所有层）。
 
 下面的例子展示了将苹果所属的所有概念的义原列表进行合并后输出的结果：
 
@@ -258,6 +260,7 @@ Display #1 sememe tree
 >>> relations = hownet_dict.get_sememe_relation('FormValue','圆', return_triples=False)
 >>> print(relations)
 'hyponym'
+
 >>> triples = hownet_dict.get_sememe_relation('FormValue','圆', return_triples=True)
 >>> print(triples)
 [(FormValue|形状值, 'hyponym', round|圆)]
@@ -285,7 +288,7 @@ Display #1 sememe tree
 实现方法基于以下论文：
 
 
-> Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. IJCNLP 2013. [[pdf](https://www.aclweb.org/anthology/I13-1120.pdf)]
+> **An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet**. *Jiangming Liu, Jinan Xu, Yujie Zhang*. IJCNLP 2013. [[pdf](https://www.aclweb.org/anthology/I13-1120.pdf)]
 
 
 ##### 额外初始化
@@ -359,7 +362,9 @@ The similarity of 苹果 and 梨 is 1.0.
 
 #### 高级功能 2：BabelNet同义词集词典
 
-本工具包集成了对于BabelNet中部分同义词集（称为BabelNet synset）信息的查询功能。
+本工具包集成了对于BabelNet中部分同义词集（称为BabelNet synset）信息的查询功能。[BabelNet](https://babelnet.org/)是一个多语百科词典，由BabelNet synset组成，每个BabelNet synset包含表达相同意思的各种语言的同义词。下面这篇工作为一些BabelNet synset标注了义原，这里的查询功能基于其标注结果实现。
+
+> **Towards Building a Multilingual Sememe Knowledge Base: Predicting Sememes for BabelNet Synsets**. *Fanchao Qi, Liang Chang, Maosong Sun, Sicong Ouyang and Zhiyuan Liu*. AAAI-20. [[pdf](https://arxiv.org/pdf/1912.01795.pdf)] [[code](https://github.com/thunlp/BabelNet-Sememe-Prediction)]
 
 ##### 额外初始化
 本功能同样需要额外的初始化操作：
@@ -374,7 +379,7 @@ Initializing BabelNet synset Dict succeeded!
 ```
 
 ##### BabelNet synset信息查询
-通过以下API可以对BabelNet synset中丰富的多源信息（中英同义词、定义、图片链接等）进行查询。
+通过以下API可以对BabelNet synset中丰富的信息（中英同义词、定义、图片链接等）进行查询。
 
 ```python
 >>> syn_list = hownet_dict_advanced.get_synset('黄色')
@@ -399,7 +404,7 @@ Chinese glosses: ['像丝瓜花或向日葵花的颜色。']
 ```
 
 ##### BabelNet synset关系查询
-同样的，BabelNet词典支持与OpenHowNet查询类似的关系查询功能，你可以方便的查询到与某个同义词集有关的同义词集。
+你还可以查询BabelNet同义词集相关的同义词集。
 
 ```python
 >>> related_synsets = syn_example.get_related_synsets()
