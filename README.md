@@ -22,6 +22,7 @@
     <img src="https://img.shields.io/badge/PRs-Welcome-red" alt="PRs are Welcome">
   </a>
 </p>
+
 OpenHowNet API is developed by [THUNLP](http://thunlp.org/), which provides a convenient way to search information in HowNet, display sememe trees, calculate word similarity via sememes, etc. You can also visit our [website](https://openhownet.thunlp.org) to enjoy searching and exhibiting sememes of words online.
 
 
