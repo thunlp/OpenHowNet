@@ -48,16 +48,16 @@ HowNet core data file (namely HowNet dictionary that can be downloaded [here](ht
 
 
 ```
-NO.=000000026417 														 # Concept ID
-W_C=不惜    																 # Chinese word
-G_C=verb    															  # POS tag of the Chinese word
-S_C=PlusFeeling|正面情感                      # Sentiment orientation
-E_C=~牺牲业余时间，~付出全部精力，~出卖自己的灵魂  # Example sentences of the Chinese word
-W_E=do not hesitate to 										  # English word 
-G_E=verb 																	  # POS tag of the English word
-S_E=PlusFeeling|正面情感    								 # Sentiment orientation
-E_E=                                        # Example sentences of the English word
-DEF={willing|愿意}  												# Sememe-based definition
+NO.=000000026417 	# Concept ID
+W_C=不惜 	# Chinese word
+G_C=verb 	# POS tag of the Chinese word
+S_C=PlusFeeling|正面情感 	# Sentiment orientation
+E_C=~牺牲业余时间，~付出全部精力，~出卖自己的灵魂 	# Example sentences of the Chinese word
+W_E=do not hesitate to 	# English word 
+G_E=verb 	# POS tag of the English word
+S_E=PlusFeeling|正面情感 	# Sentiment orientation
+E_E=               	# Example sentences of the English word
+DEF={willing|愿意} 	# Sememe-based definition
 RMK=
 ```
 

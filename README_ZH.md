@@ -48,16 +48,16 @@ HowNet自问世以来，已被广泛应用于各项自然语言处理任务，�
 HowNet核心数据（即HowNet词典，可从[OpenHowNet网站](https://openhownet.thunlp.org/download)下载）包括237,973个概念。每个概念由中英文词语及其词性、情感倾向、例句、义原标注等信息组成。下面是HowNet中一个概念的示例：
 
 ```
-NO.=000000026417 														 # 概念编号
-W_C=不惜       															  # 中文词语
-G_C=verb 																	   # 中文词语词性
-S_C=PlusFeeling|正面情感   									  # 中文词语情感倾向
-E_C=~牺牲业余时间，~付出全部精力，~出卖自己的灵魂   # 中文词语例句
-W_E=do not hesitate to  										 # 英文词语
-G_E=verb  																	 # 英文词语词性
-S_E=PlusFeeling|正面情感    									# 英文词语情感倾向
-E_E=    																		 # 英文词语例句
-DEF={willing|愿意}  													# 义原标注
+NO.=000000026417 	# 概念编号
+W_C=不惜 	# 中文词语
+G_C=verb 	# 中文词语词性
+S_C=PlusFeeling|正面情感 	# 中文词语情感倾向
+E_C=~牺牲业余时间，~付出全部精力，~出卖自己的灵魂 	# 中文词语例句
+W_E=do not hesitate to 	# 英文词语
+G_E=verb 	# 英文词语词性
+S_E=PlusFeeling|正面情感 	# 英文词语情感倾向
+E_E= 						# 英文词语例句
+DEF={willing|愿意} 	# 义原标注
 RMK=
 ```
 
