@@ -5,9 +5,7 @@ with open("OpenHowNet/version.py", "r") as fver:
     VERSION = fver.read().replace("VERSION", "").replace(
         "=", "").replace("\"", "").strip()
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = '<h1 align="center">OpenHowNet</h1>\n' + \
-        fh.read().split('### [中文版本](README_ZH.md)\n\n')[1]
+long_description = "OpenHowNet API is developed by [THUNLP](http://thunlp.org/), which provides a convenient way to search information in HowNet, display sememe trees, calculate word similarity via sememes, etc. You can also visit our [website](https://openhownet.thunlp.org) to enjoy searching and exhibiting sememes of words online."
 
 setuptools.setup(
     name="OpenHowNet",
@@ -15,7 +13,7 @@ setuptools.setup(
     author="THUNLP",
     author_email="thunlp@gmail.com",
     description="OpenHowNet",
-    # long_description=long_description,
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/thunlp/OpenHowNet",
     packages=setuptools.find_packages(),
