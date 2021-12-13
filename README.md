@@ -415,3 +415,15 @@ You can get the sememes of BabelNet synsets by inputting the word in the BabelNe
 
 For more detailed instructions, please refer to the [documentation](https://openhownet.readthedocs.io/).
 
+## Citation
+
+If the code or data help you, please cite the following paper:
+
+```
+@article{qi2019openhownet,
+  title={Openhownet: An open sememe-based lexical knowledge base},
+  author={Qi, Fanchao and Yang, Chenghao and Liu, Zhiyuan and Dong, Qiang and Sun, Maosong and Dong, Zhendong},
+  journal={arXiv preprint arXiv:1901.09957},
+  year={2019}
+}
+```
