@@ -428,3 +428,15 @@ There are 6 synsets that have relation with the bn:00113968a|yellow|黄, they ar
 
 关于工具包的更详细的说明请参考工具包[文档](https://openhownet.readthedocs.io/)。
 
+## 引用
+
+如果本项目的代码或数据帮到你，请引用下面的论文：
+
+```
+@article{qi2019openhownet,
+  title={Openhownet: An open sememe-based lexical knowledge base},
+  author={Qi, Fanchao and Yang, Chenghao and Liu, Zhiyuan and Dong, Qiang and Sun, Maosong and Dong, Zhendong},
+  journal={arXiv preprint arXiv:1901.09957},
+  year={2019}
+}
+```
