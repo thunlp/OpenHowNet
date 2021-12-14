@@ -1,21 +1,20 @@
 import requests
 import os
 from tqdm import tqdm
-import pickle
 import zipfile
 
 OPENHOWNET_DATA_URL = "https://thunlp.oss-cn-qingdao.aliyuncs.com/OpenHowNet/resources.zip"
+OPENHOWNET_RESOURCE_PATH = "~/.openhownet"
 
 
 def get_resource(path, mode='r', encoding='utf-8'):
     '''Open the resource file.
     '''
     try:
-        package_directory = os.path.dirname(os.path.abspath(__file__))
         if 'b' in mode:
-            file = open(os.path.join(package_directory, path), mode)
+            file = open(os.path.join(OPENHOWNET_RESOURCE_PATH, path), mode)
         else:
-            file = open(os.path.join(package_directory, path),
+            file = open(os.path.join(OPENHOWNET_RESOURCE_PATH, path),
                         mode, encoding=encoding)
         return file
     except FileNotFoundError as e:
@@ -40,8 +39,7 @@ def download_file(url, dest_file=None):
     if not dest_file:
         dest_file = os.path.basename(url)
 
-    package_directory = os.path.dirname(os.path.abspath(__file__))
-    dest_path = os.path.join(package_directory, dest_file)
+    dest_path = os.path.join(OPENHOWNET_RESOURCE_PATH, dest_file)
 
     with open(dest_path, 'wb') as f:
         for x in tqdm(iterable=req.iter_content(1024), total=round(total_size, 2), unit='KB', desc=dest_file):
@@ -54,11 +52,10 @@ def download():
     '''Download the HowNet resource file.
     The HowNet resource file is openhownet_data.zip.
     '''
-    package_directory = os.path.dirname(os.path.abspath(__file__))
-    if not os.path.exists(package_directory + '/resources/'):
-        os.mkdir(package_directory+'/resources')
+    if not os.path.exists(os.path.join(OPENHOWNET_RESOURCE_PATH, 'resources')):
+        os.mkdir(os.path.join(OPENHOWNET_RESOURCE_PATH, 'resources'))
     data_zip_path = download_file(
         OPENHOWNET_DATA_URL, dest_file="resources/resources.zip")
     with zipfile.ZipFile(data_zip_path, 'r') as zip_ref:
-        zip_ref.extractall(os.path.join(package_directory,'resources'))
+        zip_ref.extractall(os.path.join(OPENHOWNET_RESOURCE_PATH, 'resources'))
     os.remove(data_zip_path)
