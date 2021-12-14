@@ -2,14 +2,7 @@
 HowNetDict Class
 =================
 """
-
-import os
 import pickle
-import sys
-from typing import Dict, Any
-
-from anytree import Node, RenderTree
-from anytree.exporter import DictExporter, JsonExporter
 
 from .Sense import Sense
 from .Sememe import Sememe
@@ -44,9 +37,8 @@ class HowNetDict(object):
             init_babel (`bool`) : whether to initialize the BabelNet synest search module.
         '''
         try:
-            package_directory = os.path.dirname(os.path.abspath(__file__))
-            sememe_dir, sememe_triples_dir, data_dir = [os.path.join(package_directory, file_name) for file_name in [
-                'resources/sememe_all', 'resources/sememe_triples_taxonomy.txt', 'resources/HowNet_dict_complete']]
+            sememe_dir, sememe_triples_dir, data_dir = [
+                'resources/sememe_all', 'resources/sememe_triples_taxonomy.txt', 'resources/HowNet_dict_complete']
 
             # Initialize sememe list from sememe_all.
             self.sememe_dic = dict()
@@ -497,18 +489,15 @@ class HowNetDict(object):
         Implementation is contributed by Jun Yan, which is based on the paper :
         "Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP"
         """
-        sememe_sim_table_pickle_path = 'resources/sememe_sim_table'
-        sense_tree_path = 'resources/sense_tree'
-        sense_syn_path = 'resources/synonym'
+        sememe_sim_table_pickle_path, sense_tree_path, sense_syn_path = ['resources/sememe_sim_table', 'resources/sense_tree', 'resources/synonym']
 
-        package_directory = os.path.dirname(os.path.abspath(__file__))
         try:
             self.sememe_sim_table = pickle.load(
-                get_resource(os.path.join(package_directory, sememe_sim_table_pickle_path), "rb"))
+                get_resource(sememe_sim_table_pickle_path, "rb"))
             self.sense_tree_dic = pickle.load(
-                get_resource(os.path.join(package_directory, sense_tree_path), 'rb'))
+                get_resource(sense_tree_path, 'rb'))
             self.sense_syn_dic = pickle.load(
-                get_resource(os.path.join(package_directory, sense_syn_path), 'rb'))
+                get_resource(sense_syn_path, 'rb'))
         except FileNotFoundError as e:
             print(
                 "Enabling Word Similarity Calculation requires specific data files, please check the completeness of your download package.")
@@ -718,10 +707,9 @@ class HowNetDict(object):
         """Initialize the BabelNet Synset dict.
         """
         babel_data_path = 'resources/babel_data'
-        package_directory = os.path.dirname(os.path.abspath(__file__))
         try:
             babel_synset_list = pickle.load(
-                get_resource(os.path.join(package_directory, babel_data_path), "rb"))
+                get_resource(babel_data_path, "rb"))
 
             self.synset_dic = {}
             self.en_synset_dic = {}
