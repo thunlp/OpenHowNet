@@ -3,6 +3,7 @@ HowNetDict Class
 =================
 """
 import pickle
+import os
 
 from .Sense import Sense
 from .Sememe import Sememe
@@ -37,8 +38,8 @@ class HowNetDict(object):
             init_babel (`bool`) : whether to initialize the BabelNet synest search module.
         '''
         try:
-            sememe_dir, sememe_triples_dir, data_dir = [
-                'resources/sememe_all', 'resources/sememe_triples_taxonomy.txt', 'resources/HowNet_dict_complete']
+            sememe_dir, sememe_triples_dir, data_dir = [os.path.join("resources", i) for i in [
+                'sememe_all', 'sememe_triples_taxonomy.txt', 'HowNet_dict_complete']]
 
             # Initialize sememe list from sememe_all.
             self.sememe_dic = dict()
@@ -489,7 +490,8 @@ class HowNetDict(object):
         Implementation is contributed by Jun Yan, which is based on the paper :
         "Jiangming Liu, Jinan Xu, Yujie Zhang. An Approach of Hybrid Hierarchical Structure for Word Similarity Computing by HowNet. In Proceedings of IJCNLP"
         """
-        sememe_sim_table_pickle_path, sense_tree_path, sense_syn_path = ['resources/sememe_sim_table', 'resources/sense_tree', 'resources/synonym']
+        sememe_sim_table_pickle_path, sense_tree_path, sense_syn_path = [os.path.join("resources", i) for i in [
+            'sememe_sim_table', 'sense_tree', 'synonym']]
 
         try:
             self.sememe_sim_table = pickle.load(
@@ -706,7 +708,7 @@ class HowNetDict(object):
     def initialize_babelnet_dict(self):
         """Initialize the BabelNet Synset dict.
         """
-        babel_data_path = 'resources/babel_data'
+        babel_data_path = os.path.join('resources','babel_data')
         try:
             babel_synset_list = pickle.load(
                 get_resource(babel_data_path, "rb"))
@@ -822,7 +824,68 @@ class HowNetDict(object):
     def get_all_synset_relations(self):
         """Return all the relations between synsets in BabelNet.
         """
-        return ['similar', 'derivation', 'similar_to', 'derivationally_related_form', 'gloss_related_form_(monosemous)', 'gloss_related_form_(disambiguated)', 'also_see', 'pertainym', 'pertainym_(pertains_to_nouns)', 'category_domain', 'domain_of_synset_-_topic', 'antonym', 'attribute', 'region_domain', 'usage_domain', 'domain_of_synset_-_usage', 'domain_of_synset_-_region', 'verb_group', 'hypernym', 'hyponym', 'entailment', 'cause', 'this_taxon_is_source_of', 'natural_product_of_taxon', 'color', 'subclass_of', 'instance_of', 'semantically_related_form', 'part_meronym', 'uses', 'practiced_by', 'member_meronym', 'member_holonym', 'taxon_rank', 'recommended_unit_of_measurement', 'health_specialty', 'different_from', 'country_of_origin', 'iucn_conservation_status', 'instances_hyponym', 'instance_hyponym', 'political_ideology', 'located_in_the_administrative_territorial_entity', 'part_holonym', 'antiparticle', 'interaction', 'part_of', 'opposite_of', 'facet_of', 'use', 'has_part', 'programming_language', 'said_to_be_the_same_as', 'named_after', 'followed_by', 'substance_meronym', 'streak_color', 'instance_hypernym', 'twinned_administrative_body', 'continent', 'country', 'location_of_creation', 'material_used', 'month_of_the_year', 'applies_to_jurisdiction', 'work_location', 'member_of_political_party', 'country_of_citizenship', 'occupation', 'parent_taxon', 'taxonomic_type', 'member_of_category_domain', 'member_of_this_domain_-_topic', 'cause_of_death', 'field_of_work', 'place_of_death', 'place_of_birth', 'prime_factor', 'model_item', 'studied_by', 'has_parts_of_the_class', 'has_quality', 'used_by', 'has_cause', 'religion', 'killed_by', 'child', 'substance_holonym', 'basin_country', 'connects_with', 'from_narrative_universe', 'located_on_terrain_feature', 'location_of_discovery', 'diplomatic_relation', 'official_language', 'language_used', 'capital', 'member_of', 'contains_administrative_territorial_entity', 'shares_border_with', 'has_effect', 'medical_condition', 'ethnic_group', 'sport', 'indigenous_to', 'writing_system', 'noble_title', 'partially_coincident_with', 'immediate_cause_of', 'has_immediate_cause', 'lowest_point', 'follows', 'subject_has_role', 'grammatical_option_indicates', 'parent_astronomical_body', 'separated_from', 'place_of_burial', 'genre', 'participant', 'highest_point', 'located_in_or_next_to_body_of_water', 'location', 'found_in_taxon', 'conflict', 'child_astronomical_body', 'interested_in', 'writing_language', 'instrument', 'languages_spoken_written_or_signed', 'employer', 'educated_at', 'capital_of', 'possible_treatment', 'afflicts', 'symptoms', 'father', 'this_zoological_name_is_coordinate_with', 'taxon_synonym', 'measured_physical_quantity', 'has_grammatical_case', 'official_symbol', 'head_of_state', 'replaces', 'has_fruit_type', 'has_facet_polytope', 'studies', 'worshipped_by', 'based_on', 'depicts', 'residence', 'mouth_of_the_watercourse', 'author', 'main_subject', 'owner_of', 'discoverer_or_inventor', 'basic_form_of_government', 'anatomical_location', 'drug_used_for_treatment', 'hair_color', 'spouse', 'sibling', 'medical_condition_treated', 'manifestation_of', 'position_held', 'product_or_material_produced', 'territory_claimed_by', 'field_of_this_occupation', 'language_of_work_or_name', 'currency', 'office_held_by_head_of_government', 'permanent_duplicated_item', 'fabrication_method', 'risk_factor', 'headquarters_location', 'public_holiday', 'unmarried_partner', 'significant_event', 'manner_of_death', 'native_language', 'military_rank', 'award_received', 'source_of_energy', 'physically_interacts_with', 'inflows', 'lake_outflow', 'iconographic_symbol', 'military_branch', 'official_color', 'founded_by', 'calculated_from', 'has_natural_reservoir', 'replaced_by', 'movement', 'has_contributing_factor', 'spore_print_color', 'sex_or_gender', 'member_of_region_domain', 'member_of_this_domain_-_region', 'endemic_to', 'arterial_supply', 'day_in_year_for_periodic_occurrence', 'produced_by', 'owned_by', 'godparent', 'allegiance', 'main_food_source', 'develops_from', 'family', 'patron_saint', 'does_not_have_part', 'copyright_representative', 'location_of_formation', 'typically_sells', 'notable_work', 'tributary', 'characters', 'canonization_status', 'student_of', 'academic_degree', 'time_period', 'mountain_range', 'influenced_by', 'sexual_orientation', 'sexually_homologous_with', 'habitat', 'item_operated', 'medical_examinations', 'office_held_by_head_of_the_organization', 'original_combination', 'office_held_by_head_of_state', 'culture', 'feast_day', 'route_of_administration', 'type_locality_(geology)', 'located_in_time_zone', 'given_name', 'operator', 'produced_sound', 'designed_to_carry', 'side_effect', 'next_lower_rank', 'currency_symbol_description', 'central_bank/issuer', 'enclave_within', 'less_than', 'industry', 'exclave_of', 'significant_drug_interaction', 'foods_traditionally_associated', 'day_of_week', 'is_a_list_of', 'appointed_by', 'objective_of_project_or_action', 'conjugate_acid', 'conferred_by', 'cell_component', 'domain_of_saint_or_deity', 'place_of_detention', 'direction_relative_to_location', 'official_religion', 'legislative_body', 'shape', 'performer', 'target', 'organizer', 'occupant', 'has_grammatical_mood', 'has_tense', 'described_by_source', 'penalty', 'invasive_to', 'subsidiary', 'creator', 'discography', 'voice_type', 'uses_capitalization_for', 'linguistic_typology', 'official_residence', 'territory_overlaps', 'contributing_factor_of', 'encodes', 'professorship', 'encoded_by', 'biological_process', 'narrative_location', 'archives_at', 'measures', 'doctoral_student', 'dual_to', 'flower_color', 'convicted_of', 'first_aid_measures', 'place_of_origin_(switzerland)', 'destination_point', 'constellation', 'history_of_topic', 'parent_organization', 'lifestyle', 'legal_form', 'ancestral_home', 'terminus', 'original_language_of_film_or_tv_show', 'historic_county', 'member_of_usage_domain', 'member_of_this_domain_-_usage', 'honorific_prefix', 'next_higher_rank', 'lakes_on_river', 'origin_of_the_watercourse', 'participant_in', 'located_in_present-day_administrative_territorial_entity', 'pathogen_transmission_process', 'geography_of_topic', 'depicted_by', 'student', 'conjugate_base', 'host', 'solid_solution_series_with', 'contains', 'organization_directed_by_the_office_or_person', 'distribution_format', 'relative', 'mother', 'represents', 'sports_discipline_competed_in', 'victory', 'part_of_the_series', 'is_pollinated_by', 'authority', 'molecular_function', 'commemorates', 'basionym', 'temporal_range_start', 'powered_by', 'anthem', 'prerequisite', 'central_bank', 'of', 'developer', 'sponsor', 'has_works_in_the_collection', 'social_classification', 'contributor_to_the_creative_work_or_subject', 'voice_actor', 'chairperson', 'commissioned_by', 'manufacturer', 'anatomical_branch_of', 'foundational_text', 'appears_in_the_form_of', 'contains_settlement', 'dialect_of', 'base', 'has_vertex_figure', 'season_starts', 'members_have_occupation', 'has_anatomical_branch', 'does_not_have_quality', 'commander_of_(deprecated)', "topic's_main_category", 'measurement_scale', 'present_in_work', 'significant_person', 'gui_toolkit_or_framework', 'operating_area', 'wears', 'designated_as_terrorist_by', 'platform', 'has_boundary', 'derivative_work', 'greater_than', 'place_of_publication', 'offers_view_on', 'architectural_style', 'parent_of_this_hybrid_breed_or_cultivar', 'doctoral_advisor', 'by-product', 'signatory', 'production_statistics', 'codomain', 'domain', 'honorific_suffix', 'had_as_last_meal', 'birthday', 'historical_region', 'cause_of_destruction', 'people_or_cargo_transported', 'place_served_by_transport_hub', 'family_name', 'programming_paradigm', 'enemy_of', 'has_list', 'language_regulatory_body', 'incarnation_of', 'muscle_insertion', 'open_days', 'payment_types_accepted', 'member_of_military_unit', 'crosses', 'determination_method', 'publisher', 'by-product_of', 'statement_describes']
+        return ['similar', 'derivation', 'similar_to', 'derivationally_related_form', 'gloss_related_form_(monosemous)', 
+            'gloss_related_form_(disambiguated)', 'also_see', 'pertainym', 'pertainym_(pertains_to_nouns)', 'category_domain', 
+            'domain_of_synset_-_topic', 'antonym', 'attribute', 'region_domain', 'usage_domain', 'domain_of_synset_-_usage', 
+            'domain_of_synset_-_region', 'verb_group', 'hypernym', 'hyponym', 'entailment', 'cause', 'this_taxon_is_source_of', 
+            'natural_product_of_taxon', 'color', 'subclass_of', 'instance_of', 'semantically_related_form', 'part_meronym', 
+            'uses', 'practiced_by', 'member_meronym', 'member_holonym', 'taxon_rank', 'recommended_unit_of_measurement', 
+            'health_specialty', 'different_from', 'country_of_origin', 'iucn_conservation_status', 'instances_hyponym', 
+            'instance_hyponym', 'political_ideology', 'located_in_the_administrative_territorial_entity', 'part_holonym', 
+            'antiparticle', 'interaction', 'part_of', 'opposite_of', 'facet_of', 'use', 'has_part', 'programming_language', 
+            'said_to_be_the_same_as', 'named_after', 'followed_by', 'substance_meronym', 'streak_color', 'instance_hypernym', 
+            'twinned_administrative_body', 'continent', 'country', 'location_of_creation', 'material_used', 'month_of_the_year', 
+            'applies_to_jurisdiction', 'work_location', 'member_of_political_party', 'country_of_citizenship', 'occupation', 
+            'parent_taxon', 'taxonomic_type', 'member_of_category_domain', 'member_of_this_domain_-_topic', 'cause_of_death', 
+            'field_of_work', 'place_of_death', 'place_of_birth', 'prime_factor', 'model_item', 'studied_by', 'has_parts_of_the_class', 
+            'has_quality', 'used_by', 'has_cause', 'religion', 'killed_by', 'child', 'substance_holonym', 'basin_country', 
+            'connects_with', 'from_narrative_universe', 'located_on_terrain_feature', 'location_of_discovery', 
+            'diplomatic_relation', 'official_language', 'language_used', 'capital', 'member_of', 
+            'contains_administrative_territorial_entity', 'shares_border_with', 'has_effect', 'medical_condition', 'ethnic_group', 
+            'sport', 'indigenous_to', 'writing_system', 'noble_title', 'partially_coincident_with', 'immediate_cause_of', 
+            'has_immediate_cause', 'lowest_point', 'follows', 'subject_has_role', 'grammatical_option_indicates', 'parent_astronomical_body', 
+            'separated_from', 'place_of_burial', 'genre', 'participant', 'highest_point', 'located_in_or_next_to_body_of_water', 'location', 
+            'found_in_taxon', 'conflict', 'child_astronomical_body', 'interested_in', 'writing_language', 'instrument', 'languages_spoken_written_or_signed', 
+            'employer', 'educated_at', 'capital_of', 'possible_treatment', 'afflicts', 'symptoms', 'father', 'this_zoological_name_is_coordinate_with', 'taxon_synonym', 
+            'measured_physical_quantity', 'has_grammatical_case', 'official_symbol', 'head_of_state', 'replaces', 'has_fruit_type', 'has_facet_polytope', 
+            'studies', 'worshipped_by', 'based_on', 'depicts', 'residence', 'mouth_of_the_watercourse', 'author', 'main_subject', 
+            'owner_of', 'discoverer_or_inventor', 'basic_form_of_government', 'anatomical_location', 'drug_used_for_treatment', 'hair_color', 
+            'spouse', 'sibling', 'medical_condition_treated', 'manifestation_of', 'position_held', 'product_or_material_produced', 
+            'territory_claimed_by', 'field_of_this_occupation', 'language_of_work_or_name', 'currency', 'office_held_by_head_of_government', 
+            'permanent_duplicated_item', 'fabrication_method', 'risk_factor', 'headquarters_location', 'public_holiday', 'unmarried_partner', 
+            'significant_event', 'manner_of_death', 'native_language', 'military_rank', 'award_received', 'source_of_energy', 'physically_interacts_with', 
+            'inflows', 'lake_outflow', 'iconographic_symbol', 'military_branch', 'official_color', 'founded_by', 'calculated_from', 'has_natural_reservoir', 
+            'replaced_by', 'movement', 'has_contributing_factor', 'spore_print_color', 'sex_or_gender', 'member_of_region_domain', 'member_of_this_domain_-_region', 
+            'endemic_to', 'arterial_supply', 'day_in_year_for_periodic_occurrence', 'produced_by', 'owned_by', 'godparent', 'allegiance', 'main_food_source', 
+            'develops_from', 'family', 'patron_saint', 'does_not_have_part', 'copyright_representative', 'location_of_formation', 'typically_sells', 
+            'notable_work', 'tributary', 'characters', 'canonization_status', 'student_of', 'academic_degree', 'time_period', 'mountain_range', 
+            'influenced_by', 'sexual_orientation', 'sexually_homologous_with', 'habitat', 'item_operated', 'medical_examinations', 
+            'office_held_by_head_of_the_organization', 'original_combination', 'office_held_by_head_of_state', 'culture', 'feast_day', 'route_of_administration', 'type_locality_(geology)', 
+            'located_in_time_zone', 'given_name', 'operator', 'produced_sound', 'designed_to_carry', 'side_effect', 'next_lower_rank', 'currency_symbol_description', 
+            'central_bank/issuer', 'enclave_within', 'less_than', 'industry', 'exclave_of', 'significant_drug_interaction', 'foods_traditionally_associated', 
+            'day_of_week', 'is_a_list_of', 'appointed_by', 'objective_of_project_or_action', 'conjugate_acid', 'conferred_by', 'cell_component', 'domain_of_saint_or_deity', 
+            'place_of_detention', 'direction_relative_to_location', 'official_religion', 'legislative_body', 'shape', 'performer', 'target', 'organizer', 
+            'occupant', 'has_grammatical_mood', 'has_tense', 'described_by_source', 'penalty', 'invasive_to', 'subsidiary', 'creator', 'discography', 'voice_type', 
+            'uses_capitalization_for', 'linguistic_typology', 'official_residence', 'territory_overlaps', 'contributing_factor_of', 'encodes', 'professorship', 
+            'encoded_by', 'biological_process', 'narrative_location', 'archives_at', 'measures', 'doctoral_student', 'dual_to', 'flower_color', 'convicted_of', 
+            'first_aid_measures', 'place_of_origin_(switzerland)', 'destination_point', 'constellation', 'history_of_topic', 'parent_organization', 'lifestyle', 
+            'legal_form', 'ancestral_home', 'terminus', 'original_language_of_film_or_tv_show', 'historic_county', 'member_of_usage_domain', 'member_of_this_domain_-_usage', 
+            'honorific_prefix', 'next_higher_rank', 'lakes_on_river', 'origin_of_the_watercourse', 'participant_in', 'located_in_present-day_administrative_territorial_entity', 
+            'pathogen_transmission_process', 'geography_of_topic', 'depicted_by', 'student', 'conjugate_base', 'host', 'solid_solution_series_with', 'contains', 
+            'organization_directed_by_the_office_or_person', 'distribution_format', 'relative', 'mother', 'represents', 'sports_discipline_competed_in', 'victory', 'part_of_the_series', 
+            'is_pollinated_by', 'authority', 'molecular_function', 'commemorates', 'basionym', 'temporal_range_start', 'powered_by', 'anthem', 'prerequisite', 'central_bank', 
+            'of', 'developer', 'sponsor', 'has_works_in_the_collection', 'social_classification', 'contributor_to_the_creative_work_or_subject', 'voice_actor', 'chairperson', 
+            'commissioned_by', 'manufacturer', 'anatomical_branch_of', 'foundational_text', 'appears_in_the_form_of', 
+            'contains_settlement', 'dialect_of', 'base', 'has_vertex_figure', 'season_starts', 'members_have_occupation', 
+            'has_anatomical_branch', 'does_not_have_quality', 'commander_of_(deprecated)', "topic's_main_category", 
+            'measurement_scale', 'present_in_work', 'significant_person', 'gui_toolkit_or_framework', 'operating_area', 
+            'wears', 'designated_as_terrorist_by', 'platform', 'has_boundary', 'derivative_work', 'greater_than', 
+            'place_of_publication', 'offers_view_on', 'architectural_style', 'parent_of_this_hybrid_breed_or_cultivar', 
+            'doctoral_advisor', 'by-product', 'signatory', 'production_statistics', 'codomain', 'domain', 'honorific_suffix', 
+            'had_as_last_meal', 'birthday', 'historical_region', 'cause_of_destruction', 'people_or_cargo_transported', 
+            'place_served_by_transport_hub', 'family_name', 'programming_paradigm', 'enemy_of', 'has_list', 'language_regulatory_body', 
+            'incarnation_of', 'muscle_insertion', 'open_days', 'payment_types_accepted', 'member_of_military_unit', 'crosses', 
+            'determination_method', 'publisher', 'by-product_of', 'statement_describes']
 
     def get_synset_relation(self, x, y, return_triples=False, strict=True):
         """Get the relation between two synsets.

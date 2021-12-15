@@ -4,7 +4,7 @@ from tqdm import tqdm
 import zipfile
 
 OPENHOWNET_DATA_URL = "https://thunlp.oss-cn-qingdao.aliyuncs.com/OpenHowNet/resources.zip"
-OPENHOWNET_RESOURCE_PATH = "~/.openhownet"
+OPENHOWNET_RESOURCE_PATH = os.path.join("~", ".openhownet")
 
 
 def get_resource(path, mode='r', encoding='utf-8'):
@@ -55,7 +55,7 @@ def download():
     if not os.path.exists(os.path.join(OPENHOWNET_RESOURCE_PATH, 'resources')):
         os.mkdir(os.path.join(OPENHOWNET_RESOURCE_PATH, 'resources'))
     data_zip_path = download_file(
-        OPENHOWNET_DATA_URL, dest_file="resources/resources.zip")
+        OPENHOWNET_DATA_URL, dest_file=os.path.join("resources", "resources.zip"))
     with zipfile.ZipFile(data_zip_path, 'r') as zip_ref:
         zip_ref.extractall(os.path.join(OPENHOWNET_RESOURCE_PATH, 'resources'))
     os.remove(data_zip_path)
