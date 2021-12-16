@@ -3,8 +3,6 @@ BabelNetSynset Class
 =======================
 """
 
-from .Download import get_resource
-
 
 class BabelNetSynset(object):
     """BabelNet synset class.
@@ -68,7 +66,8 @@ class BabelNetSynset(object):
             if relation not in self.related_synsets.keys():
                 return res
             if return_triples:
-                res.extend([(self, relation, s) for s in self.related_synsets[relation]])
+                res.extend([(self, relation, s)
+                           for s in self.related_synsets[relation]])
             else:
                 res = self.related_synsets[relation]
         else:
